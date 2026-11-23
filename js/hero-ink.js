@@ -80,13 +80,14 @@
         float n1 = fbm(vUv * vec2(aspect * 4.2, 4.2) + vec2(uTime * 0.12, -uTime * 0.09)) - 0.5;
         float n2 = fbm(vUv * vec2(aspect * 7.4, 7.4) - vec2(uTime * 0.14, uTime * 0.11)) - 0.5;
 
-        // 1. Ondes ambiantes 100% continues en 60fps (viennent de partout, zéro saccade)
+        float ambSum = 0.0;
+
+        // 1. Ondes ambiantes 100% continues en 60fps (avec taches d'encre orange)
         if (uAmbient > 0.005) {
           vec2 pA = vec2(0.5 + 0.38 * sin(uTime * 0.37 + 0.4),  0.5 + 0.18 * cos(uTime * 0.51));
           vec2 pB = vec2(0.5 + 0.40 * cos(uTime * 0.29 + 2.1),  0.5 + 0.20 * sin(uTime * 0.43 + 1.2));
           vec2 pC = vec2(0.5 + 0.34 * sin(uTime * 0.45 + 4.3),  0.5 + 0.16 * cos(uTime * 0.33 + 2.7));
 
-          // Pulsation douce pour que chaque onde apparaisse puis s'efface organiquement
           float wA = pow(0.5 + 0.5 * sin(uTime * 0.55), 1.6) * uAmbient;
           float wB = pow(0.5 + 0.5 * sin(uTime * 0.47 + 2.2), 1.6) * uAmbient;
           float wC = pow(0.5 + 0.5 * sin(uTime * 0.61 + 4.1), 1.6) * uAmbient;
@@ -95,21 +96,20 @@
           vec2 cB = vec2((vUv.x - pB.x) * aspect, vUv.y - pB.y);
           vec2 cC = vec2((vUv.x - pC.x) * aspect, vUv.y - pC.y);
 
-          float rBase = 0.34 * (0.85 + 0.45 * n1);
+          float rBase = 0.36 * (0.8 + 0.55 * n1);
           float fA = smoothstep(rBase, 0.0, length(cA)) * wA;
-          float fB = smoothstep(rBase * 1.08, 0.0, length(cB)) * wB;
-          float fC = smoothstep(rBase * 0.92, 0.0, length(cC)) * wC;
+          float fB = smoothstep(rBase * 1.1, 0.0, length(cB)) * wB;
+          float fC = smoothstep(rBase * 0.95, 0.0, length(cC)) * wC;
 
-          disp += (vec2(cos(uTime * 0.37), -sin(uTime * 0.51)) * 0.045 + vec2(n1, n2) * 0.055) * fA;
-          disp += (vec2(-sin(uTime * 0.29), cos(uTime * 0.43)) * 0.045 + vec2(-n2, n1) * 0.055) * fB;
-          disp += (vec2(cos(uTime * 0.45), sin(uTime * 0.33)) * 0.040 + vec2(n1, -n2) * 0.050) * fC;
+          disp += (vec2(cos(uTime * 0.37), -sin(uTime * 0.51)) * 0.095 + vec2(n1, n2) * 0.11) * fA;
+          disp += (vec2(-sin(uTime * 0.29), cos(uTime * 0.43)) * 0.095 + vec2(-n2, n1) * 0.11) * fB;
+          disp += (vec2(cos(uTime * 0.45), sin(uTime * 0.33)) * 0.085 + vec2(n1, -n2) * 0.10) * fC;
 
-          float ambSum = fA + fB + fC;
-          inkEnergy += ambSum * 0.85;
-          splashMask += ambSum * 0.72;
+          ambSum = fA + fB + fC;
+          inkEnergy += ambSum * 1.55;
         }
 
-        // 2. Traînées interactives larges au passage de la souris
+        // 2. Traînées interactives au survol (identiques à la version validée)
         for (int i = 0; i < ${MAX_DROPS}; i++) {
           vec4 d = uDrops[i];
           if (d.w <= 0.005) continue;
@@ -141,6 +141,13 @@
         vec2 uvTrail = clamp(vUv - disp * 2.65 + vec2(n1, n2) * 0.036 * min(1.5, splashMask), 0.0, 1.0);
         float alphaTrail = texture2D(uText, uvTrail).a;
 
+        // Taches d'encre organiques uniquement pour les ondes autonomes (sans toucher au survol)
+        float nearText = max(alphaMain, max(alphaOrange, max(
+          texture2D(uText, clamp(vUv + vec2(0.018, 0.012), 0.0, 1.0)).a,
+          texture2D(uText, clamp(vUv - vec2(0.018, 0.012), 0.0, 1.0)).a
+        )));
+        float ambBlotch = smoothstep(0.42, 0.62, ambSum * 1.35 + n1 * 0.55 + n2 * 0.35) * smoothstep(0.05, 0.4, nearText + ambSum * 0.35);
+
         vec3 colBlue   = vec3(0.149, 0.173, 0.910); // #262CE8
         vec3 colOrange = vec3(1.000, 0.302, 0.110); // #FF4D1C
         vec3 colPeach  = vec3(1.000, 0.675, 0.545);
@@ -151,7 +158,7 @@
         vec3 mainColor = mix(colBlue, colOrange, mixOrange);
         mainColor = mix(mainColor, colPeach, mixPeach * 0.68);
 
-        float orangeBack = max(alphaOrange * smoothstep(0.05, 0.32, inkEnergy), alphaTrail * smoothstep(0.26, 0.88, splashMask));
+        float orangeBack = max(max(alphaOrange * smoothstep(0.05, 0.32, inkEnergy), alphaTrail * smoothstep(0.26, 0.88, splashMask)), ambBlotch * 0.9);
         vec3 finalRgb = colOrange;
         float finalAlpha = orangeBack;
 
