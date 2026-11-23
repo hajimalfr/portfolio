@@ -139,20 +139,8 @@
       </svg>
 
       <div class="station-inner st0-name-only">
-        <!-- Boîte de sélection CAO / Figma autour du nom seul en très grand -->
-        <div class="selection-box selection-box-hero" id="heroSelectionBox">
-          <!-- Taches orange organiques floues qui apparaissent au survol -->
-          <div class="orange-stain-field" id="orangeStainField" aria-hidden="true">
-            <span class="stain-blob stain-a"></span>
-            <span class="stain-blob stain-b"></span>
-            <span class="stain-blob stain-c"></span>
-          </div>
-
-          <span class="sel-handle sh-tl" aria-hidden="true"></span>
-          <span class="sel-handle sh-tr" aria-hidden="true"></span>
-          <span class="sel-handle sh-bl" aria-hidden="true"></span>
-          <span class="sel-handle sh-br" aria-hidden="true"></span>
-
+        <!-- Scène WebGL Liquid Ink (sbwebdesign.ch .is-ink) -->
+        <div class="hero-ink-wrap" id="heroInkWrap">
           <!-- Curseur / bulle d'annotation flottante orange inspirée sbwebdesign.ch -->
           <div class="atelier-cursor" id="atelierCursor" aria-hidden="true">
             <svg width="13" height="15" viewBox="0 0 13 15" fill="none">
@@ -161,15 +149,8 @@
             <span class="mono" data-i18n="st0.cursorPill">BUT GCCD · NANCY</span>
           </div>
 
-          <h1 class="hero-title hero-title-monumental" id="heroTitle" aria-label="Victor Valroff Chhun.">
-            <span class="mask-row">
-              <span class="hero-word" data-word="VICTOR">VICTOR</span>
-              <span class="hero-word" data-word="VALROFF">VALROFF</span>
-              <span class="hero-word hero-word-outline" data-word="CHHUN">CHHUN</span><span class="hero-dot" aria-hidden="true">.</span>
-            </span>
-          </h1>
-
-          <div class="sel-badge mono" id="heroSpecBadge">Bricolage · 116 px</div>
+          <canvas id="heroInkCanvas" aria-hidden="true"></canvas>
+          <h1 class="hero-title hero-title-monumental ink-sr-fallback" id="heroTitle">VICTOR VALROFF CHHUN.</h1>
         </div>
 
         <button type="button" class="scroll-cue mono magnetic" data-goto="1" aria-label="Explorer les stations">
@@ -830,6 +811,7 @@
 
   <!-- Scripts modulaires -->
   <script src="js/i18n.js" defer></script>
+  <script src="js/hero-ink.js" defer></script>
   <script src="js/cad-window.js" defer></script>
   <script src="js/tsunami-3d.js" defer></script>
   <script src="js/main.js" defer></script>
