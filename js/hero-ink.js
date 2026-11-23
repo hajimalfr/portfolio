@@ -223,12 +223,13 @@
       const d = drops[dropHead];
       dropHead = (dropHead + 1) % MAX_DROPS;
       const speed = Math.hypot(vx, vy);
+      const mobileFactor = cw <= 640 ? 0.55 : 1.0;
       d.x = nx;
       d.y = ny;
-      d.r = Math.min(0.46, 0.24 + speed * 2.1);
+      d.r = Math.min(0.46, 0.24 + speed * 2.1) * mobileFactor;
       d.life = 1.0;
-      d.vx = Math.max(-0.11, Math.min(0.11, vx * 1.6));
-      d.vy = Math.max(-0.11, Math.min(0.11, vy * 1.6));
+      d.vx = Math.max(-0.11, Math.min(0.11, vx * 1.6)) * mobileFactor;
+      d.vy = Math.max(-0.11, Math.min(0.11, vy * 1.6)) * mobileFactor;
     }
 
     if (!reducedMotion) {

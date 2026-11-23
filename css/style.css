@@ -2225,6 +2225,41 @@ body {
   .altimeter-controls { padding-top: 0; border-top: none; }
   .stage, .reticle-layer { right: 0; bottom: calc(var(--marquee-h) + 46px); }
   .st3-visuals { grid-template-columns: 1fr; }
+
+  /* Correctifs dédiés téléphone uniquement (desktop intact) */
+  .st4-layout {
+    height: 68dvh;
+    min-height: 0;
+    padding: 0 4px;
+  }
+
+  .cad-window {
+    min-height: 0;
+    height: 100%;
+  }
+
+  .cad-viewport {
+    touch-action: pan-y;
+    cursor: default;
+  }
+
+  .cad-canvas-content {
+    max-width: 100%;
+    padding: 10px 12px;
+  }
+
+  .cad-quote-box {
+    padding: 16px 14px 22px;
+  }
+
+  .cad-live-cursor,
+  .cad-viewcube {
+    display: none;
+  }
+
+  .cad-hud-bottom {
+    font-size: 8.5px;
+  }
 }
 
 /* ==========================================================================

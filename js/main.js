@@ -10,7 +10,7 @@
     preloaderDurationMs: 860, // Durée du chargement initial (ms)
     stationCooldownMs: 320,   // Anti-rebond entre deux changements de station (ms)
     wheelThresholdPx: 16,     // Sensibilité minimale de la molette
-    swipeThresholdPx: 54,     // Distance minimale de swipe vertical sur mobile (px)
+    swipeThresholdPx: 72,     // Distance minimale de swipe vertical sur mobile (px)
     emailFallback: 'victorvalroff@hotmail.com'
   };
 
@@ -403,6 +403,19 @@
 
         if (Math.abs(dy) > CONFIG.swipeThresholdPx && Math.abs(dy) > dx * 1.15) {
           const dir = dy > 0 ? 1 : -1;
+
+          // Sur mobile, laisser finir le scroll interne si la station déborde en hauteur
+          const activeSt = stations[currentIndex];
+          if (activeSt && currentIndex !== 4) {
+            const oy = getComputedStyle(activeSt).overflowY;
+            const isScrollable = (oy === 'auto' || oy === 'scroll') && activeSt.scrollHeight > activeSt.clientHeight + 8;
+            if (isScrollable) {
+              const atTop = activeSt.scrollTop <= 4;
+              const atBottom = activeSt.scrollTop + activeSt.clientHeight >= activeSt.scrollHeight - 4;
+              if ((dir > 0 && !atBottom) || (dir < 0 && !atTop)) return;
+            }
+          }
+
           if (currentIndex === 4 && window.CadManifestoController) {
             if (window.CadManifestoController.stepArch(dir, true)) return;
           }

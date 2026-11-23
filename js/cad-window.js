@@ -10,11 +10,12 @@
      PARAMÈTRES FACILES À MODIFIER — FENÊTRE MANIFESTE CAO (ST.04)
      ======================================================================== */
   const CONFIG = {
-    peakExtraScale: 0.95, // Zoom max au milieu de l'arche (0.95 => 195 %, retour à 100 % à la fin)
-    baseFontDesktop: 25,  // Taille de base du manifeste sur ordinateur (px)
-    baseFontMobile: 19,   // Taille de base du manifeste sur mobile (px)
-    wheelStep: 0.16,      // Pas par cran de molette (~6 crans pour faire l'arche complète)
-    swipeStep: 0.34       // Pas par swipe sur téléphone (3 swipes fluides pour faire l'arche)
+    peakExtraScale: 0.95,       // Zoom max desktop (195 %, retour à 100 % à la fin)
+    peakExtraScaleMobile: 0.42, // Zoom max téléphone (142 %, reste bien dans le cadre)
+    baseFontDesktop: 25,        // Taille de base sur ordinateur (px)
+    baseFontMobile: 15,         // Taille de base sur mobile (px)
+    wheelStep: 0.16,            // Pas par cran de molette
+    swipeStep: 0.34             // Pas par swipe sur téléphone (3 swipes pour l'arche)
   };
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -35,8 +36,9 @@
 
     if (!viewport || !content || !manifestoText) return;
 
-    const PEAK_EXTRA_SCALE = CONFIG.peakExtraScale;
-    const BASE_FONT_PX = window.innerWidth < 768 ? CONFIG.baseFontMobile : CONFIG.baseFontDesktop;
+    const isMobile = window.innerWidth <= 640;
+    const PEAK_EXTRA_SCALE = isMobile ? CONFIG.peakExtraScaleMobile : CONFIG.peakExtraScale;
+    const BASE_FONT_PX = isMobile ? CONFIG.baseFontMobile : CONFIG.baseFontDesktop;
 
     let progress = 0; // 0.0 -> 1.0
     let targetProgress = 0;
