@@ -1261,36 +1261,166 @@ body {
 }
 
 /* ==========================================================================
-   7. ST.03 — BREAKING, COLLECTIF & VAGUE TSUNAMI 3D (VISUELS DOMINANTS)
+   6B. BLOCS DE TEXTE ANIMÉS AU SURVOL + COTES ARCHITECTURALES 1px
+   ========================================================================== */
+.cote-block {
+  position: relative;
+  padding: 16px 18px 18px;
+  border: 1px solid var(--line);
+  background: rgba(239, 236, 230, 0.72);
+  transition: border-color 0.28s ease, transform 0.32s var(--ease-expo), box-shadow 0.32s ease, background-color 0.28s ease;
+}
+
+.cote-block::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--tsunami);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.35s var(--ease-expo);
+}
+
+.cote-block::after {
+  content: attr(data-cote);
+  position: absolute;
+  right: 10px;
+  bottom: -10px;
+  padding: 1px 7px;
+  background: var(--bg-concrete);
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  transition: border-color 0.25s ease, color 0.25s ease, transform 0.28s var(--ease-expo);
+}
+
+.cote-block:hover {
+  border-color: var(--tsunami);
+  background: rgba(239, 236, 230, 0.92);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(18, 18, 18, 0.08);
+}
+
+.cote-block:hover::before {
+  transform: scaleY(1);
+}
+
+.cote-block:hover::after {
+  border-color: var(--orange);
+  color: var(--orange);
+  transform: translateY(-2px);
+}
+
+.hover-card {
+  transition: transform 0.28s var(--ease-expo), border-color 0.22s ease, box-shadow 0.28s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--tsunami);
+  box-shadow: 0 10px 24px rgba(38, 44, 232, 0.1);
+}
+
+/* Canvas 3D Casque de chantier (ST.01) */
+.helmet-canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: min(56dvh, 430px);
+  cursor: grab;
+  touch-action: none;
+  border: 1px solid var(--line);
+  background-color: var(--bg-concrete);
+  background-image:
+    linear-gradient(to right, rgba(18, 18, 18, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(18, 18, 18, 0.055) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.helmet-canvas-wrap:active { cursor: grabbing; }
+#helmetCanvas { width: 100%; height: 100%; display: block; }
+
+/* ==========================================================================
+   7. ST.03 — BENTO BREAKING (2 FENÊTRES PHOTO + LOGO TSUNAMI 3D COMPACT)
    ========================================================================== */
 .st3-layout {
   display: grid;
-  grid-template-columns: minmax(260px, 0.68fr) minmax(0, 1.32fr);
-  gap: clamp(20px, 3vw, 40px);
+  grid-template-columns: minmax(255px, 0.62fr) minmax(0, 1.38fr);
+  gap: clamp(18px, 2.6vw, 34px);
   align-items: center;
 }
 
 .st3-quote {
   margin: 12px 0 4px;
   padding: 10px 13px;
-  border-left: 2px solid var(--tsunami);
+  border-left: 2px solid var(--orange);
   background: var(--bg-panel-soft);
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.48;
   color: var(--ink);
+  transition: border-left-width 0.2s ease, padding-left 0.2s ease;
 }
 
-.st3-visuals {
+.st3-quote:hover {
+  border-left-width: 4px;
+  padding-left: 15px;
+}
+
+.st3-bento {
   display: grid;
-  grid-template-columns: 1.08fr 0.92fr;
-  gap: 14px;
-  align-items: stretch;
-  height: min(64dvh, 490px);
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  height: min(68dvh, 520px);
 }
 
-.tsunami-stage-card {
+.st3-photo-tall {
   display: flex;
   flex-direction: column;
+  height: 100%;
+}
+
+.st3-photo-tall .smart-photo {
+  flex: 1;
+  height: 100%;
+  max-height: none;
+  aspect-ratio: auto;
+}
+
+.st3-bento-right {
+  display: grid;
+  grid-template-rows: 185px minmax(0, 1fr);
+  gap: 12px;
+  height: 100%;
+  min-height: 0;
+}
+
+.tsunami-compact-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.tsunami-compact-wrap {
+  min-height: 0;
+  flex: 1;
+}
+
+.st3-photo-second {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.st3-photo-second .smart-photo {
+  flex: 1;
+  height: 100%;
+  max-height: none;
+  aspect-ratio: auto;
 }
 
 .mini-reset {
@@ -1373,9 +1503,107 @@ body {
   gap: 10px;
 }
 
+/* ST.06 — Station Contact & CV très lisible */
+.st6-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.st6-title {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 3.8vw, 52px);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+
+.st6-sub {
+  font-size: 14px;
+  color: var(--ink-muted);
+  max-width: 62ch;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.contact-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  text-decoration: none;
+  color: var(--ink);
+  cursor: pointer;
+  min-height: 128px;
+  background: rgba(239, 236, 230, 0.92);
+}
+
+.contact-tile-primary {
+  background: var(--tsunami);
+  border-color: var(--tsunami);
+  color: #ffffff;
+}
+
+.contact-tile-primary .dim-top,
+.contact-tile-primary .dim-bottom {
+  color: rgba(255, 255, 255, 0.78);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.contact-tile-primary:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.contact-tile-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.contact-tile-main strong {
+  font-family: var(--font-display);
+  font-size: clamp(17px, 1.8vw, 24px);
+  font-weight: 700;
+  line-height: 1.15;
+  word-break: break-word;
+}
+
+.contact-arrow {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--orange);
+  flex-shrink: 0;
+  transition: transform 0.25s var(--ease-expo);
+}
+
+.contact-tile-primary .contact-arrow { color: #ffffff; }
+.contact-tile:hover .contact-arrow { transform: translate(3px, -3px); }
+
+.st6-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 980px) {
-  .iki-strip {
-    grid-template-columns: repeat(2, 1fr);
+  .iki-strip,
+  .contact-grid,
+  .st3-bento {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .st3-bento-right {
+    grid-template-rows: 200px 260px;
   }
 }
 

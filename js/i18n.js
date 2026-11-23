@@ -13,7 +13,10 @@
       'st2.nav': 'Voyages',
       'st3.nav': 'Breaking & Tsunami',
       'st4.nav': 'Manifeste CAO',
-      'st5.nav': 'Parcours & Contact',
+      'st5.nav': 'S1–S6 & Ikigai',
+      'st6.nav': 'Contact & CV',
+      'st6.kicker': 'CONTACT & CURRICULUM VITAE',
+      'st6.title': 'Échanger <span class="accent-text">&amp; Consulter mon CV.</span>',
 
       'st0.kicker': 'OUVERTURE',
       'st0.cursorPill': 'BUT GCCD · NANCY',
@@ -175,7 +178,10 @@
       'st2.nav': 'Travel',
       'st3.nav': 'Breaking & Tsunami',
       'st4.nav': 'CAD Manifesto',
-      'st5.nav': 'Path & Contact',
+      'st5.nav': 'S1–S6 & Ikigai',
+      'st6.nav': 'Contact & CV',
+      'st6.kicker': 'CONTACT & RESUME',
+      'st6.title': 'Connect <span class="accent-text">&amp; View my Resume.</span>',
 
       'st0.kicker': 'OPENING',
       'st0.cursorPill': 'CIVIL ENG. · NANCY',

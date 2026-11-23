@@ -296,10 +296,14 @@
         if (Math.abs(e.deltaY) < 16) return;
 
         const activeSt = stations[currentIndex];
-        if (activeSt && activeSt.scrollHeight > activeSt.clientHeight + 4) {
-          const atTop = activeSt.scrollTop <= 2;
-          const atBottom = activeSt.scrollTop + activeSt.clientHeight >= activeSt.scrollHeight - 2;
-          if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) return;
+        if (activeSt) {
+          const oy = getComputedStyle(activeSt).overflowY;
+          const isScrollable = (oy === 'auto' || oy === 'scroll') && activeSt.scrollHeight > activeSt.clientHeight + 6;
+          if (isScrollable) {
+            const atTop = activeSt.scrollTop <= 2;
+            const atBottom = activeSt.scrollTop + activeSt.clientHeight >= activeSt.scrollHeight - 2;
+            if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) return;
+          }
         }
 
         if (e.deltaY > 0) goToStation(currentIndex + 1);

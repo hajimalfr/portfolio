@@ -112,8 +112,13 @@
           <span class="alt-stop-tick" aria-hidden="true"></span>
         </button>
         <button type="button" class="alt-stop" data-goto="5">
-          <span class="alt-stop-name" data-i18n="st5.nav">Parcours &amp; Contact</span>
+          <span class="alt-stop-name" data-i18n="st5.nav">S1–S6 &amp; Ikigai</span>
           <span class="alt-stop-code mono">ST.05</span>
+          <span class="alt-stop-tick" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="alt-stop" data-goto="6">
+          <span class="alt-stop-name" data-i18n="st6.nav">Contact &amp; CV</span>
+          <span class="alt-stop-code mono">ST.06</span>
           <span class="alt-stop-tick" aria-hidden="true"></span>
         </button>
       </nav>
@@ -155,7 +160,7 @@
           </div>
 
           <canvas id="heroInkCanvas" aria-hidden="true"></canvas>
-          <h1 class="hero-title hero-title-monumental ink-sr-fallback" id="heroTitle">VICTOR VALROFF CHHUN.</h1>
+          <h1 class="hero-title hero-title-monumental ink-sr-fallback" id="heroTitle">VICTOR VALROFF CHHUN</h1>
         </div>
 
         <button type="button" class="scroll-cue mono magnetic" data-goto="1" aria-label="Explorer les stations">
@@ -174,7 +179,7 @@
       </svg>
 
       <div class="station-inner st-figure-dominant">
-        <div class="st-copy-compact">
+        <div class="st-copy-compact cote-block" data-cote="L=360mm · ÉCH 1:1">
           <div class="st-meta-bar mono">
             <span class="st-tag">ST.01</span>
             <span class="st-dim">+04.20m</span>
@@ -195,35 +200,16 @@
 
         <figure class="dim-frame photo-card photo-card-hero">
           <div class="dim-top mono">
-            <span>FIG.01 // CAD-3D · FUSION 360</span>
-            <span class="photo-ratio-readout" data-ratio-label>RATIO AUTO</span>
+            <span>FIG.01 // MODÉLISATION 3D · CASQUE CHANTIER</span>
+            <button type="button" class="mini-reset mono" id="resetHelmetBtn" data-i18n="st3.reset3d">RESET 360°</button>
           </div>
-          <div class="smart-photo photo-reveal" data-focal="50% 50%">
-            <img src="images/impression-3d.jpg" alt="Modélisation 3D sous Fusion 360 et impression Bambu Lab" loading="lazy">
-            <div class="photo-fallback photo-fallback-cad" aria-hidden="true">
-              <svg viewBox="0 0 640 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g stroke="currentColor" stroke-opacity="0.14" stroke-width="1">
-                  <path d="M0 50H640M0 100H640M0 150H640M0 200H640M0 250H640M0 300H640M0 350H640"/>
-                  <path d="M64 0V400M128 0V400M192 0V400M256 0V400M320 0V400M384 0V400M448 0V400M512 0V400M576 0V400"/>
-                </g>
-                <g stroke="#262CE8" stroke-width="1.8">
-                  <polygon points="320,74 470,154 320,234 170,154" fill="rgba(38,44,232,0.08)"/>
-                  <polygon points="170,154 320,234 320,322 170,242" fill="rgba(38,44,232,0.04)"/>
-                  <polygon points="470,154 320,234 320,322 470,242" fill="rgba(18,18,18,0.05)"/>
-                  <line x1="320" y1="74" x2="320" y2="322" stroke-dasharray="5 5"/>
-                </g>
-                <g stroke="#121212" stroke-width="1" stroke-opacity="0.6">
-                  <line x1="170" y1="348" x2="320" y2="348"/>
-                  <line x1="170" y1="342" x2="170" y2="354"/>
-                  <line x1="320" y1="342" x2="320" y2="354"/>
-                </g>
-              </svg>
-              <span class="fallback-tag mono">images/impression-3d.jpg</span>
-            </div>
+          <div class="helmet-canvas-wrap" id="helmetWrap">
+            <canvas id="helmetCanvas" aria-label="Modélisation 3D interactive d'un casque de protection de chantier"></canvas>
+            <span class="canvas-hint mono" data-i18n="st3.dragHint">GLISSER 360° · MODÈLE CAO</span>
           </div>
           <figcaption class="dim-bottom mono">
-            <span data-i18n="st1.capLeft">PROTOTYPAGE PARAMÉTRIQUE</span>
-            <span>X:256 · Y:256 · Z:256</span>
+            <span data-i18n="st1.capLeft">PROTOTYPAGE PARAMÉTRIQUE · EN 397</span>
+            <span>L:290 · H:155 · Ø:580mm</span>
           </figcaption>
         </figure>
       </div>
@@ -269,7 +255,7 @@
           </figcaption>
         </figure>
 
-        <div class="st-copy-compact">
+        <div class="st-copy-compact cote-block" data-cote="ELV +08.40m · B2">
           <div class="st-meta-bar mono">
             <span class="st-tag">ST.02</span>
             <span class="st-dim">+08.40m</span>
@@ -299,7 +285,7 @@
       </svg>
 
       <div class="station-inner st3-layout">
-        <div class="st-copy-compact">
+        <div class="st-copy-compact cote-block" data-cote="NANCY · 2024">
           <div class="st-meta-bar mono">
             <span class="st-tag">ST.03</span>
             <span class="st-dim">+12.60m</span>
@@ -321,44 +307,43 @@
           </div>
         </div>
 
-        <div class="st3-visuals">
-          <!-- Vague Tsunami 3D interactive grand format -->
-          <div class="dim-frame tsunami-stage-card">
+        <div class="st3-bento">
+          <!-- Photo 1 Breaking (colonne gauche haute) -->
+          <figure class="dim-frame photo-card st3-photo-tall">
             <div class="dim-top mono">
-              <span>OBJ.3D // TSUNAMI WAVE</span>
-              <button type="button" class="mini-reset mono" id="resetTsunamiBtn" data-i18n="st3.reset3d">RESET 360°</button>
-            </div>
-            <div class="tsunami-canvas-wrap" id="tsunamiWrap">
-              <canvas id="tsunamiCanvas" aria-label="Logo vague Tsunami en 3D interactive"></canvas>
-              <span class="canvas-hint mono" data-i18n="st3.dragHint">GLISSER 360° · SURVOLER</span>
-            </div>
-          </div>
-
-          <!-- Photo Breaking / Collectif grand format -->
-          <figure class="dim-frame photo-card st3-photo-card">
-            <div class="dim-top mono">
-              <span>FIG.03 // COLLECTIF</span>
-              <span class="photo-ratio-readout" data-ratio-label>RATIO AUTO</span>
+              <span>FIG.03A // BREAKING</span>
+              <span class="photo-ratio-readout" data-ratio-label>3:4</span>
             </div>
             <div class="smart-photo photo-reveal" data-focal="50% 25%">
-              <img id="breakingImg" src="images/breaking-tsunami.jpg" alt="Breaking et Association Tsunami à Nancy" loading="lazy">
-              <div class="photo-fallback photo-fallback-cad" aria-hidden="true">
-                <svg viewBox="0 0 360 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M24 212 C95 82, 185 68, 250 146 C276 174, 308 178, 336 142" stroke="#262CE8" stroke-width="2.2"/>
-                  <path d="M24 228 C105 112, 195 96, 260 168" stroke="#121212" stroke-opacity="0.28" stroke-dasharray="4 4"/>
-                  <circle cx="180" cy="108" r="6" fill="#262CE8"/>
-                </svg>
-                <span class="fallback-tag mono">images/breaking-tsunami.jpg</span>
+              <img src="images/breaking-tsunami.jpg" alt="Breaking sous structure métallique de nuit" loading="lazy">
+              <div class="photo-fallback photo-fallback-cad" aria-hidden="true"></div>
+            </div>
+          </figure>
+
+          <!-- Colonne droite empilée : Logo Tsunami 3D compact + Photo 2 Collectif -->
+          <div class="st3-bento-right">
+            <div class="dim-frame tsunami-compact-card">
+              <div class="dim-top mono">
+                <span>OBJ.3D // TSUNAMI</span>
+                <button type="button" class="mini-reset mono" id="resetTsunamiBtn" data-i18n="st3.reset3d">RESET 360°</button>
+              </div>
+              <div class="tsunami-canvas-wrap tsunami-compact-wrap" id="tsunamiWrap">
+                <canvas id="tsunamiCanvas" aria-label="Logo vague Tsunami en 3D interactive"></canvas>
+                <span class="canvas-hint mono" data-i18n="st3.dragHint">GLISSER 360°</span>
               </div>
             </div>
-            <figcaption class="dim-bottom mono">
-              <div class="photo-switcher" role="group" aria-label="Galerie Breaking">
-                <button type="button" class="photo-sw-btn active" data-swap-target="breakingImg" data-swap-src="images/breaking-tsunami.jpg">01</button>
-                <button type="button" class="photo-sw-btn" data-swap-target="breakingImg" data-swap-src="images/breaking-2.jpg">02</button>
+
+            <figure class="dim-frame photo-card st3-photo-second">
+              <div class="dim-top mono">
+                <span>FIG.03B // COLLECTIF</span>
+                <span class="photo-ratio-readout" data-ratio-label>3:4</span>
               </div>
-              <span>BREAKING · COLLECTIF</span>
-            </figcaption>
-          </figure>
+              <div class="smart-photo photo-reveal" data-focal="50% 35%">
+                <img src="images/breaking-2.jpg" alt="Scène nocturne collective Breaking & Tsunami" loading="lazy">
+                <div class="photo-fallback photo-fallback-cad" aria-hidden="true"></div>
+              </div>
+            </figure>
+          </div>
         </div>
       </div>
     </section>
@@ -495,20 +480,15 @@
     </section>
 
     <!-- ======================================================================
-         ST.05 — TRAJECTOIRE S1 → S6, IKIGAI SYNTHÉTIQUE & CONTACT (+21.00m)
+         ST.05 — TRAJECTOIRE S1 → S6 & IKIGAI (+21.00m)
          ====================================================================== -->
-    <section class="station" id="station-5" data-index="5" data-alt="+21.00m" data-code="ST.05" aria-label="Station 05 — Parcours, Ikigai & Contact">
+    <section class="station" id="station-5" data-index="5" data-alt="+21.00m" data-code="ST.05" aria-label="Station 05 — Trajectoire S1-S6 & Ikigai">
       <div class="station-inner st5-layout">
-        <div class="st4-id-strip mono">
-          <span data-i18n="st0.lead">19 ans · 1ère année <strong>BUT GCCD</strong> (IUT Nancy-Brabois, ex-PCSI Loritz) · Cap <strong>ingénieur génie civil</strong></span>
-          <a href="https://www.16personalities.com/fr/profils/af633b606aec5" target="_blank" rel="noopener noreferrer" class="discreet-badge">INTP-A ↗</a>
-        </div>
-
         <!-- Bloc S1 → S6 -->
         <div class="dim-frame st5-traj-block">
           <div class="dim-top mono">
-            <span>ST.05 // <span data-i18n="cad.tabTrajectory">TRAJECTOIRE S1 → S6</span></span>
-            <span>ELV +21.00m</span>
+            <span>ST.05A // <span data-i18n="cad.tabTrajectory">TRAJECTOIRE S1 → S6</span></span>
+            <span>BUT GCCD · ELV +21.00m</span>
           </div>
           <div class="st5-traj-wrap">
             <svg class="traj-svg-line" viewBox="0 0 900 120" fill="none" preserveAspectRatio="none" aria-hidden="true">
@@ -516,17 +496,17 @@
               <path d="M 480 60 C 640 10, 740 110, 870 60" stroke="#121212" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="5 6"/>
             </svg>
             <div class="traj-grid">
-              <div class="traj-step">
+              <div class="traj-step hover-card">
                 <span class="mono traj-code">01 · S1 ACTUEL</span>
                 <h3 data-i18n="traj.s1Title">Socle GCCD</h3>
                 <p data-i18n="traj.s1Text">Plans AutoDesk, matériaux, mécanique des structures, topographie.</p>
               </div>
-              <div class="traj-step traj-step-accent">
+              <div class="traj-step traj-step-accent hover-card">
                 <span class="mono traj-code">02 · S2 MAI–JUIN</span>
                 <h3 data-i18n="traj.s2Title">Stage 4 semaines</h3>
                 <p data-i18n="traj.s2Text">Suivi de chantier auprès d’un ingénieur travaux pour relier théorie et terrain.</p>
               </div>
-              <div class="traj-step">
+              <div class="traj-step hover-card">
                 <span class="mono traj-code">03 · S3 → S6</span>
                 <h3 data-i18n="traj.s3Title">École d’Ingénieurs</h3>
                 <p data-i18n="traj.s3Text">Dimensionnement, BIM, stages longs et intégration (INSA, ESTP, ENTPE).</p>
@@ -535,45 +515,116 @@
           </div>
         </div>
 
-        <!-- Synthèse Ikigai ultra-discrète (4 repères) -->
-        <div class="iki-strip">
-          <div class="iki-mini-cell">
-            <span class="mono">01 / PASSION</span>
-            <p data-i18n="iki.p1">Conception 3D, plans techniques et design fonctionnel.</p>
+        <!-- Synthèse Ikigai bien visible & équilibrée -->
+        <div class="dim-frame st5-iki-block">
+          <div class="dim-top mono">
+            <span>ST.05B // <span data-i18n="cad.tabIkigai">IKIGAI · SYNTHÈSE D'ORIENTATION</span></span>
+            <span>4 PÔLES · 1 CAP</span>
           </div>
-          <div class="iki-mini-cell">
-            <span class="mono">02 / TALENTS</span>
-            <p data-i18n="iki.p2">Bases PCSI, AutoDesk, méthode et gestion de collectif.</p>
-          </div>
-          <div class="iki-mini-cell">
-            <span class="mono">03 / MISSION</span>
-            <p data-i18n="iki.p3">Bâtir durablement des ouvrages utiles et fiables.</p>
-          </div>
-          <div class="iki-mini-cell iki-mini-core">
-            <span class="mono">04 / CAP</span>
-            <p data-i18n="iki.p4"><strong>Ingénieur en génie civil</strong>, ouvert à l’international.</p>
+          <div class="iki-strip">
+            <div class="iki-mini-cell hover-card">
+              <span class="mono">01 / PASSION</span>
+              <p data-i18n="iki.p1">Conception 3D, plans techniques et design fonctionnel.</p>
+            </div>
+            <div class="iki-mini-cell hover-card">
+              <span class="mono">02 / TALENTS</span>
+              <p data-i18n="iki.p2">Bases PCSI, AutoDesk, méthode et gestion de collectif.</p>
+            </div>
+            <div class="iki-mini-cell hover-card">
+              <span class="mono">03 / MISSION</span>
+              <p data-i18n="iki.p3">Bâtir durablement des ouvrages utiles et fiables.</p>
+            </div>
+            <div class="iki-mini-cell iki-mini-core hover-card">
+              <span class="mono">04 / CAP</span>
+              <p data-i18n="iki.p4"><strong>Ingénieur en génie civil</strong>, ouvert à l’international.</p>
+            </div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <!-- Barre Contact & CV -->
-        <footer class="st4-footer">
-          <div class="contact-group">
-            <button type="button" class="btn-solid magnetic" id="openCvFooter">
-              <span data-i18n="st4.openCv">Consulter le CV (A4)</span>
-              <span aria-hidden="true">↗</span>
-            </button>
-            <button type="button" class="btn-outline magnetic" id="copyEmailBtn" data-email="victorvalroff@hotmail.com">
-              <span id="copyEmailLabel">victorvalroff@hotmail.com</span>
-              <span class="mono copy-tag" id="copyEmailTag" data-i18n="st4.copy">COPIER</span>
-            </button>
+    <!-- ======================================================================
+         ST.06 — CONTACT & CV COMPLET (+25.20m) · STATION DÉDIÉE TRÈS LISIBLE
+         ====================================================================== -->
+    <section class="station" id="station-6" data-index="6" data-alt="+25.20m" data-code="ST.06" aria-label="Station 06 — Contact & CV">
+      <div class="station-inner st6-layout">
+        <div class="st6-head cote-block" data-cote="STAGE MAI–JUIN · 4 SEM.">
+          <div class="st-meta-bar mono">
+            <span class="st-tag">ST.06 // <span data-i18n="st6.kicker">CONTACT &amp; CURRICULUM VITAE</span></span>
+            <span class="st-dim">ELV +25.20m</span>
           </div>
+          <h2 class="st6-title" data-i18n="st6.title">Échanger <span class="accent-text">&amp; Consulter mon CV.</span></h2>
+          <p class="st6-sub" data-i18n="st0.lead">
+            19 ans · 1ère année <strong>BUT GCCD</strong> (IUT Nancy-Brabois, ex-PCSI Loritz) · Recherche un stage de 4 semaines (mai–juin) en suivi de chantier.
+          </p>
+        </div>
 
-          <div class="contact-links mono">
-            <a href="https://www.linkedin.com/in/victor-valroff-chhun/" target="_blank" rel="noopener noreferrer">LINKEDIN ↗</a>
-            <a href="tel:+33601406962">06 01 40 69 62</a>
-            <a href="VALROFF_Victor_CV.pdf" download>PDF ↓</a>
-          </div>
-        </footer>
+        <div class="contact-grid">
+          <button type="button" class="dim-frame contact-tile contact-tile-primary hover-card" id="openCvFooter">
+            <div class="dim-top mono">
+              <span>DOC // CV COMPLET</span>
+              <span>A4 / MODALE</span>
+            </div>
+            <div class="contact-tile-main">
+              <strong data-i18n="st4.openCv">Consulter le CV (A4)</strong>
+              <span class="contact-arrow">↗</span>
+            </div>
+            <div class="dim-bottom mono">
+              <span>IMPRESSION 1 PAGE A4</span>
+              <span>FORMAT OFFICIEL</span>
+            </div>
+          </button>
+
+          <button type="button" class="dim-frame contact-tile hover-card" id="copyEmailBtn" data-email="victorvalroff@hotmail.com">
+            <div class="dim-top mono">
+              <span>MAIL // DIRECT</span>
+              <span class="copy-tag" id="copyEmailTag" data-i18n="st4.copy">COPIER</span>
+            </div>
+            <div class="contact-tile-main">
+              <strong id="copyEmailLabel">victorvalroff@hotmail.com</strong>
+              <span class="contact-arrow">⎘</span>
+            </div>
+            <div class="dim-bottom mono">
+              <span>CLIC POUR COPIER</span>
+              <span>RÉPONSE RAPIDE</span>
+            </div>
+          </button>
+
+          <a href="https://www.linkedin.com/in/victor-valroff-chhun/" target="_blank" rel="noopener noreferrer" class="dim-frame contact-tile hover-card">
+            <div class="dim-top mono">
+              <span>RÉSEAU // PRO</span>
+              <span>LINKEDIN</span>
+            </div>
+            <div class="contact-tile-main">
+              <strong>linkedin.com/in/victor-valroff-chhun</strong>
+              <span class="contact-arrow">↗</span>
+            </div>
+            <div class="dim-bottom mono">
+              <span>PROFIL PROFESSIONNEL</span>
+              <span>EXTERNE</span>
+            </div>
+          </a>
+
+          <a href="tel:+33601406962" class="dim-frame contact-tile hover-card">
+            <div class="dim-top mono">
+              <span>TÉL // MOBILE</span>
+              <span>NANCY · FR</span>
+            </div>
+            <div class="contact-tile-main">
+              <strong>06 01 40 69 62</strong>
+              <span class="contact-arrow">↗</span>
+            </div>
+            <div class="dim-bottom mono">
+              <span>PERMIS B &amp; VÉHICULE</span>
+              <span>DISPO STAGE</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="st6-foot mono">
+          <a href="VALROFF_Victor_CV.pdf" download class="btn-outline magnetic">TÉLÉCHARGER LE CV (PDF) ↓</a>
+          <a href="https://www.16personalities.com/fr/profils/af633b606aec5" target="_blank" rel="noopener noreferrer" class="discreet-badge">INTP-A ↗</a>
+        </div>
       </div>
     </section>
   </main>
@@ -813,6 +864,7 @@
   <!-- Scripts modulaires -->
   <script src="js/i18n.js" defer></script>
   <script src="js/hero-ink.js" defer></script>
+  <script src="js/helmet-3d.js" defer></script>
   <script src="js/cad-window.js" defer></script>
   <script src="js/tsunami-3d.js" defer></script>
   <script src="js/main.js" defer></script>

@@ -9,8 +9,8 @@
     const wrap = document.getElementById('heroInkWrap');
     if (!canvas || !wrap) return;
 
-    const TEXT = 'VICTOR VALROFF CHHUN.';
-    const MAX_DROPS = 26;
+    const TEXT = 'VICTOR VALROFF CHHUN';
+    const MAX_DROPS = 32;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const gl = canvas.getContext('webgl', {
@@ -103,19 +103,19 @@
           }
         }
 
-        // Limitation douce de la déformation
-        disp = clamp(disp, vec2(-0.16), vec2(0.16));
+        // Limitation plus ample pour des vagues d'encre larges
+        disp = clamp(disp, vec2(-0.24), vec2(0.24));
 
         // 1. Lettre principale déformée (Bleu Tsunami #262CE8)
         vec2 uvMain = clamp(vUv - disp, 0.0, 1.0);
         float alphaMain = texture2D(uText, uvMain).a;
 
-        // 2. Couche d'éclaboussure / cisaillement orange (#FF4D1C) derrière & autour
-        vec2 uvOrange = clamp(vUv - disp * 1.72 + vec2(-0.0045, 0.0035) * min(1.4, inkEnergy), 0.0, 1.0);
+        // 2. Couche d'éclaboussure / cisaillement orange (#FF4D1C) large derrière & autour
+        vec2 uvOrange = clamp(vUv - disp * 1.92 + vec2(-0.006, 0.0045) * min(1.8, inkEnergy), 0.0, 1.0);
         float alphaOrange = texture2D(uText, uvOrange).a;
 
         // 3. Deuxième traînée d'encre orange plus étirée pour les projections
-        vec2 uvTrail = clamp(vUv - disp * 2.35 + vec2(n1, n2) * 0.024 * min(1.2, splashMask), 0.0, 1.0);
+        vec2 uvTrail = clamp(vUv - disp * 2.65 + vec2(n1, n2) * 0.036 * min(1.5, splashMask), 0.0, 1.0);
         float alphaTrail = texture2D(uText, uvTrail).a;
 
         vec3 colBlue   = vec3(0.149, 0.173, 0.910); // #262CE8
@@ -226,29 +226,32 @@
     let dropHead = 0;
     let lastX = null;
     let lastY = null;
+    let lastPointerTime = 0;
+    let ambientPhase = 0;
 
-    function addDrop(nx, ny, vx, vy) {
+    function addDrop(nx, ny, vx, vy, radiusScale = 1.0) {
       const d = drops[dropHead];
       dropHead = (dropHead + 1) % MAX_DROPS;
       const speed = Math.hypot(vx, vy);
       d.x = nx;
       d.y = ny;
-      d.r = Math.min(0.32, 0.16 + speed * 1.4);
+      d.r = Math.min(0.48, (0.26 + speed * 2.1) * radiusScale);
       d.life = 1.0;
-      d.vx = Math.max(-0.08, Math.min(0.08, vx * 1.25));
-      d.vy = Math.max(-0.08, Math.min(0.08, vy * 1.25));
+      d.vx = Math.max(-0.11, Math.min(0.11, vx * 1.6));
+      d.vy = Math.max(-0.11, Math.min(0.11, vy * 1.6));
     }
 
     if (!reducedMotion) {
       wrap.addEventListener('pointermove', (e) => {
+        lastPointerTime = performance.now();
         const rect = wrap.getBoundingClientRect();
         const nx = (e.clientX - rect.left) / rect.width;
         const ny = (e.clientY - rect.top) / rect.height;
-        const vx = lastX === null ? 0.01 : nx - lastX;
+        const vx = lastX === null ? 0.015 : nx - lastX;
         const vy = lastY === null ? 0.0 : ny - lastY;
         lastX = nx;
         lastY = ny;
-        addDrop(nx, ny, vx, vy);
+        addDrop(nx, ny, vx, vy, 1.05);
       });
 
       wrap.addEventListener('pointerleave', () => {
@@ -264,12 +267,25 @@
     function render(now) {
       const t = (now - startTime) * 0.001;
 
+      // Onde liquide autonome quand la souris n'est pas sur le titre
+      if (!reducedMotion && now - lastPointerTime > 1800) {
+        ambientPhase += 0.014;
+        const cycle = ambientPhase % 2.6;
+        if (cycle < 1.15) {
+          const waveX = 0.06 + (cycle / 1.15) * 0.88;
+          const waveY = 0.5 + Math.sin(cycle * 6.0) * 0.07;
+          if (Math.floor(ambientPhase * 60) % 3 === 0) {
+            addDrop(waveX, waveY, 0.022, Math.cos(cycle * 6.0) * 0.008, 0.85);
+          }
+        }
+      }
+
       for (let i = 0; i < MAX_DROPS; i++) {
         const d = drops[i];
         if (d.life > 0) {
-          d.life = Math.max(0, d.life - 0.016); // retour fluide en ~1.1s
-          d.vx *= 0.94;
-          d.vy *= 0.94;
+          d.life = Math.max(0, d.life - 0.013); // retour fluide légèrement plus long
+          d.vx *= 0.945;
+          d.vy *= 0.945;
         }
         dropUniforms[i * 4] = d.x;
         dropUniforms[i * 4 + 1] = d.y;
