@@ -107,8 +107,13 @@
           <span class="alt-stop-tick" aria-hidden="true"></span>
         </button>
         <button type="button" class="alt-stop" data-goto="4">
-          <span class="alt-stop-name" data-i18n="st4.nav">Manifeste &amp; Contact</span>
+          <span class="alt-stop-name" data-i18n="st4.nav">Manifeste CAO</span>
           <span class="alt-stop-code mono">ST.04</span>
+          <span class="alt-stop-tick" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="alt-stop" data-goto="5">
+          <span class="alt-stop-name" data-i18n="st5.nav">Parcours &amp; Contact</span>
+          <span class="alt-stop-code mono">ST.05</span>
           <span class="alt-stop-tick" aria-hidden="true"></span>
         </button>
       </nav>
@@ -359,32 +364,18 @@
     </section>
 
     <!-- ======================================================================
-         ST.04 — CADRE GCCD, MANIFESTE CAO, PARCOURS & CONTACT (+16.80m)
+         ST.04 — MANIFESTE CAO FUSION 360 (+16.80m) · 100 % MANIFESTE
          ====================================================================== -->
-    <section class="station" id="station-4" data-index="4" data-alt="+16.80m" data-code="ST.04" aria-label="Station 04 — Manifeste CAO, Parcours & Contact">
+    <section class="station" id="station-4" data-index="4" data-alt="+16.80m" data-code="ST.04" aria-label="Station 04 — Manifeste CAO">
       <div class="station-inner st4-layout">
-
-        <!-- Bandeau identité compacte (déplacé de ST.00 pour garder l'ouverture 100% pure) -->
-        <div class="st4-id-strip mono">
-          <span data-i18n="st0.lead">19 ans · 1ère année <strong>BUT GCCD</strong> (IUT Nancy-Brabois, ex-PCSI Loritz) · Cap <strong>ingénieur génie civil</strong> · Stage 4 sem. Mai–Juin</span>
-          <a href="https://www.16personalities.com/fr/profils/af633b606aec5" target="_blank" rel="noopener noreferrer" class="discreet-badge">INTP-A ↗</a>
-        </div>
 
         <!-- Grande fenêtre Manifeste façon Fusion 360 / AutoCAD -->
         <div class="cad-window" id="cadWindow">
-          <!-- Barre supérieure fenêtre CAO -->
           <div class="cad-titlebar">
             <div class="cad-win-left">
               <span class="cad-dots" aria-hidden="true"><i></i><i></i><i></i></span>
               <span class="cad-app-badge mono">FUSION // CAO</span>
               <span class="cad-doc-name mono">MANIFESTE_GCCD.f3d</span>
-            </div>
-
-            <!-- Ruban d'onglets : Manifeste CAO + mini-onglets discrets S1→S6 & Ikigai -->
-            <div class="cad-tabs" role="tablist" aria-label="Onglets de la fenêtre CAO">
-              <button type="button" class="cad-tab active" role="tab" aria-selected="true" data-cad-tab="manifesto" data-i18n="cad.tabManifesto">Manifeste</button>
-              <button type="button" class="cad-tab" role="tab" aria-selected="false" data-cad-tab="trajectory" data-i18n="cad.tabTrajectory">S1 → S6</button>
-              <button type="button" class="cad-tab" role="tab" aria-selected="false" data-cad-tab="ikigai" data-i18n="cad.tabIkigai">Ikigai</button>
             </div>
 
             <div class="cad-win-right mono">
@@ -393,7 +384,6 @@
             </div>
           </div>
 
-          <!-- Corps CAO : Browser latéral Fusion 360 + Viewport interactif -->
           <div class="cad-workspace">
             <!-- Légende latérale personnalisée façon Fusion 360 Browser + Inspecteur live -->
             <aside class="cad-browser" aria-label="Arborescence CAO">
@@ -443,7 +433,7 @@
                 </div>
                 <div class="cad-metric-row">
                   <span data-i18n="cad.mTrack">APPROCHE</span>
-                  <strong id="cadMetricTrack">-0.02em</strong>
+                  <strong id="cadMetricTrack">-0.015em</strong>
                 </div>
               </div>
 
@@ -455,106 +445,117 @@
               </div>
             </aside>
 
-            <!-- Zone centrale (panneaux onglets) -->
+            <!-- Viewport Manifeste Zoomable & Pan -->
             <div class="cad-viewport-shell">
-              <!-- Onglet 1 : Viewport Manifeste Zoomable & Pan + Selection Box live -->
-              <div class="cad-panel active" id="cadPanel-manifesto" role="tabpanel">
-                <div class="cad-viewport" id="cadViewport" tabindex="0" aria-label="Viewport CAO du manifeste : utiliser la molette pour zoomer et glisser pour déplacer">
-                  <div class="cad-axis-x" aria-hidden="true"><span class="mono">X+</span></div>
-                  <div class="cad-axis-y" aria-hidden="true"><span class="mono">Y+</span></div>
+              <div class="cad-viewport" id="cadViewport" tabindex="0" aria-label="Viewport CAO du manifeste : utiliser la molette pour zoomer et glisser pour déplacer">
+                <div class="cad-axis-x" aria-hidden="true"><span class="mono">X+</span></div>
+                <div class="cad-axis-y" aria-hidden="true"><span class="mono">Y+</span></div>
 
-                  <div class="cad-viewcube" aria-hidden="true">
-                    <svg viewBox="0 0 64 64" fill="none">
-                      <polygon points="32,8 54,19 32,30 10,19" stroke="#262CE8" stroke-width="1.2" fill="rgba(38,44,232,0.06)"/>
-                      <polygon points="10,19 32,30 32,54 10,43" stroke="#121212" stroke-width="1" stroke-opacity="0.5"/>
-                      <polygon points="54,19 32,30 32,54 54,43" stroke="#121212" stroke-width="1" stroke-opacity="0.75"/>
-                    </svg>
-                    <span class="mono">TOP / ISO</span>
-                  </div>
+                <div class="cad-viewcube" aria-hidden="true">
+                  <svg viewBox="0 0 64 64" fill="none">
+                    <polygon points="32,8 54,19 32,30 10,19" stroke="#262CE8" stroke-width="1.2" fill="rgba(38,44,232,0.06)"/>
+                    <polygon points="10,19 32,30 32,54 10,43" stroke="#121212" stroke-width="1" stroke-opacity="0.5"/>
+                    <polygon points="54,19 32,30 32,54 54,43" stroke="#121212" stroke-width="1" stroke-opacity="0.75"/>
+                  </svg>
+                  <span class="mono">TOP / ISO</span>
+                </div>
 
-                  <!-- Contenu transformé par zoom/pan avec cadre de sélection CAO & curseur orange -->
-                  <div class="cad-canvas-content" id="cadContent">
-                    <div class="cad-quote-box" id="cadQuoteBox">
-                      <span class="sel-handle sh-tl" aria-hidden="true"></span>
-                      <span class="sel-handle sh-tr" aria-hidden="true"></span>
-                      <span class="sel-handle sh-bl" aria-hidden="true"></span>
-                      <span class="sel-handle sh-br" aria-hidden="true"></span>
+                <div class="cad-canvas-content" id="cadContent">
+                  <div class="cad-quote-box" id="cadQuoteBox">
+                    <span class="sel-handle sh-tl" aria-hidden="true"></span>
+                    <span class="sel-handle sh-tr" aria-hidden="true"></span>
+                    <span class="sel-handle sh-bl" aria-hidden="true"></span>
+                    <span class="sel-handle sh-br" aria-hidden="true"></span>
 
-                      <!-- Curseur d'atelier orange synchronisé au zoom -->
-                      <div class="cad-live-cursor" id="cadLiveCursor" aria-hidden="true">
-                        <svg width="13" height="15" viewBox="0 0 13 15" fill="none">
-                          <path d="M1 1L11.5 7.2L6.2 8.4L4.2 13.5L1 1Z" fill="#FF4D1C" stroke="#EFECE6" stroke-width="1"/>
-                        </svg>
-                        <span class="mono" id="cadCursorComment">Du plan au réel ✓</span>
-                      </div>
-
-                      <div class="cad-quote-kicker mono" data-i18n="cad.quoteKicker">MANIFESTE // GÉNIE CIVIL VS ARCHITECTURE</div>
-                      <blockquote class="cad-manifesto-text" id="cadManifestoText">
-                        « <span class="m-seg" data-seg="design" data-i18n="cad.segDesign">Le design d’un objet est une chose très importante pour moi,</span> <span class="m-seg" data-seg="realisation" data-i18n="cad.segReal">mais sa réalisation</span> <span class="m-seg" data-seg="utilite" data-i18n="cad.segUtil">et son utilité concrète me paraissent nécessaires à son appréciation.</span> <span class="m-seg" data-seg="choix" data-i18n="cad.segChoix">C’est pourquoi j’ai préféré le génie civil à l’architecture.</span> »
-                      </blockquote>
-
-                      <div class="sel-badge mono" id="cadQuoteBadge">Bricolage · 28 px · 100%</div>
+                    <div class="cad-live-cursor" id="cadLiveCursor" aria-hidden="true">
+                      <svg width="13" height="15" viewBox="0 0 13 15" fill="none">
+                        <path d="M1 1L11.5 7.2L6.2 8.4L4.2 13.5L1 1Z" fill="#FF4D1C" stroke="#EFECE6" stroke-width="1"/>
+                      </svg>
+                      <span class="mono" id="cadCursorComment">Du plan au réel ✓</span>
                     </div>
-                  </div>
 
-                  <div class="cad-hud-bottom mono">
-                    <span id="cadCoords">X: 000.0 · Y: 000.0</span>
-                    <span data-i18n="cad.hudTip">MOLETTE = ZOOM · GLISSER = PAN · 2×CLIC = RESET</span>
+                    <div class="cad-quote-kicker mono" data-i18n="cad.quoteKicker">MANIFESTE // GÉNIE CIVIL VS ARCHITECTURE</div>
+                    <blockquote class="cad-manifesto-text" id="cadManifestoText">
+                      « <span class="m-seg" data-seg="design" data-i18n="cad.segDesign">Le design d’un objet est une chose très importante pour moi,</span> <span class="m-seg" data-seg="realisation" data-i18n="cad.segReal">mais sa réalisation</span> <span class="m-seg" data-seg="utilite" data-i18n="cad.segUtil">et son utilité concrète me paraissent nécessaires à son appréciation.</span> <span class="m-seg" data-seg="choix" data-i18n="cad.segChoix">C’est pourquoi j’ai préféré le génie civil à l’architecture.</span> »
+                    </blockquote>
+
+                    <div class="sel-badge mono" id="cadQuoteBadge">Bricolage · 25 px · 100%</div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Onglet 2 : Trajectoire S1 → S6 avec tracé SVG continu (sbwebdesign) -->
-              <div class="cad-panel cad-info-panel" id="cadPanel-trajectory" role="tabpanel">
-                <svg class="traj-svg-line" viewBox="0 0 900 120" fill="none" preserveAspectRatio="none" aria-hidden="true">
-                  <path class="traj-path-active" d="M 30 60 C 200 10, 320 110, 480 60" stroke="#262CE8" stroke-width="2"/>
-                  <path d="M 480 60 C 640 10, 740 110, 870 60" stroke="#121212" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="5 6"/>
-                </svg>
-                <div class="traj-grid">
-                  <div class="traj-step">
-                    <span class="mono traj-code">01 · S1 ACTUEL</span>
-                    <h3 data-i18n="traj.s1Title">Socle GCCD</h3>
-                    <p data-i18n="traj.s1Text">Plans AutoDesk, matériaux, mécanique des structures, topographie.</p>
-                  </div>
-                  <div class="traj-step traj-step-accent">
-                    <span class="mono traj-code">02 · S2 MAI–JUIN</span>
-                    <h3 data-i18n="traj.s2Title">Stage 4 semaines</h3>
-                    <p data-i18n="traj.s2Text">Suivi de chantier auprès d’un ingénieur travaux pour relier théorie et terrain.</p>
-                  </div>
-                  <div class="traj-step">
-                    <span class="mono traj-code">03 · S3 → S6</span>
-                    <h3 data-i18n="traj.s3Title">École d’Ingénieurs</h3>
-                    <p data-i18n="traj.s3Text">Dimensionnement, BIM, stages longs et intégration (INSA, ESTP, ENTPE).</p>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Onglet 3 : Ikigai ultra-synthétique -->
-              <div class="cad-panel cad-info-panel" id="cadPanel-ikigai" role="tabpanel">
-                <div class="iki-mini-grid">
-                  <div class="iki-mini-cell">
-                    <span class="mono">01 / PASSION</span>
-                    <p data-i18n="iki.p1">Conception 3D, plans techniques et design fonctionnel.</p>
-                  </div>
-                  <div class="iki-mini-cell">
-                    <span class="mono">02 / TALENTS</span>
-                    <p data-i18n="iki.p2">Bases PCSI, AutoDesk, méthode et gestion de collectif.</p>
-                  </div>
-                  <div class="iki-mini-cell">
-                    <span class="mono">03 / MISSION</span>
-                    <p data-i18n="iki.p3">Bâtir durablement des ouvrages utiles et fiables.</p>
-                  </div>
-                  <div class="iki-mini-cell iki-mini-core">
-                    <span class="mono">04 / CAP</span>
-                    <p data-i18n="iki.p4"><strong>Ingénieur en génie civil</strong>, ouvert à l’international.</p>
-                  </div>
+                <div class="cad-hud-bottom mono">
+                  <span id="cadCoords">X: 000.0 · Y: 000.0</span>
+                  <span data-i18n="cad.hudTip">MOLETTE = ZOOM · GLISSER = PAN · 2×CLIC = RESET</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    </section>
 
-        <!-- Barre Contact & CV en bas de ST.04 -->
+    <!-- ======================================================================
+         ST.05 — TRAJECTOIRE S1 → S6, IKIGAI SYNTHÉTIQUE & CONTACT (+21.00m)
+         ====================================================================== -->
+    <section class="station" id="station-5" data-index="5" data-alt="+21.00m" data-code="ST.05" aria-label="Station 05 — Parcours, Ikigai & Contact">
+      <div class="station-inner st5-layout">
+        <div class="st4-id-strip mono">
+          <span data-i18n="st0.lead">19 ans · 1ère année <strong>BUT GCCD</strong> (IUT Nancy-Brabois, ex-PCSI Loritz) · Cap <strong>ingénieur génie civil</strong></span>
+          <a href="https://www.16personalities.com/fr/profils/af633b606aec5" target="_blank" rel="noopener noreferrer" class="discreet-badge">INTP-A ↗</a>
+        </div>
+
+        <!-- Bloc S1 → S6 -->
+        <div class="dim-frame st5-traj-block">
+          <div class="dim-top mono">
+            <span>ST.05 // <span data-i18n="cad.tabTrajectory">TRAJECTOIRE S1 → S6</span></span>
+            <span>ELV +21.00m</span>
+          </div>
+          <div class="st5-traj-wrap">
+            <svg class="traj-svg-line" viewBox="0 0 900 120" fill="none" preserveAspectRatio="none" aria-hidden="true">
+              <path class="traj-path-active" d="M 30 60 C 200 10, 320 110, 480 60" stroke="#262CE8" stroke-width="2"/>
+              <path d="M 480 60 C 640 10, 740 110, 870 60" stroke="#121212" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="5 6"/>
+            </svg>
+            <div class="traj-grid">
+              <div class="traj-step">
+                <span class="mono traj-code">01 · S1 ACTUEL</span>
+                <h3 data-i18n="traj.s1Title">Socle GCCD</h3>
+                <p data-i18n="traj.s1Text">Plans AutoDesk, matériaux, mécanique des structures, topographie.</p>
+              </div>
+              <div class="traj-step traj-step-accent">
+                <span class="mono traj-code">02 · S2 MAI–JUIN</span>
+                <h3 data-i18n="traj.s2Title">Stage 4 semaines</h3>
+                <p data-i18n="traj.s2Text">Suivi de chantier auprès d’un ingénieur travaux pour relier théorie et terrain.</p>
+              </div>
+              <div class="traj-step">
+                <span class="mono traj-code">03 · S3 → S6</span>
+                <h3 data-i18n="traj.s3Title">École d’Ingénieurs</h3>
+                <p data-i18n="traj.s3Text">Dimensionnement, BIM, stages longs et intégration (INSA, ESTP, ENTPE).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Synthèse Ikigai ultra-discrète (4 repères) -->
+        <div class="iki-strip">
+          <div class="iki-mini-cell">
+            <span class="mono">01 / PASSION</span>
+            <p data-i18n="iki.p1">Conception 3D, plans techniques et design fonctionnel.</p>
+          </div>
+          <div class="iki-mini-cell">
+            <span class="mono">02 / TALENTS</span>
+            <p data-i18n="iki.p2">Bases PCSI, AutoDesk, méthode et gestion de collectif.</p>
+          </div>
+          <div class="iki-mini-cell">
+            <span class="mono">03 / MISSION</span>
+            <p data-i18n="iki.p3">Bâtir durablement des ouvrages utiles et fiables.</p>
+          </div>
+          <div class="iki-mini-cell iki-mini-core">
+            <span class="mono">04 / CAP</span>
+            <p data-i18n="iki.p4"><strong>Ingénieur en génie civil</strong>, ouvert à l’international.</p>
+          </div>
+        </div>
+
+        <!-- Barre Contact & CV -->
         <footer class="st4-footer">
           <div class="contact-group">
             <button type="button" class="btn-solid magnetic" id="openCvFooter">

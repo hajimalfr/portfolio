@@ -12,7 +12,8 @@
       'st1.nav': 'Impression 3D',
       'st2.nav': 'Voyages',
       'st3.nav': 'Breaking & Tsunami',
-      'st4.nav': 'Manifeste & Contact',
+      'st4.nav': 'Manifeste CAO',
+      'st5.nav': 'Parcours & Contact',
 
       'st0.kicker': 'OUVERTURE',
       'st0.cursorPill': 'BUT GCCD · NANCY',
@@ -173,7 +174,8 @@
       'st1.nav': '3D Printing',
       'st2.nav': 'Travel',
       'st3.nav': 'Breaking & Tsunami',
-      'st4.nav': 'Manifesto & Contact',
+      'st4.nav': 'CAD Manifesto',
+      'st5.nav': 'Path & Contact',
 
       'st0.kicker': 'OPENING',
       'st0.cursorPill': 'CIVIL ENG. · NANCY',

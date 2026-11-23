@@ -190,14 +190,13 @@
     }
 
     /* Molette dans la fenêtre CAO :
-       - Vers le bas : avance sur l'arche (zoom jusqu'à 195 % puis dézoom retour à 100 %)
+       - Vers le bas : avance sur l'arche (zoom jusqu'à 195 % puis retour 100 %) ; une fois à 100 % (fin d'arche), laisse descendre vers ST.05 !
        - Vers le haut : recule sur l'arche ; une fois à 0 %, laisse remonter librement vers ST.03 ! */
     viewport.addEventListener(
       'wheel',
       (e) => {
-        if (e.deltaY < 0 && targetProgress <= 0.01) {
-          return;
-        }
+        if (e.deltaY < 0 && targetProgress <= 0.01) return;
+        if (e.deltaY > 0 && targetProgress >= 0.99) return;
 
         e.preventDefault();
         e.stopPropagation();
