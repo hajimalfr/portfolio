@@ -1,7 +1,7 @@
 /* ==========================================================================
-   js/hero-ink.js — Shader WebGL "Liquid Ink" 60fps sans saccade
-   - 3 ondes ambiantes continues dans le shader (viennent de partout, 0 saccade)
-   - Déformation large + éclaboussures & mélange d'encre orange #FF4D1C au survol
+   js/hero-ink.js — Shader WebGL "Liquid Ink" 60fps (sbwebdesign.ch .is-ink)
+   Le survol souris ET les ondes autonomes utilisent exactement le même
+   pipeline de pinceau liquide (addDrop), avec des trajectoires venant de partout.
    ========================================================================== */
 (function () {
   document.addEventListener('DOMContentLoaded', () => {
@@ -10,7 +10,7 @@
     if (!canvas || !wrap) return;
 
     const TEXT = 'VICTOR VALROFF CHHUN';
-    const MAX_DROPS = 28;
+    const MAX_DROPS = 30;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const gl = canvas.getContext('webgl', {
@@ -41,7 +41,6 @@
       uniform sampler2D uText;
       uniform vec2 uRes;
       uniform float uTime;
-      uniform float uAmbient;
       uniform vec4 uDrops[${MAX_DROPS}];
       uniform vec2 uVels[${MAX_DROPS}];
 
@@ -77,39 +76,9 @@
         float inkEnergy = 0.0;
         float splashMask = 0.0;
 
-        float n1 = fbm(vUv * vec2(aspect * 4.2, 4.2) + vec2(uTime * 0.12, -uTime * 0.09)) - 0.5;
-        float n2 = fbm(vUv * vec2(aspect * 7.4, 7.4) - vec2(uTime * 0.14, uTime * 0.11)) - 0.5;
+        float n1 = fbm(vUv * vec2(aspect * 4.5, 4.5) + vec2(uTime * 0.12, -uTime * 0.1)) - 0.5;
+        float n2 = fbm(vUv * vec2(aspect * 7.8, 7.8) - vec2(uTime * 0.14, uTime * 0.11)) - 0.5;
 
-        float ambSum = 0.0;
-
-        // 1. Ondes ambiantes 100% continues en 60fps (avec taches d'encre orange)
-        if (uAmbient > 0.005) {
-          vec2 pA = vec2(0.5 + 0.38 * sin(uTime * 0.37 + 0.4),  0.5 + 0.18 * cos(uTime * 0.51));
-          vec2 pB = vec2(0.5 + 0.40 * cos(uTime * 0.29 + 2.1),  0.5 + 0.20 * sin(uTime * 0.43 + 1.2));
-          vec2 pC = vec2(0.5 + 0.34 * sin(uTime * 0.45 + 4.3),  0.5 + 0.16 * cos(uTime * 0.33 + 2.7));
-
-          float wA = pow(0.5 + 0.5 * sin(uTime * 0.55), 1.6) * uAmbient;
-          float wB = pow(0.5 + 0.5 * sin(uTime * 0.47 + 2.2), 1.6) * uAmbient;
-          float wC = pow(0.5 + 0.5 * sin(uTime * 0.61 + 4.1), 1.6) * uAmbient;
-
-          vec2 cA = vec2((vUv.x - pA.x) * aspect, vUv.y - pA.y);
-          vec2 cB = vec2((vUv.x - pB.x) * aspect, vUv.y - pB.y);
-          vec2 cC = vec2((vUv.x - pC.x) * aspect, vUv.y - pC.y);
-
-          float rBase = 0.36 * (0.8 + 0.55 * n1);
-          float fA = smoothstep(rBase, 0.0, length(cA)) * wA;
-          float fB = smoothstep(rBase * 1.1, 0.0, length(cB)) * wB;
-          float fC = smoothstep(rBase * 0.95, 0.0, length(cC)) * wC;
-
-          disp += (vec2(cos(uTime * 0.37), -sin(uTime * 0.51)) * 0.095 + vec2(n1, n2) * 0.11) * fA;
-          disp += (vec2(-sin(uTime * 0.29), cos(uTime * 0.43)) * 0.095 + vec2(-n2, n1) * 0.11) * fB;
-          disp += (vec2(cos(uTime * 0.45), sin(uTime * 0.33)) * 0.085 + vec2(n1, -n2) * 0.10) * fC;
-
-          ambSum = fA + fB + fC;
-          inkEnergy += ambSum * 1.55;
-        }
-
-        // 2. Traînées interactives au survol (identiques à la version validée)
         for (int i = 0; i < ${MAX_DROPS}; i++) {
           vec4 d = uDrops[i];
           if (d.w <= 0.005) continue;
@@ -124,7 +93,7 @@
           if (falloff > 0.001) {
             vec2 vel = uVels[i];
             vec2 swirl = vec2(-corr.y, corr.x) * (0.35 + n2 * 0.75);
-            disp += (vel * 1.5 + swirl * 0.14 + vec2(n1, n2) * 0.06) * falloff;
+            disp += (vel * 1.55 + swirl * 0.14 + vec2(n1, n2) * 0.06) * falloff;
             inkEnergy += falloff * (0.9 + length(vel) * 9.5);
             splashMask += smoothstep(r * 1.15, r * 0.15, dist) * d.w;
           }
@@ -141,13 +110,6 @@
         vec2 uvTrail = clamp(vUv - disp * 2.65 + vec2(n1, n2) * 0.036 * min(1.5, splashMask), 0.0, 1.0);
         float alphaTrail = texture2D(uText, uvTrail).a;
 
-        // Taches d'encre organiques uniquement pour les ondes autonomes (sans toucher au survol)
-        float nearText = max(alphaMain, max(alphaOrange, max(
-          texture2D(uText, clamp(vUv + vec2(0.018, 0.012), 0.0, 1.0)).a,
-          texture2D(uText, clamp(vUv - vec2(0.018, 0.012), 0.0, 1.0)).a
-        )));
-        float ambBlotch = smoothstep(0.42, 0.62, ambSum * 1.35 + n1 * 0.55 + n2 * 0.35) * smoothstep(0.05, 0.4, nearText + ambSum * 0.35);
-
         vec3 colBlue   = vec3(0.149, 0.173, 0.910); // #262CE8
         vec3 colOrange = vec3(1.000, 0.302, 0.110); // #FF4D1C
         vec3 colPeach  = vec3(1.000, 0.675, 0.545);
@@ -158,7 +120,7 @@
         vec3 mainColor = mix(colBlue, colOrange, mixOrange);
         mainColor = mix(mainColor, colPeach, mixPeach * 0.68);
 
-        float orangeBack = max(max(alphaOrange * smoothstep(0.05, 0.32, inkEnergy), alphaTrail * smoothstep(0.26, 0.88, splashMask)), ambBlotch * 0.9);
+        float orangeBack = max(alphaOrange * smoothstep(0.05, 0.32, inkEnergy), alphaTrail * smoothstep(0.26, 0.88, splashMask));
         vec3 finalRgb = colOrange;
         float finalAlpha = orangeBack;
 
@@ -191,7 +153,6 @@
 
     const uRes = gl.getUniformLocation(prog, 'uRes');
     const uTime = gl.getUniformLocation(prog, 'uTime');
-    const uAmbientLoc = gl.getUniformLocation(prog, 'uAmbient');
     const uDropsLoc = gl.getUniformLocation(prog, 'uDrops');
     const uVelsLoc = gl.getUniformLocation(prog, 'uVels');
 
@@ -245,7 +206,6 @@
     let lastX = null;
     let lastY = null;
     let lastPointerTime = 0;
-    let ambientLevel = reducedMotion ? 0 : 0.72;
 
     function addDrop(nx, ny, vx, vy) {
       const d = drops[dropHead];
@@ -253,7 +213,7 @@
       const speed = Math.hypot(vx, vy);
       d.x = nx;
       d.y = ny;
-      d.r = Math.min(0.48, 0.26 + speed * 2.1);
+      d.r = Math.min(0.46, 0.24 + speed * 2.1);
       d.life = 1.0;
       d.vx = Math.max(-0.11, Math.min(0.11, vx * 1.6));
       d.vy = Math.max(-0.11, Math.min(0.11, vy * 1.6));
@@ -278,21 +238,67 @@
       });
     }
 
+    // Pinceau virtuel autonome (identique au survol souris, venant de partout)
+    const AUTO_PATHS = [
+      { sx: 0.88, sy: 0.36, ex: 0.22, ey: 0.62 }, // Droite-haut -> Gauche-bas
+      { sx: 0.28, sy: 0.66, ex: 0.78, ey: 0.38 }, // Gauche-bas -> Droite-haut
+      { sx: 0.62, sy: 0.28, ex: 0.36, ey: 0.70 }, // Centre-haut -> Bas-gauche
+      { sx: 0.14, sy: 0.44, ex: 0.68, ey: 0.56 }, // Gauche -> Centre-droite
+      { sx: 0.82, sy: 0.64, ex: 0.42, ey: 0.34 }  // Droite-bas -> Centre-haut
+    ];
+    let pathIdx = 0;
+    let strokeActive = false;
+    let strokeStart = 0;
+    let nextStrokeAt = performance.now() + 900;
+    let ghostPrevX = null;
+    let ghostPrevY = null;
+    const STROKE_DURATION = 1350; // ms (fluide à 60 fps)
+
     const dropUniforms = new Float32Array(MAX_DROPS * 4);
     const velUniforms = new Float32Array(MAX_DROPS * 2);
     const startTime = performance.now();
 
     function render(now) {
       const t = (now - startTime) * 0.001;
-      const targetAmb = reducedMotion ? 0 : (now - lastPointerTime > 1600 ? 0.82 : 0.08);
-      ambientLevel += (targetAmb - ambientLevel) * 0.03;
+
+      // Exécution fluide du pinceau virtuel quand la souris est inactive
+      if (!reducedMotion && now - lastPointerTime > 1700) {
+        if (!strokeActive && now >= nextStrokeAt) {
+          strokeActive = true;
+          strokeStart = now;
+          ghostPrevX = null;
+          ghostPrevY = null;
+        }
+        if (strokeActive) {
+          const raw = (now - strokeStart) / STROKE_DURATION;
+          if (raw >= 1) {
+            strokeActive = false;
+            pathIdx = (pathIdx + 1) % AUTO_PATHS.length;
+            nextStrokeAt = now + 1150;
+          } else {
+            const p = AUTO_PATHS[pathIdx];
+            // Courbe ease-in-out fluide
+            const e = raw < 0.5 ? 2 * raw * raw : 1 - Math.pow(-2 * raw + 2, 2) / 2;
+            const gx = p.sx + (p.ex - p.sx) * e;
+            const gy = p.sy + (p.ey - p.sy) * e + Math.sin(e * Math.PI) * 0.06;
+            const gvx = ghostPrevX === null ? (p.ex - p.sx) * 0.015 : gx - ghostPrevX;
+            const gvy = ghostPrevY === null ? (p.ey - p.sy) * 0.015 : gy - ghostPrevY;
+            ghostPrevX = gx;
+            ghostPrevY = gy;
+            addDrop(gx, gy, gvx, gvy);
+          }
+        }
+      } else {
+        strokeActive = false;
+        nextStrokeAt = now + 1500;
+      }
 
       for (let i = 0; i < MAX_DROPS; i++) {
         const d = drops[i];
         if (d.life > 0) {
-          d.life = Math.max(0, d.life - 0.011);
-          d.vx *= 0.95;
-          d.vy *= 0.95;
+          d.life = Math.max(0, d.life - 0.013);
+          d.vx *= 0.945;
+          d.vy *= 0.945;
         }
         dropUniforms[i * 4] = d.x;
         dropUniforms[i * 4 + 1] = d.y;
@@ -306,7 +312,6 @@
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.uniform2f(uRes, cw, ch);
       gl.uniform1f(uTime, t);
-      gl.uniform1f(uAmbientLoc, ambientLevel);
       gl.uniform4fv(uDropsLoc, dropUniforms);
       gl.uniform2fv(uVelsLoc, velUniforms);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
