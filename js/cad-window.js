@@ -1,9 +1,9 @@
 /* ==========================================================================
    js/cad-window.js — Fenêtre Manifeste CAO façon Fusion 360 × sbwebdesign.ch
-   - Zoom vectoriel net (font-size réel, zéro pixellisation)
-   - Retour libre vers le haut à la molette dès que le zoom est à 100 %
-   - Animations synchronisées au zoom : étapes 01/04→04/04, curseur orange,
-     inspecteur typographique live & pastille de dimensions
+   - Courbe en arche au scroll : zoom vectoriel 100 % -> 195 % -> retour 100 %
+     en fin de scroll (zéro pixellisation, font-size vectoriel réel)
+   - Retour libre vers ST.03 en scrollant vers le haut depuis le début (0 %)
+   - Animations synchronisées : étapes 01/04→04/04, curseur orange & inspecteur
    ========================================================================== */
 (function () {
   document.addEventListener('DOMContentLoaded', () => {
@@ -24,12 +24,12 @@
 
     if (!viewport || !content || !manifestoText) return;
 
-    const MIN_SCALE = 1.0;
-    const MAX_SCALE = 2.2;
+    const PEAK_EXTRA_SCALE = 0.95; // 100% -> 195% au sommet -> 100% à la fin
     const BASE_FONT_PX = window.innerWidth < 768 ? 19 : 25;
 
+    let progress = 0; // 0.0 -> 1.0
+    let targetProgress = 0;
     let scale = 1.0;
-    let targetScale = 1.0;
     let panX = 0;
     let panY = 0;
     let targetPanX = 0;
@@ -66,7 +66,7 @@
         step: '03/04',
         noteKey: 'cad.noteDesign',
         commentKey: 'cad.cDesign',
-        weight: 750,
+        weight: 760,
         track: '-0.030em',
         cursorPos: 'translate3d(-310px, 4px, 0)'
       },
@@ -76,7 +76,7 @@
         noteKey: 'cad.noteChoix',
         commentKey: 'cad.cChoix',
         weight: 800,
-        track: '-0.036em',
+        track: '-0.022em',
         cursorPos: 'translate3d(-30px, 128px, 0)'
       }
     ];
@@ -116,11 +116,11 @@
       }
     }
 
-    function syncStepFromZoom(s) {
+    function syncStepFromProgress(p) {
       let nextKey = 'realisation';
-      if (s >= 1.82) nextKey = 'choix';
-      else if (s >= 1.52) nextKey = 'design';
-      else if (s >= 1.24) nextKey = 'utilite';
+      if (p >= 0.78) nextKey = 'choix';
+      else if (p >= 0.5) nextKey = 'design';
+      else if (p >= 0.24) nextKey = 'utilite';
 
       if (nextKey !== activeStepKey) {
         applyStep(nextKey);
@@ -143,31 +143,35 @@
     }
 
     function animate() {
-      scale += (targetScale - scale) * 0.2;
-      panX += (targetPanX - panX) * 0.22;
-      panY += (targetPanY - panY) * 0.22;
+      progress += (targetProgress - progress) * 0.16;
+      panX += (targetPanX - panX) * 0.2;
+      panY += (targetPanY - panY) * 0.2;
 
-      // Zoom vectoriel pur (font-size réel) : zéro pixellisation des lettres
+      // Arche sinusoïdale : 100% au début -> 195% au milieu -> retour propre à 100% à la fin
+      scale = 1.0 + Math.sin(progress * Math.PI) * PEAK_EXTRA_SCALE;
+
+      // Zoom vectoriel pur (font-size réel) : zéro pixellisation
       manifestoText.style.fontSize = `${(BASE_FONT_PX * scale).toFixed(2)}px`;
       content.style.transform = `translate3d(${panX.toFixed(1)}px, ${panY.toFixed(1)}px, 0)`;
 
-      syncStepFromZoom(scale);
+      syncStepFromProgress(progress);
       updateReadouts();
 
       const done =
-        Math.abs(targetScale - scale) < 0.002 &&
+        Math.abs(targetProgress - progress) < 0.0015 &&
         Math.abs(targetPanX - panX) < 0.2 &&
         Math.abs(targetPanY - panY) < 0.2;
 
       if (!done) {
         rafId = requestAnimationFrame(animate);
       } else {
-        scale = targetScale;
+        progress = targetProgress;
+        scale = 1.0 + Math.sin(progress * Math.PI) * PEAK_EXTRA_SCALE;
         panX = targetPanX;
         panY = targetPanY;
         manifestoText.style.fontSize = `${(BASE_FONT_PX * scale).toFixed(2)}px`;
         content.style.transform = `translate3d(${panX}px, ${panY}px, 0)`;
-        syncStepFromZoom(scale);
+        syncStepFromProgress(progress);
         updateReadouts();
         rafId = null;
       }
@@ -178,7 +182,7 @@
     }
 
     function resetView() {
-      targetScale = 1.0;
+      targetProgress = 0;
       targetPanX = 0;
       targetPanY = 0;
       applyStep('realisation');
@@ -186,13 +190,12 @@
     }
 
     /* Molette dans la fenêtre CAO :
-       - Vers le bas (deltaY > 0) : agrandit le texte vectoriellement + anime les étapes
-       - Vers le haut (deltaY < 0) : dézoome jusqu'à 100 %, puis laisse remonter librement vers ST.03 ! */
+       - Vers le bas : avance sur l'arche (zoom jusqu'à 195 % puis dézoom retour à 100 %)
+       - Vers le haut : recule sur l'arche ; une fois à 0 %, laisse remonter librement vers ST.03 ! */
     viewport.addEventListener(
       'wheel',
       (e) => {
-        // Si déjà à 100 % et qu'on scrolle vers le haut => ne pas bloquer, laisser main.js remonter !
-        if (e.deltaY < 0 && targetScale <= MIN_SCALE + 0.01) {
+        if (e.deltaY < 0 && targetProgress <= 0.01) {
           return;
         }
 
@@ -200,10 +203,10 @@
         e.stopPropagation();
 
         const direction = Math.sign(e.deltaY);
-        targetScale = clamp(targetScale + direction * 0.14, MIN_SCALE, MAX_SCALE);
+        targetProgress = clamp(targetProgress + direction * 0.11, 0, 1);
 
-        // Recentrer progressivement le pan quand on revient à 100 %
-        if (targetScale <= 1.04) {
+        // Recentrer doucement le pan aux extrémités (taille normale 100 %)
+        if (targetProgress <= 0.05 || targetProgress >= 0.95) {
           targetPanX = 0;
           targetPanY = 0;
         }
@@ -247,10 +250,26 @@
     }
 
     /* Clic direct dans l'arborescence Fusion 360 */
+    const stepProgressMap = {
+      realisation: 0.0,
+      utilite: 0.34,
+      design: 0.62,
+      choix: 1.0
+    };
+
     document.querySelectorAll('.cad-node').forEach((btn) => {
       btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-highlight');
         switchCadTab('manifesto');
-        applyStep(btn.getAttribute('data-highlight'));
+        if (stepProgressMap[key] !== undefined) {
+          targetProgress = stepProgressMap[key];
+          if (targetProgress === 0 || targetProgress === 1) {
+            targetPanX = 0;
+            targetPanY = 0;
+          }
+          kickAnim();
+        }
+        applyStep(key);
       });
     });
 
