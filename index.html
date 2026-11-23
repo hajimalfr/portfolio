@@ -497,12 +497,12 @@
             </svg>
             <div class="traj-grid">
               <div class="traj-step hover-card">
-                <span class="mono traj-code">01 · S1 ACTUEL</span>
+                <span class="mono traj-code" data-i18n="traj.s1Code">01 · S1 ACTUEL</span>
                 <h3 data-i18n="traj.s1Title">Socle GCCD</h3>
                 <p data-i18n="traj.s1Text">Plans AutoDesk, matériaux, mécanique des structures, topographie.</p>
               </div>
               <div class="traj-step traj-step-accent hover-card">
-                <span class="mono traj-code">02 · S2 MAI–JUIN</span>
+                <span class="mono traj-code" data-i18n="traj.s2Code">02 · S2 MAI–JUIN</span>
                 <h3 data-i18n="traj.s2Title">Stage 4 semaines</h3>
                 <p data-i18n="traj.s2Text">Suivi de chantier auprès d’un ingénieur travaux pour relier théorie et terrain.</p>
               </div>
@@ -518,8 +518,8 @@
         <!-- Vrai diagramme Ikigai en 4 cercles entrelacés interactifs -->
         <div class="dim-frame st5-iki-block">
           <div class="dim-top mono">
-            <span>ST.05B // <span data-i18n="cad.tabIkigai">IKIGAI · DIAGRAMME 4 CERCLES</span></span>
-            <span>CLIC / SURVOL SUR UN CERCLE</span>
+            <span>ST.05B // <span data-i18n="iki.header">IKIGAI · DIAGRAMME 4 CERCLES</span></span>
+            <span data-i18n="iki.hint">CLIC / SURVOL SUR UN CERCLE</span>
           </div>
           <div class="ikigai-venn-layout">
             <svg class="ikigai-venn-svg" viewBox="0 0 420 340" role="img" aria-label="Diagramme Ikigai en 4 cercles">
@@ -527,31 +527,31 @@
               <!-- Cercle 1 : Passion (Haut) -->
               <g class="venn-circle active" data-pole="passion" tabindex="0" role="button">
                 <circle cx="210" cy="112" r="78" fill="rgba(38,44,232,0.14)" stroke="#262CE8" stroke-width="1.6"/>
-                <text x="210" y="72" text-anchor="middle" class="venn-title">CE QUE J'AIME</text>
-                <text x="210" y="87" text-anchor="middle" class="venn-sub">3D · PLANS</text>
+                <text x="210" y="72" text-anchor="middle" class="venn-title" data-i18n="iki.vLove">CE QUE J'AIME</text>
+                <text x="210" y="87" text-anchor="middle" class="venn-sub" data-i18n="iki.vLoveSub">3D · PLANS</text>
               </g>
               <!-- Cercle 2 : Talents (Gauche) -->
               <g class="venn-circle" data-pole="talents" tabindex="0" role="button">
                 <circle cx="148" cy="170" r="78" fill="rgba(18,18,18,0.08)" stroke="#121212" stroke-width="1.5"/>
-                <text x="108" y="166" text-anchor="middle" class="venn-title">TALENTS</text>
-                <text x="108" y="181" text-anchor="middle" class="venn-sub">PCSI · CAO</text>
+                <text x="108" y="166" text-anchor="middle" class="venn-title" data-i18n="iki.vTalents">TALENTS</text>
+                <text x="108" y="181" text-anchor="middle" class="venn-sub" data-i18n="iki.vTalentsSub">PCSI · CAO</text>
               </g>
               <!-- Cercle 3 : Mission (Droite) -->
               <g class="venn-circle" data-pole="mission" tabindex="0" role="button">
                 <circle cx="272" cy="170" r="78" fill="rgba(255,77,28,0.14)" stroke="#FF4D1C" stroke-width="1.6"/>
                 <text x="312" y="166" text-anchor="middle" class="venn-title">MISSION</text>
-                <text x="312" y="181" text-anchor="middle" class="venn-sub">DURABLE</text>
+                <text x="312" y="181" text-anchor="middle" class="venn-sub" data-i18n="iki.vMissionSub">DURABLE</text>
               </g>
               <!-- Cercle 4 : Profession (Bas) -->
               <g class="venn-circle" data-pole="profession" tabindex="0" role="button">
                 <circle cx="210" cy="228" r="78" fill="rgba(38,44,232,0.09)" stroke="#262CE8" stroke-width="1.5" stroke-dasharray="4 3"/>
                 <text x="210" y="264" text-anchor="middle" class="venn-title">PROFESSION</text>
-                <text x="210" y="279" text-anchor="middle" class="venn-sub">INGÉNIEUR</text>
+                <text x="210" y="279" text-anchor="middle" class="venn-sub" data-i18n="iki.vProfSub">INGÉNIEUR</text>
               </g>
               <!-- Cœur central Ikigai -->
               <circle cx="210" cy="170" r="36" fill="#EFECE6" stroke="#121212" stroke-width="1.6"/>
               <text x="210" y="167" text-anchor="middle" class="venn-core-title">IKIGAI</text>
-              <text x="210" y="180" text-anchor="middle" class="venn-core-sub">GÉNIE CIVIL</text>
+              <text x="210" y="180" text-anchor="middle" class="venn-core-sub" data-i18n="iki.vCoreSub">GÉNIE CIVIL</text>
             </svg>
 
             <div class="ikigai-venn-cards">
@@ -596,16 +596,16 @@
         <div class="contact-grid">
           <button type="button" class="dim-frame contact-tile contact-tile-primary hover-card" id="openCvFooter">
             <div class="dim-top mono">
-              <span>DOC // CV COMPLET</span>
-              <span>A4 / MODALE</span>
+              <span data-i18n="st6.cvTag">DOC // CV COMPLET</span>
+              <span>A4 / PDF</span>
             </div>
             <div class="contact-tile-main">
               <strong data-i18n="st4.openCv">Consulter le CV (A4)</strong>
               <span class="contact-arrow">↗</span>
             </div>
             <div class="dim-bottom mono">
-              <span>IMPRESSION 1 PAGE A4</span>
-              <span>FORMAT OFFICIEL</span>
+              <span data-i18n="st6.cvSub1">IMPRESSION 1 PAGE A4</span>
+              <span data-i18n="st6.cvSub2">FORMAT OFFICIEL</span>
             </div>
           </button>
 
@@ -619,14 +619,14 @@
               <span class="contact-arrow">⎘</span>
             </div>
             <div class="dim-bottom mono">
-              <span>CLIC POUR COPIER</span>
-              <span>RÉPONSE RAPIDE</span>
+              <span data-i18n="st6.mailSub1">CLIC POUR COPIER</span>
+              <span data-i18n="st6.mailSub2">RÉPONSE RAPIDE</span>
             </div>
           </button>
 
           <a href="https://www.linkedin.com/in/victor-valroff-chhun/" target="_blank" rel="noopener noreferrer" class="dim-frame contact-tile hover-card">
             <div class="dim-top mono">
-              <span>RÉSEAU // PRO</span>
+              <span data-i18n="st6.liTag">RÉSEAU // PRO</span>
               <span>LINKEDIN</span>
             </div>
             <div class="contact-tile-main">
@@ -634,14 +634,14 @@
               <span class="contact-arrow">↗</span>
             </div>
             <div class="dim-bottom mono">
-              <span>PROFIL PROFESSIONNEL</span>
-              <span>EXTERNE</span>
+              <span data-i18n="st6.liSub1">PROFIL PROFESSIONNEL</span>
+              <span data-i18n="st6.liSub2">EXTERNE</span>
             </div>
           </a>
 
           <a href="tel:+33601406962" class="dim-frame contact-tile hover-card">
             <div class="dim-top mono">
-              <span>TÉL // MOBILE</span>
+              <span data-i18n="st6.telTag">TÉL // MOBILE</span>
               <span>NANCY · FR</span>
             </div>
             <div class="contact-tile-main">
@@ -649,14 +649,14 @@
               <span class="contact-arrow">↗</span>
             </div>
             <div class="dim-bottom mono">
-              <span>PERMIS B &amp; VÉHICULE</span>
-              <span>DISPO STAGE</span>
+              <span data-i18n="st6.telSub1">PERMIS B &amp; VÉHICULE</span>
+              <span data-i18n="st0.avail">DISPO STAGE</span>
             </div>
           </a>
         </div>
 
         <div class="st6-foot mono">
-          <a href="VALROFF_Victor_CV.pdf" download class="btn-outline magnetic">TÉLÉCHARGER LE CV (PDF) ↓</a>
+          <a href="VALROFF_Victor_CV.pdf" download class="btn-outline magnetic" data-i18n="st6.downloadPdf">TÉLÉCHARGER LE CV (PDF) ↓</a>
           <a href="https://www.16personalities.com/fr/profils/af633b606aec5" target="_blank" rel="noopener noreferrer" class="discreet-badge">INTP-A ↗</a>
         </div>
       </div>

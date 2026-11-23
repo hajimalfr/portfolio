@@ -1675,12 +1675,29 @@ body {
 @media (max-width: 980px) {
   .iki-strip,
   .contact-grid,
-  .st3-bento {
+  .st3-bento,
+  .ikigai-venn-layout {
     grid-template-columns: 1fr;
     height: auto;
   }
   .st3-bento-right {
-    grid-template-rows: 200px 260px;
+    grid-template-rows: 190px 260px;
+  }
+  .ikigai-venn-svg {
+    max-height: 250px;
+  }
+  .ikigai-venn-cards {
+    grid-template-columns: 1fr;
+  }
+  .helmet-canvas-wrap {
+    height: 36dvh;
+    min-height: 240px;
+  }
+  .hero-ink-wrap {
+    height: 36dvh;
+  }
+  .contact-tile {
+    min-height: 92px;
   }
 }
 
