@@ -1,7 +1,7 @@
 /* ==========================================================================
-   js/hero-ink.js — Shader WebGL "Liquid Ink" inspiré de sbwebdesign.ch (.is-ink)
-   Déformation fluide des lettres + éclaboussures & mélange d'encre orange #FF4D1C
-   en temps réel au passage de la souris, sur fond transparent (béton apparent).
+   js/hero-ink.js — Shader WebGL "Liquid Ink" 60fps sans saccade
+   - 3 ondes ambiantes continues dans le shader (viennent de partout, 0 saccade)
+   - Déformation large + éclaboussures & mélange d'encre orange #FF4D1C au survol
    ========================================================================== */
 (function () {
   document.addEventListener('DOMContentLoaded', () => {
@@ -10,7 +10,7 @@
     if (!canvas || !wrap) return;
 
     const TEXT = 'VICTOR VALROFF CHHUN';
-    const MAX_DROPS = 32;
+    const MAX_DROPS = 28;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const gl = canvas.getContext('webgl', {
@@ -20,7 +20,6 @@
     });
 
     if (!gl) {
-      // Fallback propre si WebGL indisponible
       wrap.classList.add('ink-fallback');
       return;
     }
@@ -42,10 +41,10 @@
       uniform sampler2D uText;
       uniform vec2 uRes;
       uniform float uTime;
-      uniform vec4 uDrops[${MAX_DROPS}];   // xy = pos (0..1), z = radius, w = life (1..0)
-      uniform vec2 uVels[${MAX_DROPS}];    // xy = velocity vector
+      uniform float uAmbient;
+      uniform vec4 uDrops[${MAX_DROPS}];
+      uniform vec2 uVels[${MAX_DROPS}];
 
-      // Bruit organique fluide pour casser toute symétrie géométrique
       float hash(vec2 p) {
         return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
       }
@@ -66,7 +65,7 @@
         float a = 0.5;
         for (int i = 0; i < 3; i++) {
           v += a * noise(p);
-          p = p * 2.1 + vec2(1.7, 9.2);
+          p = p * 2.05 + vec2(1.7, 9.2);
           a *= 0.5;
         }
         return v;
@@ -78,9 +77,39 @@
         float inkEnergy = 0.0;
         float splashMask = 0.0;
 
-        float n1 = fbm(vUv * vec2(aspect * 5.2, 5.2) + vec2(uTime * 0.15, -uTime * 0.12)) - 0.5;
-        float n2 = fbm(vUv * vec2(aspect * 8.5, 8.5) - vec2(uTime * 0.18, uTime * 0.14)) - 0.5;
+        float n1 = fbm(vUv * vec2(aspect * 4.2, 4.2) + vec2(uTime * 0.12, -uTime * 0.09)) - 0.5;
+        float n2 = fbm(vUv * vec2(aspect * 7.4, 7.4) - vec2(uTime * 0.14, uTime * 0.11)) - 0.5;
 
+        // 1. Ondes ambiantes 100% continues en 60fps (viennent de partout, zéro saccade)
+        if (uAmbient > 0.005) {
+          vec2 pA = vec2(0.5 + 0.38 * sin(uTime * 0.37 + 0.4),  0.5 + 0.18 * cos(uTime * 0.51));
+          vec2 pB = vec2(0.5 + 0.40 * cos(uTime * 0.29 + 2.1),  0.5 + 0.20 * sin(uTime * 0.43 + 1.2));
+          vec2 pC = vec2(0.5 + 0.34 * sin(uTime * 0.45 + 4.3),  0.5 + 0.16 * cos(uTime * 0.33 + 2.7));
+
+          // Pulsation douce pour que chaque onde apparaisse puis s'efface organiquement
+          float wA = pow(0.5 + 0.5 * sin(uTime * 0.55), 1.6) * uAmbient;
+          float wB = pow(0.5 + 0.5 * sin(uTime * 0.47 + 2.2), 1.6) * uAmbient;
+          float wC = pow(0.5 + 0.5 * sin(uTime * 0.61 + 4.1), 1.6) * uAmbient;
+
+          vec2 cA = vec2((vUv.x - pA.x) * aspect, vUv.y - pA.y);
+          vec2 cB = vec2((vUv.x - pB.x) * aspect, vUv.y - pB.y);
+          vec2 cC = vec2((vUv.x - pC.x) * aspect, vUv.y - pC.y);
+
+          float rBase = 0.34 * (0.85 + 0.45 * n1);
+          float fA = smoothstep(rBase, 0.0, length(cA)) * wA;
+          float fB = smoothstep(rBase * 1.08, 0.0, length(cB)) * wB;
+          float fC = smoothstep(rBase * 0.92, 0.0, length(cC)) * wC;
+
+          disp += (vec2(cos(uTime * 0.37), -sin(uTime * 0.51)) * 0.045 + vec2(n1, n2) * 0.055) * fA;
+          disp += (vec2(-sin(uTime * 0.29), cos(uTime * 0.43)) * 0.045 + vec2(-n2, n1) * 0.055) * fB;
+          disp += (vec2(cos(uTime * 0.45), sin(uTime * 0.33)) * 0.040 + vec2(n1, -n2) * 0.050) * fC;
+
+          float ambSum = fA + fB + fC;
+          inkEnergy += ambSum * 0.85;
+          splashMask += ambSum * 0.72;
+        }
+
+        // 2. Traînées interactives larges au passage de la souris
         for (int i = 0; i < ${MAX_DROPS}; i++) {
           vec4 d = uDrops[i];
           if (d.w <= 0.005) continue;
@@ -89,52 +118,43 @@
           vec2 corr = vec2(diff.x * aspect, diff.y);
           float dist = length(corr);
 
-          // Rayon organique irrégulier (non circulaire)
           float r = d.z * (0.82 + 0.52 * n1 + 0.28 * n2);
           float falloff = smoothstep(r, 0.0, dist) * d.w;
 
           if (falloff > 0.001) {
             vec2 vel = uVels[i];
-            // Tourbillon + étirement dans le sens du mouvement de souris
-            vec2 swirl = vec2(-corr.y, corr.x) * (0.35 + n2 * 0.8);
-            disp += (vel * 1.45 + swirl * 0.14 + vec2(n1, n2) * 0.055) * falloff;
-            inkEnergy += falloff * (0.85 + length(vel) * 9.0);
-            splashMask += smoothstep(r * 1.12, r * 0.15, dist) * d.w;
+            vec2 swirl = vec2(-corr.y, corr.x) * (0.35 + n2 * 0.75);
+            disp += (vel * 1.5 + swirl * 0.14 + vec2(n1, n2) * 0.06) * falloff;
+            inkEnergy += falloff * (0.9 + length(vel) * 9.5);
+            splashMask += smoothstep(r * 1.15, r * 0.15, dist) * d.w;
           }
         }
 
-        // Limitation plus ample pour des vagues d'encre larges
         disp = clamp(disp, vec2(-0.24), vec2(0.24));
 
-        // 1. Lettre principale déformée (Bleu Tsunami #262CE8)
         vec2 uvMain = clamp(vUv - disp, 0.0, 1.0);
         float alphaMain = texture2D(uText, uvMain).a;
 
-        // 2. Couche d'éclaboussure / cisaillement orange (#FF4D1C) large derrière & autour
         vec2 uvOrange = clamp(vUv - disp * 1.92 + vec2(-0.006, 0.0045) * min(1.8, inkEnergy), 0.0, 1.0);
         float alphaOrange = texture2D(uText, uvOrange).a;
 
-        // 3. Deuxième traînée d'encre orange plus étirée pour les projections
         vec2 uvTrail = clamp(vUv - disp * 2.65 + vec2(n1, n2) * 0.036 * min(1.5, splashMask), 0.0, 1.0);
         float alphaTrail = texture2D(uText, uvTrail).a;
 
         vec3 colBlue   = vec3(0.149, 0.173, 0.910); // #262CE8
         vec3 colOrange = vec3(1.000, 0.302, 0.110); // #FF4D1C
-        vec3 colPeach  = vec3(1.000, 0.675, 0.545); // Reflet chaud façon sbwebdesign
+        vec3 colPeach  = vec3(1.000, 0.675, 0.545);
 
-        // Mélange fluide bleu -> orange -> reflet pêche à l'intérieur des lettres perturbées
-        float mixOrange = smoothstep(0.18, 1.05, inkEnergy + n1 * 0.25);
-        float mixPeach  = smoothstep(0.65, 1.55, inkEnergy + n2 * 0.3);
+        float mixOrange = smoothstep(0.16, 1.0, inkEnergy + n1 * 0.25);
+        float mixPeach  = smoothstep(0.62, 1.5, inkEnergy + n2 * 0.3);
 
         vec3 mainColor = mix(colBlue, colOrange, mixOrange);
         mainColor = mix(mainColor, colPeach, mixPeach * 0.68);
 
-        // Composition des éclaboussures orange nettes derrière les lettres
-        float orangeBack = max(alphaOrange * smoothstep(0.06, 0.35, inkEnergy), alphaTrail * smoothstep(0.28, 0.9, splashMask));
+        float orangeBack = max(alphaOrange * smoothstep(0.05, 0.32, inkEnergy), alphaTrail * smoothstep(0.26, 0.88, splashMask));
         vec3 finalRgb = colOrange;
         float finalAlpha = orangeBack;
 
-        // Superposition de la lettre principale sur les éclaboussures orange
         finalRgb = mix(finalRgb, mainColor, alphaMain);
         finalAlpha = max(finalAlpha, alphaMain);
 
@@ -164,10 +184,10 @@
 
     const uRes = gl.getUniformLocation(prog, 'uRes');
     const uTime = gl.getUniformLocation(prog, 'uTime');
+    const uAmbientLoc = gl.getUniformLocation(prog, 'uAmbient');
     const uDropsLoc = gl.getUniformLocation(prog, 'uDrops');
     const uVelsLoc = gl.getUniformLocation(prog, 'uVels');
 
-    // Texture texte haute résolution
     const textCanvas = document.createElement('canvas');
     const tCtx = textCanvas.getContext('2d');
     const tex = gl.createTexture();
@@ -195,14 +215,11 @@
       tCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
       tCtx.clearRect(0, 0, cw, ch);
 
-      // Calcul automatique de la taille de police pour remplir ~90 % de la largeur sur 1 seule ligne
       let fontSize = Math.min(132, Math.max(34, cw * 0.088));
       tCtx.font = `800 ${fontSize}px "Bricolage Grotesque", "Barlow Condensed", sans-serif`;
       const measured = tCtx.measureText(TEXT).width;
       const targetW = cw * 0.9;
-      if (measured > 0) {
-        fontSize = fontSize * (targetW / measured);
-      }
+      if (measured > 0) fontSize = fontSize * (targetW / measured);
 
       tCtx.font = `800 ${fontSize.toFixed(1)}px "Bricolage Grotesque", "Barlow Condensed", sans-serif`;
       tCtx.fillStyle = '#262CE8';
@@ -214,28 +231,22 @@
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textCanvas);
     }
 
-    // Buffer de gouttes / traînées de pinceau
     const drops = Array.from({ length: MAX_DROPS }, () => ({
-      x: -10,
-      y: -10,
-      r: 0.16,
-      life: 0,
-      vx: 0,
-      vy: 0
+      x: -10, y: -10, r: 0.2, life: 0, vx: 0, vy: 0
     }));
     let dropHead = 0;
     let lastX = null;
     let lastY = null;
     let lastPointerTime = 0;
-    let ambientPhase = 0;
+    let ambientLevel = reducedMotion ? 0 : 0.72;
 
-    function addDrop(nx, ny, vx, vy, radiusScale = 1.0) {
+    function addDrop(nx, ny, vx, vy) {
       const d = drops[dropHead];
       dropHead = (dropHead + 1) % MAX_DROPS;
       const speed = Math.hypot(vx, vy);
       d.x = nx;
       d.y = ny;
-      d.r = Math.min(0.48, (0.26 + speed * 2.1) * radiusScale);
+      d.r = Math.min(0.48, 0.26 + speed * 2.1);
       d.life = 1.0;
       d.vx = Math.max(-0.11, Math.min(0.11, vx * 1.6));
       d.vy = Math.max(-0.11, Math.min(0.11, vy * 1.6));
@@ -251,7 +262,7 @@
         const vy = lastY === null ? 0.0 : ny - lastY;
         lastX = nx;
         lastY = ny;
-        addDrop(nx, ny, vx, vy, 1.05);
+        addDrop(nx, ny, vx, vy);
       });
 
       wrap.addEventListener('pointerleave', () => {
@@ -266,31 +277,20 @@
 
     function render(now) {
       const t = (now - startTime) * 0.001;
-
-      // Onde liquide autonome lente et fluide quand la souris n'est pas sur le titre
-      if (!reducedMotion && now - lastPointerTime > 2400) {
-        ambientPhase += 0.0045;
-        const cycle = ambientPhase % 4.2;
-        if (cycle < 1.9) {
-          const waveX = 0.06 + (cycle / 1.9) * 0.88;
-          const waveY = 0.5 + Math.sin(cycle * 3.4) * 0.06;
-          if (Math.floor(ambientPhase * 120) % 4 === 0) {
-            addDrop(waveX, waveY, 0.013, Math.cos(cycle * 3.4) * 0.004, 0.82);
-          }
-        }
-      }
+      const targetAmb = reducedMotion ? 0 : (now - lastPointerTime > 1600 ? 0.82 : 0.08);
+      ambientLevel += (targetAmb - ambientLevel) * 0.03;
 
       for (let i = 0; i < MAX_DROPS; i++) {
         const d = drops[i];
         if (d.life > 0) {
-          d.life = Math.max(0, d.life - 0.0095); // retour plus doux et progressif
-          d.vx *= 0.955;
-          d.vy *= 0.955;
+          d.life = Math.max(0, d.life - 0.011);
+          d.vx *= 0.95;
+          d.vy *= 0.95;
         }
         dropUniforms[i * 4] = d.x;
         dropUniforms[i * 4 + 1] = d.y;
         dropUniforms[i * 4 + 2] = d.r;
-        dropUniforms[i * 4 + 3] = d.life * d.life; // courbe d'amortissement élastique
+        dropUniforms[i * 4 + 3] = d.life * d.life;
         velUniforms[i * 2] = d.vx;
         velUniforms[i * 2 + 1] = d.vy;
       }
@@ -299,6 +299,7 @@
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.uniform2f(uRes, cw, ch);
       gl.uniform1f(uTime, t);
+      gl.uniform1f(uAmbientLoc, ambientLevel);
       gl.uniform4fv(uDropsLoc, dropUniforms);
       gl.uniform2fv(uVelsLoc, velUniforms);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);

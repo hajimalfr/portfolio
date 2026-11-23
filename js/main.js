@@ -223,7 +223,7 @@
     let currentIndex = 0;
     let isTransitioning = false;
     let reticleTimer = null;
-    const COOLDOWN_MS = 620;
+    const COOLDOWN_MS = 320;
 
     function triggerReticle(code, alt) {
       if (reticleLayer && reticleStatus) {
@@ -285,6 +285,28 @@
 
     if (btnPrev) btnPrev.addEventListener('click', () => goToStation(currentIndex - 1));
     if (btnNext) btnNext.addEventListener('click', () => goToStation(currentIndex + 1));
+
+    // Appui sur la molette (clic milieu) => remonte directement tout en haut (ST.00)
+    window.addEventListener('mousedown', (e) => {
+      if (e.button === 1) {
+        e.preventDefault();
+        goToStation(0);
+      }
+    });
+
+    // Interaction 4 cercles Ikigai <-> cartes (ST.05)
+    function setIkigaiPole(pole) {
+      document.querySelectorAll('.venn-circle, .ikigai-venn-cards .iki-mini-cell').forEach((el) => {
+        el.classList.toggle('active', el.getAttribute('data-pole') === pole);
+      });
+    }
+
+    document.querySelectorAll('.venn-circle, .ikigai-venn-cards .iki-mini-cell').forEach((el) => {
+      const pole = el.getAttribute('data-pole');
+      if (!pole) return;
+      el.addEventListener('click', () => setIkigaiPole(pole));
+      el.addEventListener('pointerenter', () => setIkigaiPole(pole));
+    });
 
     const cvModal = document.getElementById('cvModal');
 
