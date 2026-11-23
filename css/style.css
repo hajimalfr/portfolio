@@ -507,7 +507,7 @@ body {
   transform: translate3d(0, 0, 0);
 }
 
-/* Tracé SVG bleu Tsunami qui se dessine à l'entrée de la station */
+/* Ruban d'atmosphère très flouté en arrière-plan (non géométrique) */
 .station-ribbon {
   position: absolute;
   inset: 0;
@@ -515,9 +515,12 @@ body {
   height: 100%;
   pointer-events: none;
   z-index: 0;
+  filter: blur(26px);
+  opacity: 0.7;
 }
 
 .ribbon-path {
+  stroke-width: 18;
   stroke-dasharray: 1800;
   stroke-dashoffset: 1800;
   transition: stroke-dashoffset 1.35s var(--ease-expo) 0.12s;
@@ -763,6 +766,60 @@ body {
   padding: clamp(22px, 3vw, 38px) clamp(24px, 3.6vw, 48px);
   background: rgba(239, 236, 230, 0.28);
   backdrop-filter: blur(2px);
+}
+
+/* Taches orange organiques fortement floutées au survol */
+.orange-stain-field {
+  position: absolute;
+  inset: -24px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.55s ease;
+}
+
+.orange-stain-field.active {
+  opacity: 1;
+}
+
+.stain-blob {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 58% 42% 66% 34% / 44% 62% 38% 56%;
+  background: radial-gradient(circle at 42% 45%, rgba(255, 77, 28, 0.72), rgba(255, 77, 28, 0.26) 52%, rgba(255, 77, 28, 0) 76%);
+  filter: blur(30px);
+  mix-blend-mode: multiply;
+  will-change: transform;
+  transform: translate3d(-999px, -999px, 0);
+}
+
+.stain-a {
+  width: 240px;
+  height: 190px;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.stain-b {
+  width: 185px;
+  height: 220px;
+  border-radius: 41% 59% 35% 65% / 58% 36% 64% 42%;
+  filter: blur(38px);
+  transition: transform 0.52s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stain-c {
+  width: 150px;
+  height: 130px;
+  border-radius: 68% 32% 52% 48% / 38% 64% 36% 62%;
+  filter: blur(24px);
+  transition: transform 0.78s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.selection-box-hero .hero-title {
+  position: relative;
+  z-index: 2;
 }
 
 .hero-title-monumental {

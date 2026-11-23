@@ -46,9 +46,12 @@
     const heroSelectionBox = document.getElementById('heroSelectionBox');
     const heroTitle = document.getElementById('heroTitle');
     const heroSpecBadge = document.getElementById('heroSpecBadge');
+    const stainField = document.getElementById('orangeStainField');
+    const stainBlobs = stainField ? Array.from(stainField.querySelectorAll('.stain-blob')) : [];
     const heroLetters = [];
 
     if (heroTitle) {
+      let letterIdx = 0;
       heroTitle.querySelectorAll('.hero-word').forEach((wordEl) => {
         const text = wordEl.textContent || '';
         wordEl.textContent = '';
@@ -56,6 +59,13 @@
           const span = document.createElement('span');
           span.className = 'hero-letter';
           span.textContent = ch;
+          // Graine organique unique par lettre (casse la symétrie géométrique)
+          const seed = Math.sin(letterIdx * 12.9898 + 4.1414) * 43758.5453;
+          const rand = seed - Math.floor(seed); // 0..1
+          span.dataset.liftBias = String(0.65 + rand * 0.75);
+          span.dataset.tiltBias = String((rand - 0.5) * 14);
+          span.dataset.xDrift = String((rand - 0.5) * 10);
+          letterIdx += 1;
           wordEl.appendChild(span);
           heroLetters.push(span);
         });
@@ -79,6 +89,17 @@
           const mx = e.clientX;
           const my = e.clientY;
 
+          // Taches orange organiques qui suivent le curseur avec décalage et inertie
+          if (stainField && stainBlobs.length) {
+            const boxRect = stainField.getBoundingClientRect();
+            const lx = mx - boxRect.left;
+            const ly = my - boxRect.top;
+            stainField.classList.add('active');
+            if (stainBlobs[0]) stainBlobs[0].style.transform = `translate3d(${(lx - 120).toFixed(0)}px, ${(ly - 95).toFixed(0)}px, 0) rotate(${((lx % 40) - 20).toFixed(0)}deg)`;
+            if (stainBlobs[1]) stainBlobs[1].style.transform = `translate3d(${(lx - 65).toFixed(0)}px, ${(ly - 130).toFixed(0)}px, 0) rotate(${((ly % 50) - 25).toFixed(0)}deg)`;
+            if (stainBlobs[2]) stainBlobs[2].style.transform = `translate3d(${(lx - 145).toFixed(0)}px, ${(ly - 45).toFixed(0)}px, 0)`;
+          }
+
           heroLetters.forEach((letter) => {
             const rect = letter.getBoundingClientRect();
             const cx = rect.left + rect.width / 2;
@@ -87,23 +108,27 @@
             const dy = my - cy;
             const dist = Math.hypot(dx, dy);
 
-            // Onde de proximité gaussienne ample et expressive lettre par lettre
-            const influence = Math.exp(-(dist * dist) / (2 * 155 * 155));
+            // Diffusion organique asymétrique + halo orange flou
+            const influence = Math.exp(-(dist * dist) / (2 * 145 * 145));
 
-            if (influence > 0.03) {
-              const lift = -influence * 26;
-              const tilt = Math.max(-13, Math.min(13, (dx / 42) * influence * 12));
-              const scaleY = 1 + influence * 0.22;
-              const scaleX = 1 + influence * 0.1;
-              const wght = Math.round(700 + influence * 100);
-              const shadowAlpha = (influence * 0.96).toFixed(2);
-              const shadowX = (-influence * 5.2).toFixed(1);
-              const shadowY = (-influence * 3.6).toFixed(1);
+            if (influence > 0.04) {
+              const liftBias = parseFloat(letter.dataset.liftBias || '1');
+              const tiltBias = parseFloat(letter.dataset.tiltBias || '0');
+              const xDrift = parseFloat(letter.dataset.xDrift || '0');
+
+              const lift = -influence * 18 * liftBias;
+              const shiftX = influence * xDrift;
+              const tilt = influence * (tiltBias + (dx / 85) * 4.5);
+              const scaleY = 1 + influence * 0.12 * liftBias;
+              const wght = Math.round(720 + influence * 80);
+              const haloAlpha = (influence * 0.65).toFixed(2);
+              const blurCore = Math.round(12 + influence * 18);
+              const blurWide = Math.round(26 + influence * 28);
 
               letter.classList.add('is-active');
-              letter.style.transform = `translate3d(0, ${lift.toFixed(1)}px, 0) rotate(${tilt.toFixed(1)}deg) scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)})`;
+              letter.style.transform = `translate3d(${shiftX.toFixed(1)}px, ${lift.toFixed(1)}px, 0) rotate(${tilt.toFixed(1)}deg) scaleY(${scaleY.toFixed(3)})`;
               letter.style.fontVariationSettings = `'wght' ${wght}, 'opsz' 96`;
-              letter.style.textShadow = `${shadowX}px ${shadowY}px 0 rgba(255, 77, 28, ${shadowAlpha})`;
+              letter.style.textShadow = `0 0 ${blurCore}px rgba(255, 77, 28, ${haloAlpha}), ${(-shiftX).toFixed(1)}px 4px ${blurWide}px rgba(255, 77, 28, ${(influence * 0.42).toFixed(2)})`;
             } else {
               letter.classList.remove('is-active');
               letter.style.transform = '';
@@ -114,6 +139,7 @@
         });
 
         heroSelectionBox.addEventListener('pointerleave', () => {
+          if (stainField) stainField.classList.remove('active');
           heroLetters.forEach((letter) => {
             letter.classList.remove('is-active');
             letter.style.transform = '';
