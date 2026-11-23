@@ -218,9 +218,11 @@
       ctx.font = '600 10px "JetBrains Mono", monospace';
       ctx.fillText('H=155mm', leftX + 8, (topPt.y + botPt.y) / 2 + 3);
       ctx.fillStyle = '#262CE8';
-      ctx.fillText('EN 397 · CASQUE CHANTIER 3D', 14, 22);
+      ctx.fillText('EN 397 · CASQUE 3D', 12, 20);
       ctx.fillStyle = '#FF4D1C';
-      ctx.fillText('L=290mm · Ø 580', cw - 122, ch - 14);
+      ctx.textAlign = 'right';
+      ctx.fillText('L=290 · Ø 580mm', cw - 12, 20);
+      ctx.textAlign = 'left';
       ctx.restore();
 
       requestAnimationFrame(render);
