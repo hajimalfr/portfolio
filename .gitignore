@@ -1,0 +1,15 @@
+# Système & éditeurs
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+.idea/
+
+# Fichiers temporaires / exports bruts
+_tmp_*
+*.blend
+*.exr
+*.psd
+*.zip
+node_modules/

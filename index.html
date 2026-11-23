@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#EFECE6">
+  <meta name="description" content="Portfolio de Victor Valroff Chhun — Étudiant en 1ère année de BUT Génie Civil – Construction Durable (IUT de Nancy-Brabois), objectif ingénieur en génie civil.">
+  <title>Victor Valroff Chhun — Portfolio V2 · BUT GCCD</title>
+
+  <!-- Typographies éditoriales & techniques : Bricolage Grotesque, Barlow Condensed, Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Fond béton minéral issu de Téléchargements + voile éditorial pour contraste net -->
+  <div class="concrete-backdrop" aria-hidden="true"></div>
+  <div class="concrete-veil" aria-hidden="true"></div>
+
+  <!-- Mire / réticule architectural discret (se recalibre à chaque changement de station) -->
+  <div class="reticle-layer" id="reticleLayer" aria-hidden="true">
+    <div class="reticle-corner rc-tl"></div>
+    <div class="reticle-corner rc-tr"></div>
+    <div class="reticle-corner rc-bl"></div>
+    <div class="reticle-corner rc-br"></div>
+    <div class="reticle-axis reticle-axis-h"></div>
+    <div class="reticle-axis reticle-axis-v"></div>
+    <div class="reticle-lock-pill" id="reticleStatus">LOCK // ST.00 · +00.00m</div>
+  </div>
+
+  <!-- En-tête fixe minimaliste -->
+  <header class="site-header" role="banner">
+    <div class="header-left">
+      <button type="button" class="brand-btn" data-goto="0" aria-label="Retour à la station 00">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-code">VVC // V2</span>
+      </button>
+      <span class="header-sep" aria-hidden="true">/</span>
+      <span class="header-loc mono">48.66°N 6.15°E · NANCY</span>
+    </div>
+
+    <div class="header-right">
+      <div class="lang-switch" role="group" aria-label="Sélecteur de langue">
+        <button type="button" class="lang-btn" data-lang="fr" aria-pressed="true">FR</button>
+        <span class="lang-slash" aria-hidden="true">/</span>
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+
+      <button type="button" class="header-cv-btn" id="openCvHeader">
+        <span data-i18n="nav.cv">CV COMPLET</span>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Altimètre vertical latéral fixe (navigation directe + cote active en #262CE8) -->
+  <aside class="altimeter" aria-label="Altimètre de navigation par stations">
+    <div class="altimeter-readout">
+      <span class="alt-label mono" data-i18n="alt.label">COTE</span>
+      <span class="alt-value mono" id="altValue">+00.00m</span>
+    </div>
+
+    <div class="altimeter-track">
+      <div class="altimeter-rail" aria-hidden="true">
+        <div class="altimeter-progress" id="altProgress"></div>
+      </div>
+
+      <nav class="altimeter-stops" aria-label="Stations du portfolio">
+        <button type="button" class="alt-stop active" data-goto="0" aria-current="true">
+          <span class="alt-stop-name" data-i18n="st0.nav">Ouverture</span>
+          <span class="alt-stop-code mono">ST.00</span>
+          <span class="alt-stop-tick" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="alt-stop" data-goto="1">
+          <span class="alt-stop-name" data-i18n="st1.nav">Impression 3D</span>
+          <span class="alt-stop-code mono">ST.01</span>
+          <span class="alt-stop-tick" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="alt-stop" data-goto="2">
+          <span class="alt-stop-name" data-i18n="st2.nav">Voyages</span>
+          <span class="alt-stop-code mono">ST.02</span>
+          <span class="alt-stop-tick" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="alt-stop" data-goto="3">
+          <span class="alt-stop-name" data-i18n="st3.nav">Breaking &amp; Tsunami</span>
+          <span class="alt-stop-code mono">ST.03</span>
+          <span class="alt-stop-tick" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="alt-stop" data-goto="4">
+          <span class="alt-stop-name" data-i18n="st4.nav">Manifeste &amp; Contact</span>
+          <span class="alt-stop-code mono">ST.04</span>
+          <span class="alt-stop-tick" aria-hidden="true"></span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="altimeter-controls">
+      <button type="button" class="nav-step-btn" id="btnPrev" aria-label="Station précédente" title="Précédent (↑)">
+        <span aria-hidden="true">↑</span>
+        <span class="sr-only" data-i18n="nav.prev">Précédent</span>
+      </button>
+      <button type="button" class="nav-step-btn" id="btnNext" aria-label="Station suivante" title="Suivant (↓)">
+        <span aria-hidden="true">↓</span>
+        <span class="sr-only" data-i18n="nav.next">Suivant</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Scène principale 100dvh contenant les 5 stations -->
+  <main class="stage" id="stage">
+
+    <!-- ======================================================================
+         ST.00 — OUVERTURE (+00.00m)
+         ====================================================================== -->
+    <section class="station active" id="station-0" data-index="0" data-alt="+00.00m" data-code="ST.00" aria-label="Station 00 — Ouverture">
+      <div class="station-inner st0-layout">
+        <div class="st0-hero">
+          <div class="st-meta-bar mono">
+            <span class="st-tag">ST.00 // <span data-i18n="st0.kicker">OUVERTURE</span></span>
+            <span class="st-dim">ELV +00.00m · 1:1</span>
+          </div>
+
+          <!-- Titre interactif inspiré sbwebdesign.ch -->
+          <h1 class="hero-title" id="heroTitle" aria-label="Victor Valroff Chhun.">
+            <span class="mask-row"><span class="hero-word" data-word="VICTOR">VICTOR</span></span>
+            <span class="mask-row">
+              <span class="hero-word" data-word="VALROFF">VALROFF</span>
+              <span class="hero-word hero-word-outline" data-word="CHHUN">CHHUN</span><span class="hero-dot" aria-hidden="true">.</span>
+            </span>
+          </h1>
+
+          <p class="st0-lead" data-i18n="st0.lead">
+            19 ans, étudiant en 1ère année de <strong>BUT Génie Civil – Construction Durable</strong> à l’IUT de Nancy-Brabois (ex-CPGE PCSI au Lycée Loritz). Cap sur un diplôme d’<strong>ingénieur en génie civil</strong>.
+          </p>
+
+          <div class="st0-actions">
+            <button type="button" class="btn-solid" data-goto="1">
+              <span data-i18n="st0.ctaExplore">Explorer les stations</span>
+              <span aria-hidden="true">↓</span>
+            </button>
+            <button type="button" class="btn-outline" data-goto="4">
+              <span data-i18n="st0.ctaManifesto">Manifeste CAO &amp; CV</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Fiche d'identité compacte + cotations 1px -->
+        <aside class="dim-frame id-card" aria-label="Fiche d'identité">
+          <div class="dim-top mono">
+            <span>REF // ID-00</span>
+            <span>NANCY · FR</span>
+          </div>
+
+          <div class="id-card-head">
+            <div class="smart-photo id-avatar" data-focal="50% 20%" data-fixed-ratio="1/1">
+              <img src="images/portrait-victor.jpg" alt="Portrait de Victor Valroff Chhun" loading="eager">
+              <div class="photo-fallback" aria-hidden="true">
+                <span class="mono">VVC</span>
+              </div>
+            </div>
+            <div>
+              <div class="id-name">Victor Valroff Chhun</div>
+              <div class="id-sub mono" data-i18n="st0.idSub">19 ans · Permis B</div>
+            </div>
+          </div>
+
+          <dl class="id-specs">
+            <div class="id-row">
+              <dt class="mono" data-i18n="st0.kForm">FORMATION</dt>
+              <dd data-i18n="st0.vForm">BUT GCCD · 1ère année</dd>
+            </div>
+            <div class="id-row">
+              <dt class="mono" data-i18n="st0.kInst">IUT</dt>
+              <dd>Nancy-Brabois (UL)</dd>
+            </div>
+            <div class="id-row">
+              <dt class="mono" data-i18n="st0.kPrev">PARCOURS</dt>
+              <dd>CPGE PCSI → BUT GCCD</dd>
+            </div>
+            <div class="id-row">
+              <dt class="mono" data-i18n="st0.kGoal">OBJECTIF</dt>
+              <dd data-i18n="st0.vGoal">Ingénieur Génie Civil</dd>
+            </div>
+            <div class="id-row">
+              <dt class="mono" data-i18n="st0.kStage">STAGE S2</dt>
+              <dd data-i18n="st0.vStage">4 sem. · Mai–Juin</dd>
+            </div>
+          </dl>
+
+          <div class="id-card-foot">
+            <a href="https://www.16personalities.com/fr/profils/af633b606aec5" target="_blank" rel="noopener noreferrer" class="discreet-badge mono" title="Profil de personnalité">
+              INTP-A ↗
+            </a>
+            <span class="mono id-status"><i class="pulse-dot"></i> <span data-i18n="st0.avail">DISPO STAGE</span></span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         ST.01 — IMPRESSION 3D (+04.20m)
+         ====================================================================== -->
+    <section class="station" id="station-1" data-index="1" data-alt="+04.20m" data-code="ST.01" aria-label="Station 01 — Impression 3D">
+      <div class="station-inner st-split">
+        <div class="st-copy">
+          <div class="st-meta-bar mono">
+            <span class="st-tag">ST.01 // <span data-i18n="st1.kicker">CONCEPTION &amp; FABRICATION</span></span>
+            <span class="st-dim">ELV +04.20m</span>
+          </div>
+
+          <h2 class="st-title" data-i18n="st1.title">Impression 3D<br><span class="accent-text">&amp; Précision utile.</span></h2>
+
+          <p class="st-text" data-i18n="st1.p1">
+            De l’esquisse paramétrique sous <strong>Fusion 360</strong> jusqu’à la pièce imprimée sur <strong>Bambu Lab</strong>, chaque millimètre répond à un usage réel.
+          </p>
+          <p class="st-text" data-i18n="st1.p2">
+            La cotation, les tolérances d’assemblage et le prototypage rapide nourrissent directement ma rigueur sur AutoDesk et AutoCAD.
+          </p>
+
+          <div class="spec-chips mono">
+            <span>FUSION 360</span>
+            <span>BAMBU LAB</span>
+            <span>AUTODESK / AUTOCAD</span>
+            <span>TOLÉRANCE ±0.1mm</span>
+          </div>
+        </div>
+
+        <figure class="dim-frame photo-card">
+          <div class="dim-top mono">
+            <span>FIG.01 // CAD-3D</span>
+            <span class="photo-ratio-readout" data-ratio-label>RATIO AUTO</span>
+          </div>
+          <div class="smart-photo" data-focal="50% 50%">
+            <img src="images/impression-3d.jpg" alt="Modélisation 3D sous Fusion 360 et impression Bambu Lab" loading="lazy">
+            <div class="photo-fallback photo-fallback-cad" aria-hidden="true">
+              <svg viewBox="0 0 400 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="currentColor" stroke-opacity="0.16" stroke-width="1">
+                  <path d="M0 40H400M0 80H400M0 120H400M0 160H400M0 200H400M0 240H400"/>
+                  <path d="M40 0V280M80 0V280M120 0V280M160 0V280M200 0V280M240 0V280M280 0V280M320 0V280M360 0V280"/>
+                </g>
+                <g stroke="#262CE8" stroke-width="1.5">
+                  <polygon points="200,56 294,108 200,160 106,108" fill="rgba(38,44,232,0.08)"/>
+                  <polygon points="106,108 200,160 200,218 106,166" fill="rgba(38,44,232,0.04)"/>
+                  <polygon points="294,108 200,160 200,218 294,166" fill="rgba(18,18,18,0.05)"/>
+                  <line x1="200" y1="56" x2="200" y2="218" stroke-dasharray="4 4"/>
+                </g>
+                <g stroke="#121212" stroke-width="1" stroke-opacity="0.55">
+                  <line x1="106" y1="234" x2="200" y2="234"/>
+                  <line x1="106" y1="229" x2="106" y2="239"/>
+                  <line x1="200" y1="229" x2="200" y2="239"/>
+                </g>
+              </svg>
+              <span class="fallback-tag mono">images/impression-3d.jpg</span>
+            </div>
+          </div>
+          <figcaption class="dim-bottom mono">
+            <span data-i18n="st1.capLeft">PROTOTYPAGE PARAMÉTRIQUE</span>
+            <span>X:256 · Y:256 · Z:256</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         ST.02 — VOYAGES (+08.40m)
+         ====================================================================== -->
+    <section class="station" id="station-2" data-index="2" data-alt="+08.40m" data-code="ST.02" aria-label="Station 02 — Voyages">
+      <div class="station-inner st-split st-split-reverse">
+        <div class="st-copy">
+          <div class="st-meta-bar mono">
+            <span class="st-tag">ST.02 // <span data-i18n="st2.kicker">OUVERTURE &amp; MOBILITÉ</span></span>
+            <span class="st-dim">ELV +08.40m</span>
+          </div>
+
+          <h2 class="st-title" data-i18n="st2.title">Voyages<br><span class="accent-text">&amp; Horizon international.</span></h2>
+
+          <p class="st-text" data-i18n="st2.p1">
+            Se déplacer, observer d’autres façons de construire et de vivre la ville : les voyages nourrissent ma curiosité technique et mon ouverture culturelle.
+          </p>
+          <p class="st-text" data-i18n="st2.p2">
+            Appuyé par un <strong>anglais B2 certifié (First Cambridge)</strong>, j’envisage à terme une carrière d’ingénieur ouverte à l’international.
+          </p>
+
+          <div class="spec-chips mono">
+            <span>FIRST CAMBRIDGE B2</span>
+            <span data-i18n="st2.chip1">SECTION EUROPÉENNE</span>
+            <span data-i18n="st2.chip2">MOBILITÉ INTL.</span>
+          </div>
+        </div>
+
+        <figure class="dim-frame photo-card">
+          <div class="dim-top mono">
+            <span>FIG.02 // HORIZON</span>
+            <span class="photo-ratio-readout" data-ratio-label>RATIO AUTO</span>
+          </div>
+          <div class="smart-photo" data-focal="50% 35%">
+            <img src="images/voyages.jpg" alt="Voyages et ouverture internationale" loading="lazy">
+            <div class="photo-fallback photo-fallback-cad" aria-hidden="true">
+              <svg viewBox="0 0 400 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="200" cy="140" r="92" stroke="#121212" stroke-opacity="0.2" stroke-dasharray="3 5"/>
+                <circle cx="200" cy="140" r="56" stroke="#262CE8" stroke-width="1.3"/>
+                <ellipse cx="200" cy="140" rx="92" ry="34" stroke="#262CE8" stroke-opacity="0.55" stroke-width="1"/>
+                <ellipse cx="200" cy="140" rx="34" ry="92" stroke="#121212" stroke-opacity="0.25" stroke-width="1"/>
+                <line x1="76" y1="140" x2="324" y2="140" stroke="#121212" stroke-opacity="0.25"/>
+                <line x1="200" y1="30" x2="200" y2="250" stroke="#121212" stroke-opacity="0.25"/>
+                <circle cx="256" cy="108" r="4" fill="#262CE8"/>
+              </svg>
+              <span class="fallback-tag mono">images/voyages.jpg</span>
+            </div>
+          </div>
+          <figcaption class="dim-bottom mono">
+            <span data-i18n="st2.capLeft">CAMBRIDGE FIRST · B2</span>
+            <span>FR · EN · ES</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         ST.03 — BREAKING & ASSOCIATION TSUNAMI (+12.60m)
+         ====================================================================== -->
+    <section class="station" id="station-3" data-index="3" data-alt="+12.60m" data-code="ST.03" aria-label="Station 03 — Breaking & Association Tsunami">
+      <div class="station-inner st3-layout">
+        <div class="st-copy">
+          <div class="st-meta-bar mono">
+            <span class="st-tag">ST.03 // <span data-i18n="st3.kicker">COLLECTIF &amp; ENGAGEMENT</span></span>
+            <span class="st-dim">ELV +12.60m</span>
+          </div>
+
+          <h2 class="st-title" data-i18n="st3.title">Breaking<br><span class="accent-text">&amp; Association Tsunami.</span></h2>
+
+          <p class="st-text" data-i18n="st3.p1">
+            Pratiquant de breaking, <strong>président et cofondateur de l’Association Tsunami</strong> à Nancy depuis 2024 : gestion associative, événements culturels et participation au Relais de la Flamme des JO.
+          </p>
+
+          <blockquote class="st3-quote" data-i18n="st3.quote">
+            « Rien ne se monte seul : que ce soit au sein de l’Association Tsunami, en session de breaking ou en déplacement, c’est l’énergie du collectif et la confiance entre amis qui donnent du relief à ce que j’entreprends. »
+          </blockquote>
+
+          <div class="spec-chips mono">
+            <span data-i18n="st3.chip1">PRÉSIDENT · COFONDATEUR</span>
+            <span>NANCY · DEPUIS 2024</span>
+            <span data-i18n="st3.chip2">FLAMME OLYMPIQUE</span>
+          </div>
+        </div>
+
+        <div class="st3-visuals">
+          <!-- Vague Tsunami 3D interactive (détourage auto canvas + rotation 360°) -->
+          <div class="dim-frame tsunami-stage-card">
+            <div class="dim-top mono">
+              <span>OBJ.3D // TSUNAMI WAVE</span>
+              <button type="button" class="mini-reset mono" id="resetTsunamiBtn" data-i18n="st3.reset3d">RESET 360°</button>
+            </div>
+            <div class="tsunami-canvas-wrap" id="tsunamiWrap">
+              <canvas id="tsunamiCanvas" aria-label="Logo vague Tsunami en 3D interactive"></canvas>
+              <span class="canvas-hint mono" data-i18n="st3.dragHint">GLISSER 360° · SURVOLER</span>
+            </div>
+          </div>
+
+          <!-- Photo Breaking / Collectif à rognage intelligent -->
+          <figure class="dim-frame photo-card st3-photo-card">
+            <div class="dim-top mono">
+              <span>FIG.03 // COLLECTIF</span>
+              <span class="photo-ratio-readout" data-ratio-label>RATIO AUTO</span>
+            </div>
+            <div class="smart-photo" data-focal="50% 25%">
+              <img src="images/breaking-tsunami.jpg" alt="Breaking et Association Tsunami à Nancy" loading="lazy">
+              <div class="photo-fallback photo-fallback-cad" aria-hidden="true">
+                <svg viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M24 172 C95 62, 185 48, 250 116 C276 144, 308 148, 336 122" stroke="#262CE8" stroke-width="2"/>
+                  <path d="M24 186 C105 90, 195 76, 260 138" stroke="#121212" stroke-opacity="0.28" stroke-dasharray="4 4"/>
+                  <circle cx="180" cy="84" r="5" fill="#262CE8"/>
+                </svg>
+                <span class="fallback-tag mono">images/breaking-tsunami.jpg</span>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         ST.04 — CADRE GCCD, MANIFESTE CAO, PARCOURS & CONTACT (+16.80m)
+         ====================================================================== -->
+    <section class="station" id="station-4" data-index="4" data-alt="+16.80m" data-code="ST.04" aria-label="Station 04 — Manifeste CAO, Parcours & Contact">
+      <div class="station-inner st4-layout">
+
+        <!-- Grande fenêtre Manifeste façon Fusion 360 / AutoCAD -->
+        <div class="cad-window" id="cadWindow">
+          <!-- Barre supérieure fenêtre CAO -->
+          <div class="cad-titlebar">
+            <div class="cad-win-left">
+              <span class="cad-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="cad-app-badge mono">FUSION // CAO</span>
+              <span class="cad-doc-name mono">MANIFESTE_GCCD_V2.f3d</span>
+            </div>
+
+            <!-- Ruban d'onglets : Manifeste CAO + mini-onglets discrets S1→S6 & Ikigai -->
+            <div class="cad-tabs" role="tablist" aria-label="Onglets de la fenêtre CAO">
+              <button type="button" class="cad-tab active" role="tab" aria-selected="true" data-cad-tab="manifesto" data-i18n="cad.tabManifesto">Manifeste</button>
+              <button type="button" class="cad-tab" role="tab" aria-selected="false" data-cad-tab="trajectory" data-i18n="cad.tabTrajectory">S1 → S6</button>
+              <button type="button" class="cad-tab" role="tab" aria-selected="false" data-cad-tab="ikigai" data-i18n="cad.tabIkigai">Ikigai</button>
+            </div>
+
+            <div class="cad-win-right mono">
+              <span class="cad-zoom-readout" id="cadZoomReadout">100%</span>
+              <button type="button" class="cad-reset-btn" id="cadResetBtn">RESET</button>
+            </div>
+          </div>
+
+          <!-- Corps CAO : Browser latéral Fusion 360 + Viewport interactif -->
+          <div class="cad-workspace">
+            <!-- Légende latérale personnalisée façon Fusion 360 Browser -->
+            <aside class="cad-browser" aria-label="Arborescence CAO">
+              <div class="cad-browser-head mono">
+                <span data-i18n="cad.browser">ARBORESCENCE</span>
+                <span>v2.0</span>
+              </div>
+
+              <ul class="cad-tree" id="cadTree">
+                <li>
+                  <button type="button" class="cad-node active" data-highlight="realisation">
+                    <span class="cad-eye" aria-hidden="true">◉</span>
+                    <span data-i18n="cad.nReal">Réalisation</span>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="cad-node" data-highlight="utilite">
+                    <span class="cad-eye" aria-hidden="true">◉</span>
+                    <span data-i18n="cad.nUtil">Utilité concrète</span>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="cad-node" data-highlight="design">
+                    <span class="cad-eye" aria-hidden="true">◉</span>
+                    <span data-i18n="cad.nDesign">Design &amp; Forme</span>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="cad-node" data-highlight="choix">
+                    <span class="cad-eye" aria-hidden="true">◉</span>
+                    <span data-i18n="cad.nChoix">Choix Génie Civil</span>
+                  </button>
+                </li>
+              </ul>
+
+              <div class="cad-workshop-note">
+                <span class="mono cad-note-label" data-i18n="cad.noteLabel">NOTE D'ATELIER</span>
+                <p id="cadNoteText" data-i18n="cad.noteDefault">
+                  Molette dans le cadre pour zoomer · Glisser pour déplacer · Double-clic pour recentrer.
+                </p>
+              </div>
+            </aside>
+
+            <!-- Zone centrale (panneaux onglets) -->
+            <div class="cad-viewport-shell">
+              <!-- Onglet 1 : Viewport Manifeste Zoomable & Pan -->
+              <div class="cad-panel active" id="cadPanel-manifesto" role="tabpanel">
+                <div class="cad-viewport" id="cadViewport" tabindex="0" aria-label="Viewport CAO du manifeste : utiliser la molette pour zoomer et glisser pour déplacer">
+                  <!-- Axes X / Y -->
+                  <div class="cad-axis-x" aria-hidden="true"><span class="mono">X+</span></div>
+                  <div class="cad-axis-y" aria-hidden="true"><span class="mono">Y+</span></div>
+
+                  <!-- ViewCube filaire -->
+                  <div class="cad-viewcube" aria-hidden="true">
+                    <svg viewBox="0 0 64 64" fill="none">
+                      <polygon points="32,8 54,19 32,30 10,19" stroke="#262CE8" stroke-width="1.2" fill="rgba(38,44,232,0.06)"/>
+                      <polygon points="10,19 32,30 32,54 10,43" stroke="#121212" stroke-width="1" stroke-opacity="0.5"/>
+                      <polygon points="54,19 32,30 32,54 54,43" stroke="#121212" stroke-width="1" stroke-opacity="0.75"/>
+                    </svg>
+                    <span class="mono">TOP / ISO</span>
+                  </div>
+
+                  <!-- Contenu transformé par zoom/pan -->
+                  <div class="cad-canvas-content" id="cadContent">
+                    <div class="cad-quote-kicker mono" data-i18n="cad.quoteKicker">MANIFESTE // GÉNIE CIVIL VS ARCHITECTURE</div>
+                    <blockquote class="cad-manifesto-text" id="cadManifestoText">
+                      « <span class="m-seg" data-seg="design" data-i18n="cad.segDesign">Le design d’un objet est une chose très importante pour moi,</span> <span class="m-seg" data-seg="realisation" data-i18n="cad.segReal">mais sa réalisation</span> <span class="m-seg" data-seg="utilite" data-i18n="cad.segUtil">et son utilité concrète me paraissent nécessaires à son appréciation.</span> <span class="m-seg" data-seg="choix" data-i18n="cad.segChoix">C’est pourquoi j’ai préféré le génie civil à l’architecture.</span> »
+                    </blockquote>
+                  </div>
+
+                  <div class="cad-hud-bottom mono">
+                    <span id="cadCoords">X: 000.0 · Y: 000.0</span>
+                    <span data-i18n="cad.hudTip">MOLETTE = ZOOM · GLISSER = PAN · 2×CLIC = RESET</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Onglet 2 : Trajectoire S1 → S6 (discret & synthétique) -->
+              <div class="cad-panel cad-info-panel" id="cadPanel-trajectory" role="tabpanel">
+                <div class="traj-grid">
+                  <div class="traj-step">
+                    <span class="mono traj-code">S1 · ACTUEL</span>
+                    <h3 data-i18n="traj.s1Title">Socle GCCD</h3>
+                    <p data-i18n="traj.s1Text">Plans AutoDesk, matériaux, mécanique des structures, topographie et identité pro.</p>
+                  </div>
+                  <div class="traj-step traj-step-accent">
+                    <span class="mono traj-code">S2 · MAI–JUIN</span>
+                    <h3 data-i18n="traj.s2Title">Stage 4 semaines</h3>
+                    <p data-i18n="traj.s2Text">Suivi de chantier auprès d’un ingénieur travaux pour relier théorie et exécution.</p>
+                  </div>
+                  <div class="traj-step">
+                    <span class="mono traj-code">S3 → S6</span>
+                    <h3 data-i18n="traj.s3Title">Cap École d’Ingénieurs</h3>
+                    <p data-i18n="traj.s3Text">Dimensionnement, BIM, stages longs et intégration en école d’ingénieurs (INSA, ESTP, ENTPE).</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Onglet 3 : Ikigai ultra-synthétique -->
+              <div class="cad-panel cad-info-panel" id="cadPanel-ikigai" role="tabpanel">
+                <div class="iki-mini-grid">
+                  <div class="iki-mini-cell">
+                    <span class="mono">01 / PASSION</span>
+                    <p data-i18n="iki.p1">Conception 3D, plans techniques et design fonctionnel.</p>
+                  </div>
+                  <div class="iki-mini-cell">
+                    <span class="mono">02 / TALENTS</span>
+                    <p data-i18n="iki.p2">Bases PCSI, AutoDesk, méthode et gestion de collectif.</p>
+                  </div>
+                  <div class="iki-mini-cell">
+                    <span class="mono">03 / MISSION</span>
+                    <p data-i18n="iki.p3">Bâtir durablement des ouvrages utiles et fiables.</p>
+                  </div>
+                  <div class="iki-mini-cell iki-mini-core">
+                    <span class="mono">04 / CAP</span>
+                    <p data-i18n="iki.p4"><strong>Ingénieur en génie civil</strong>, ouvert à l’international.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Barre Contact & CV en bas de ST.04 -->
+        <footer class="st4-footer">
+          <div class="contact-group">
+            <button type="button" class="btn-solid" id="openCvFooter">
+              <span data-i18n="st4.openCv">Consulter le CV (A4)</span>
+              <span aria-hidden="true">↗</span>
+            </button>
+            <button type="button" class="btn-outline" id="copyEmailBtn" data-email="victorvalroff@hotmail.com">
+              <span id="copyEmailLabel">victorvalroff@hotmail.com</span>
+              <span class="mono copy-tag" id="copyEmailTag" data-i18n="st4.copy">COPIER</span>
+            </button>
+          </div>
+
+          <div class="contact-links mono">
+            <a href="https://www.linkedin.com/in/victor-valroff-chhun/" target="_blank" rel="noopener noreferrer">LINKEDIN ↗</a>
+            <a href="tel:+33601406962">06 01 40 69 62</a>
+            <a href="VALROFF_Victor_CV.pdf" download>PDF ↓</a>
+          </div>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bandeau cinétique (marquee) inspiré de sbwebdesign.ch avec séparateurs ✦ -->
+  <div class="marquee-bar" id="marqueeBar" aria-hidden="true">
+    <div class="marquee-track" id="marqueeTrack">
+      <div class="marquee-seq" id="marqueeSeq1">
+        <span>VICTOR VALROFF CHHUN</span><span class="m-star">✦</span>
+        <span>BUT GÉNIE CIVIL &amp; CONSTRUCTION DURABLE</span><span class="m-star">✦</span>
+        <span>IUT NANCY-BRABOIS</span><span class="m-star">✦</span>
+        <span>FUSION 360 · BAMBU LAB</span><span class="m-star">✦</span>
+        <span>ASSOCIATION TSUNAMI</span><span class="m-star">✦</span>
+      </div>
+      <div class="marquee-seq" id="marqueeSeq2">
+        <span>VICTOR VALROFF CHHUN</span><span class="m-star">✦</span>
+        <span>BUT GÉNIE CIVIL &amp; CONSTRUCTION DURABLE</span><span class="m-star">✦</span>
+        <span>IUT NANCY-BRABOIS</span><span class="m-star">✦</span>
+        <span>FUSION 360 · BAMBU LAB</span><span class="m-star">✦</span>
+        <span>ASSOCIATION TSUNAMI</span><span class="m-star">✦</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODALE CV COMPLET (AVEC IMPRESSION A4 & TÉLÉCHARGEMENT PDF)
+       ======================================================================== -->
+  <div class="cv-modal-backdrop" id="cvModal" role="dialog" aria-modal="true" aria-labelledby="cvModalTitle" aria-hidden="true">
+    <div class="cv-modal-sheet">
+      <div class="cv-modal-header">
+        <div>
+          <span class="mono cv-kicker">CURRICULUM VITAE // A4</span>
+          <h2 id="cvModalTitle">Victor Valroff Chhun</h2>
+          <p class="cv-sub mono">victorvalroff@hotmail.com · 06 01 40 69 62 · Nancy, France · Permis B</p>
+        </div>
+        <div class="cv-modal-actions">
+          <button type="button" class="btn-outline" id="printCvBtn" data-i18n="cv.print">Imprimer A4</button>
+          <a href="VALROFF_Victor_CV.pdf" download class="btn-outline" data-i18n="cv.pdf">PDF ↓</a>
+          <button type="button" class="btn-solid" id="closeCvBtn" data-i18n="cv.close">Fermer</button>
+        </div>
+      </div>
+
+      <div class="cv-modal-body">
+        <div class="cv-profile-box">
+          <strong data-i18n="cv.profileLabel">Profil :</strong>
+          <span data-i18n="cv.profileText">Étudiant en première année de BUT Génie Civil – Construction Durable, je recherche un stage de 4 semaines (mai-juin) en suivi de chantier auprès d’un ingénieur travaux. Rigoureux, impliqué et doté d’une première expérience concrète en environnement professionnel, je souhaite observer la gestion technique et opérationnelle d’un projet pour consolider mon parcours vers les écoles d’ingénieurs.</span>
+        </div>
+
+        <div class="cv-grid">
+          <div>
+            <h3 class="cv-sec-title mono" data-i18n="cv.expTitle">EXPÉRIENCES PROFESSIONNELLES &amp; ASSOCIATIVES</h3>
+
+            <article class="cv-item">
+              <div class="cv-item-title" data-i18n="cv.exp1Title">Président Associatif — Association Tsunami (Cofondateur)</div>
+              <div class="cv-item-meta mono" data-i18n="cv.exp1Meta">Nancy | Depuis 2024</div>
+              <ul>
+                <li data-i18n="cv.exp1L1">Gestion financière et organisation d’événements culturels</li>
+                <li data-i18n="cv.exp1L2">Tâches administratives et coordination d’équipe</li>
+                <li data-i18n="cv.exp1L3">Participation au Relais de la Flamme des Jeux Olympiques</li>
+              </ul>
+            </article>
+
+            <article class="cv-item">
+              <div class="cv-item-title" data-i18n="cv.exp2Title">Vendeur en Fromagerie — Les Frères Marchand</div>
+              <div class="cv-item-meta mono" data-i18n="cv.exp2Meta">Nancy | Juin, Novembre et Décembre 2026 (CDD)</div>
+              <ul>
+                <li data-i18n="cv.exp2L1">Accueil, conseil personnalisé et vente au comptoir de produits laitiers</li>
+                <li data-i18n="cv.exp2L2">Gestion de la caisse, encaissement et entretien du stand</li>
+                <li data-i18n="cv.exp2L3">Réassort et respect strict des normes d’hygiène alimentaire</li>
+              </ul>
+            </article>
+
+            <article class="cv-item">
+              <div class="cv-item-title" data-i18n="cv.exp3Title">Préparateur de Commandes — Auchan Drive</div>
+              <div class="cv-item-meta mono" data-i18n="cv.exp3Meta">Laxou | Février – Mai 2026</div>
+              <ul>
+                <li data-i18n="cv.exp3L1">Préparation cadencée de commandes via scanneur</li>
+                <li data-i18n="cv.exp3L2">Réception de la clientèle et chargement des commandes</li>
+              </ul>
+            </article>
+
+            <article class="cv-item">
+              <div class="cv-item-title" data-i18n="cv.exp4Title">Trieur — Chronopost (Intérim)</div>
+              <div class="cv-item-meta mono" data-i18n="cv.exp4Meta">Nancy | Janvier 2026</div>
+              <ul>
+                <li data-i18n="cv.exp4L1">Déchargement de camions, utilisation de transpalettes et tri par zone</li>
+                <li data-i18n="cv.exp4L2">Respect des cadences et des procédures d’acheminement express</li>
+              </ul>
+            </article>
+
+            <article class="cv-item">
+              <div class="cv-item-title" data-i18n="cv.exp5Title">Opérateur de Production — Elis (CDD)</div>
+              <div class="cv-item-meta mono" data-i18n="cv.exp5Meta">Nancy | Décembre 2025</div>
+              <ul>
+                <li data-i18n="cv.exp5L1">Tri et contrôle de vêtements industriels dans un environnement cadencé</li>
+                <li data-i18n="cv.exp5L2">Respect strict des consignes d’hygiène et de sécurité</li>
+              </ul>
+            </article>
+          </div>
+
+          <div>
+            <h3 class="cv-sec-title mono" data-i18n="cv.eduTitle">FORMATION</h3>
+            <article class="cv-item">
+              <div class="cv-item-title" data-i18n="cv.edu1Title">BUT Génie Civil – Construction Durable</div>
+              <div class="cv-item-meta mono" data-i18n="cv.edu1Meta">IUT Nancy-Brabois | Depuis septembre 2026</div>
+            </article>
+            <article class="cv-item">
+              <div class="cv-item-title">CPGE PCSI (Scientifique)</div>
+              <div class="cv-item-meta mono">Lycée Loritz, Nancy | 2025</div>
+            </article>
+            <article class="cv-item">
+              <div class="cv-item-title" data-i18n="cv.edu3Title">Baccalauréat Général Scientifique</div>
+              <div class="cv-item-meta mono" data-i18n="cv.edu3Meta">Section Européenne · Mention Assez Bien · Lycée Notre-Dame Saint Sigisbert | 2025</div>
+            </article>
+
+            <h3 class="cv-sec-title mono" data-i18n="cv.skillsTitle">COMPÉTENCES</h3>
+            <ul class="cv-list">
+              <li data-i18n="cv.sk1">Maîtrise AutoDesk au niveau avancé</li>
+              <li data-i18n="cv.sk2">Maîtrise Pack Office au niveau avancé</li>
+              <li data-i18n="cv.sk3">Respect des consignes et règles de sécurité</li>
+              <li data-i18n="cv.sk4">Adaptabilité, endurance et fiabilité</li>
+              <li data-i18n="cv.sk5">Travail en équipe</li>
+            </ul>
+
+            <h3 class="cv-sec-title mono" data-i18n="cv.certTitle">CERTIFICATIONS</h3>
+            <ul class="cv-list">
+              <li>First Cambridge Niveau B2</li>
+              <li>Pix niveau avancé</li>
+              <li>Impression 3D Bambu Lab</li>
+            </ul>
+
+            <h3 class="cv-sec-title mono" data-i18n="cv.langTitle">LANGUES</h3>
+            <ul class="cv-list">
+              <li data-i18n="cv.lg1">Français : langue maternelle</li>
+              <li data-i18n="cv.lg2">Anglais : niveau avancé attesté (B2)</li>
+              <li data-i18n="cv.lg3">Espagnol : notions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Conteneur dédié à l'impression A4 (1 page propre) -->
+  <div id="cv-print-root" aria-hidden="true">
+    <aside class="print-sidebar">
+      <div>
+        <div class="print-name">Victor<br>Valroff</div>
+        <div class="print-subtitle">Étudiant en Génie Civil</div>
+        <div class="print-contact">
+          <div>victorvalroff@hotmail.com</div>
+          <div>06 01 40 69 62</div>
+          <div>Permis B et véhicule</div>
+          <div>Nancy, France</div>
+        </div>
+        <div class="print-side-sec">
+          <div class="print-side-title">Profil</div>
+          <p class="print-profile-text">
+            Étudiant en première année de BUT Génie Civil - Construction Durable, je recherche un stage de 4 semaines (mai-juin) en suivi de chantier auprès d'un ingénieur travaux. Rigoureux, impliqué et doté d'une première expérience concrète en environnement professionnel, je souhaite observer la gestion technique et opérationnelle d'un projet pour consolider mon parcours vers les écoles d'ingénieurs.
+          </p>
+        </div>
+        <div class="print-side-sec">
+          <div class="print-side-title">Formation</div>
+          <div class="print-edu-item">
+            <div class="print-edu-title">BUT Génie Civil - Construction Durable</div>
+            <div class="print-edu-meta">IUT Nancy-Brabois · Depuis septembre 2026</div>
+          </div>
+          <div class="print-edu-item">
+            <div class="print-edu-title">CPGE PCSI (Scientifique)</div>
+            <div class="print-edu-meta">Lycée Loritz · 2025</div>
+          </div>
+          <div class="print-edu-item">
+            <div class="print-edu-title">Baccalauréat Général Scientifique</div>
+            <div class="print-edu-meta">Section Européenne mention Assez Bien · Lycée Notre-Dame Saint Sigisbert · 2025</div>
+          </div>
+        </div>
+        <div class="print-side-sec">
+          <div class="print-side-title">Compétences</div>
+          <ul class="print-side-list">
+            <li>Respect des consignes et règles de sécurité</li>
+            <li>Adaptabilité, endurance et fiabilité</li>
+            <li>Travail en équipe</li>
+            <li>Maîtrise Pack Office au niveau avancé</li>
+            <li>Maîtrise AutoDesk au niveau avancé</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="print-side-sec">
+          <div class="print-side-title">Langues</div>
+          <ul class="print-side-list">
+            <li>Français : langue maternelle</li>
+            <li>Anglais : niveau avancé attesté (B2)</li>
+            <li>Espagnol : notions</li>
+          </ul>
+        </div>
+        <div class="print-side-sec" style="margin-bottom:0">
+          <div class="print-side-title">Certifications</div>
+          <ul class="print-side-list">
+            <li>First Cambridge Niveau B2</li>
+            <li>Pix niveau avancé</li>
+            <li>Impression 3D Bambu Lab</li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <section class="print-main">
+      <div class="print-main-title">Expériences</div>
+      <div class="print-exp-item">
+        <div class="print-exp-role">Vendeur en fromagerie</div>
+        <div class="print-exp-place">Les Frères Marchand, Nancy | Juin, Novembre et Décembre 2026 (CDD)</div>
+        <ul class="print-exp-list">
+          <li>Accueil, conseil personnalisé et vente au comptoir de produits laitiers</li>
+          <li>Gestion de la caisse, encaissement et entretien du stand</li>
+          <li>Réassort et respect strict des normes d'hygiène alimentaire</li>
+        </ul>
+      </div>
+      <div class="print-exp-item">
+        <div class="print-exp-role">Préparateur de commandes</div>
+        <div class="print-exp-place">Auchan Drive, Laxou | Février–Mai 2026</div>
+        <ul class="print-exp-list">
+          <li>Préparation cadencée de commandes via scanneur</li>
+          <li>Réception de la clientèle et chargement des commandes</li>
+        </ul>
+      </div>
+      <div class="print-exp-item">
+        <div class="print-exp-role">Président associatif</div>
+        <div class="print-exp-place">Association Tsunami (Cofondateur), Nancy | Depuis 2024</div>
+        <ul class="print-exp-list">
+          <li>Gestion financière et organisation d'événements culturels</li>
+          <li>Tâches administratives et coordination d'équipe</li>
+          <li>Participation au Relais de la Flamme des Jeux Olympiques</li>
+        </ul>
+      </div>
+      <div class="print-exp-item">
+        <div class="print-exp-role">Trieur</div>
+        <div class="print-exp-place">Chronopost, Nancy | Janvier 2026 (intérim)</div>
+        <ul class="print-exp-list">
+          <li>Déchargement de camions et utilisation de transpalettes</li>
+          <li>Tri de colis par zone géographique et scannage pour traçabilité</li>
+          <li>Respect des cadences et des procédures d'acheminement express</li>
+        </ul>
+      </div>
+      <div class="print-exp-item" style="margin-bottom:0">
+        <div class="print-exp-role">Opérateur de production</div>
+        <div class="print-exp-place">Elis, Nancy | Décembre 2025 (CDD)</div>
+        <ul class="print-exp-list">
+          <li>Tri et contrôle de vêtements industriels</li>
+          <li>Respect strict des consignes d'hygiène et de sécurité</li>
+          <li>Travail en équipe dans un environnement cadencé</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <!-- Scripts modulaires -->
+  <script src="js/i18n.js" defer></script>
+  <script src="js/cad-window.js" defer></script>
+  <script src="js/tsunami-3d.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

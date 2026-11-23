@@ -1,0 +1,1988 @@
+/* ==========================================================================
+   PORTFOLIO V2 — VICTOR VALROFF CHHUN
+   Direction artistique : Béton brut éditorial × Repères CAO × Bleu Tsunami
+   ========================================================================== */
+
+:root {
+  --bg-concrete: #EFECE6;
+  --bg-panel: #E2DFD7;
+  --bg-panel-soft: rgba(226, 223, 215, 0.78);
+  --bg-card: rgba(239, 236, 230, 0.88);
+  --ink: #121212;
+  --ink-muted: rgba(18, 18, 18, 0.62);
+  --ink-faint: rgba(18, 18, 18, 0.34);
+
+  --line: rgba(18, 18, 18, 0.18);
+  --line-strong: rgba(18, 18, 18, 0.82);
+
+  /* Accent signature unique : Bleu Tsunami */
+  --tsunami: #262CE8;
+  --tsunami-soft: rgba(38, 44, 232, 0.1);
+  --tsunami-line: rgba(38, 44, 232, 0.38);
+
+  --font-display: 'Bricolage Grotesque', 'Barlow Condensed', -apple-system, sans-serif;
+  --font-condensed: 'Barlow Condensed', 'Bricolage Grotesque', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --header-h: 56px;
+  --marquee-h: 36px;
+  --altimeter-w: 112px;
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snap: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: var(--bg-concrete);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--tsunami);
+  color: #ffffff;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.accent-text {
+  color: var(--tsunami);
+}
+
+/* ==========================================================================
+   1. FOND BÉTON MINÉRAL & MIRE / RÉTICULE ARCHITECTURAL
+   ========================================================================== */
+.concrete-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: url('../images/beton-fond.jpg');
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(100%) contrast(1.06);
+  opacity: 0.34;
+  pointer-events: none;
+}
+
+.concrete-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(239, 236, 230, 0.48), rgba(239, 236, 230, 0.78) 65%),
+    linear-gradient(180deg, rgba(239, 236, 230, 0.55) 0%, rgba(226, 223, 215, 0.42) 100%);
+  pointer-events: none;
+}
+
+/* Mire / réticule discret : ne coupe jamais le texte, se recalibre au changement */
+.reticle-layer {
+  position: fixed;
+  inset: var(--header-h) var(--altimeter-w) var(--marquee-h) 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.reticle-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: rgba(18, 18, 18, 0.32);
+  border-style: solid;
+  border-width: 0;
+  transition: transform 0.35s var(--ease-expo), border-color 0.25s ease;
+}
+
+.rc-tl { top: 14px; left: 16px; border-top-width: 1px; border-left-width: 1px; }
+.rc-tr { top: 14px; right: 16px; border-top-width: 1px; border-right-width: 1px; }
+.rc-bl { bottom: 14px; left: 16px; border-bottom-width: 1px; border-left-width: 1px; }
+.rc-br { bottom: 14px; right: 16px; border-bottom-width: 1px; border-right-width: 1px; }
+
+.reticle-axis {
+  position: absolute;
+  background: rgba(18, 18, 18, 0.08);
+  transition: background-color 0.25s ease, opacity 0.25s ease;
+}
+
+.reticle-axis-h {
+  top: 50%;
+  left: 16px;
+  width: 10px;
+  height: 1px;
+}
+
+.reticle-axis-v {
+  left: 50%;
+  top: 14px;
+  width: 1px;
+  height: 10px;
+}
+
+.reticle-lock-pill {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  padding: 2px 10px;
+  border: 1px solid var(--tsunami);
+  background: var(--bg-concrete);
+  color: var(--tsunami);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  opacity: 0;
+  transition: opacity 0.22s ease, transform 0.28s var(--ease-expo);
+}
+
+.reticle-layer.calibrating .reticle-corner {
+  border-color: var(--tsunami);
+}
+.reticle-layer.calibrating .rc-tl { transform: translate(5px, 5px); }
+.reticle-layer.calibrating .rc-tr { transform: translate(-5px, 5px); }
+.reticle-layer.calibrating .rc-bl { transform: translate(5px, -5px); }
+.reticle-layer.calibrating .rc-br { transform: translate(-5px, -5px); }
+.reticle-layer.calibrating .reticle-axis { background: var(--tsunami); }
+.reticle-layer.calibrating .reticle-lock-pill {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================================================
+   2. EN-TÊTE FIXE MINIMALISTE
+   ========================================================================== */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-h);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(239, 236, 230, 0.84);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.header-left,
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: none;
+  border: none;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.brand-dot {
+  width: 9px;
+  height: 9px;
+  background: var(--tsunami);
+  display: inline-block;
+  transition: transform 0.25s var(--ease-expo);
+}
+
+.brand-btn:hover .brand-dot {
+  transform: rotate(45deg) scale(1.1);
+}
+
+.header-sep {
+  color: var(--ink-faint);
+}
+
+.header-loc {
+  font-size: 11px;
+  color: var(--ink-muted);
+  letter-spacing: 0.06em;
+}
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  background: var(--bg-panel-soft);
+}
+
+.lang-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  cursor: pointer;
+  padding: 2px 3px;
+  transition: color 0.2s ease;
+}
+
+.lang-btn.active,
+.lang-btn:hover {
+  color: var(--tsunami);
+}
+
+.lang-slash {
+  color: var(--ink-faint);
+  font-size: 10px;
+}
+
+.header-cv-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--bg-concrete);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s var(--ease-expo);
+}
+
+.header-cv-btn:hover {
+  background: var(--tsunami);
+  border-color: var(--tsunami);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   3. ALTIMÈTRE VERTICAL LATÉRAL FIXE
+   ========================================================================== */
+.altimeter {
+  position: fixed;
+  top: var(--header-h);
+  right: 0;
+  bottom: var(--marquee-h);
+  width: var(--altimeter-w);
+  z-index: 35;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: 16px 12px;
+  border-left: 1px solid var(--line);
+  background: rgba(226, 223, 215, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.altimeter-readout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.alt-label {
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--ink-muted);
+}
+
+.alt-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--tsunami);
+  letter-spacing: 0.02em;
+  margin-top: 2px;
+}
+
+.altimeter-track {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 12px 0;
+}
+
+.altimeter-rail {
+  position: absolute;
+  right: 4px;
+  top: 12%;
+  bottom: 12%;
+  width: 1px;
+  background: var(--line);
+}
+
+.altimeter-progress {
+  width: 100%;
+  height: 0%;
+  background: var(--tsunami);
+  transition: height 0.55s var(--ease-expo);
+}
+
+.altimeter-stops {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 76%;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.alt-stop {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 0;
+  color: var(--ink-muted);
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.alt-stop-name {
+  position: absolute;
+  right: calc(100% + 16px);
+  white-space: nowrap;
+  padding: 4px 10px;
+  background: var(--ink);
+  color: var(--bg-concrete);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(6px);
+  transition: opacity 0.2s ease, transform 0.25s var(--ease-expo);
+}
+
+.alt-stop:hover .alt-stop-name {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.alt-stop-code {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.alt-stop-tick {
+  width: 12px;
+  height: 1px;
+  background: var(--ink-muted);
+  transition: width 0.3s var(--ease-expo), background-color 0.2s ease, height 0.2s ease;
+}
+
+.alt-stop:hover {
+  color: var(--ink);
+}
+
+.alt-stop.active {
+  color: var(--tsunami);
+}
+
+.alt-stop.active .alt-stop-tick {
+  width: 24px;
+  height: 2px;
+  background: var(--tsunami);
+}
+
+.altimeter-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.nav-step-btn {
+  height: 34px;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-concrete);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-step-btn:hover:not(:disabled) {
+  background: var(--tsunami);
+  border-color: var(--tsunami);
+  color: #ffffff;
+}
+
+.nav-step-btn:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   4. SCÈNE & STATIONS 100dvh
+   ========================================================================== */
+.stage {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  right: var(--altimeter-w);
+  bottom: var(--marquee-h);
+  z-index: 10;
+  overflow: hidden;
+}
+
+.station {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(20px, 3.2vw, 44px) clamp(24px, 4.5vw, 64px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, 36px, 0);
+  transition:
+    opacity 0.52s var(--ease-expo),
+    transform 0.62s var(--ease-expo),
+    visibility 0.52s;
+}
+
+.station.above {
+  transform: translate3d(0, -36px, 0);
+}
+
+.station.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0);
+}
+
+.station-inner {
+  width: 100%;
+  max-width: 1220px;
+  max-height: 100%;
+}
+
+/* Meta bar + typographie des stations */
+.st-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+}
+
+.st-tag {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.st-title {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 4.3vw, 58px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  margin-bottom: 18px;
+}
+
+.st-text {
+  font-size: clamp(14.5px, 1.15vw, 16px);
+  color: var(--ink-muted);
+  max-width: 48ch;
+  margin-bottom: 12px;
+}
+
+.st-text strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.spec-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.spec-chips span {
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  background: var(--bg-panel-soft);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+
+/* Boutons brutalistes */
+.btn-solid,
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 18px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s var(--ease-expo);
+}
+
+.btn-solid {
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--bg-concrete);
+}
+
+.btn-solid:hover {
+  background: var(--tsunami);
+  border-color: var(--tsunami);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  border: 1px solid var(--line-strong);
+  background: var(--bg-card);
+  color: var(--ink);
+}
+
+.btn-outline:hover {
+  border-color: var(--tsunami);
+  color: var(--tsunami);
+  transform: translateY(-1px);
+}
+
+/* Cadres techniques à lignes de cote 1px */
+.dim-frame {
+  position: relative;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-card);
+  padding: 12px;
+}
+
+.dim-frame::before,
+.dim-frame::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+}
+
+.dim-frame::before {
+  top: -5px;
+  left: -5px;
+  border-top: 1px solid var(--tsunami);
+  border-left: 1px solid var(--tsunami);
+}
+
+.dim-frame::after {
+  bottom: -5px;
+  right: -5px;
+  border-bottom: 1px solid var(--tsunami);
+  border-right: 1px solid var(--tsunami);
+}
+
+.dim-top,
+.dim-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+}
+
+.dim-top {
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.dim-bottom {
+  padding-top: 8px;
+  margin-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+/* ==========================================================================
+   5. ST.00 — OUVERTURE & TITRE INTERACTIF (SBWEBDESIGN.CH)
+   ========================================================================== */
+.st0-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(290px, 360px);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(46px, 6.4vw, 96px);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  margin: 4px 0 22px;
+  user-select: none;
+}
+
+.mask-row {
+  display: block;
+  overflow: hidden;
+  padding: 2px 0;
+}
+
+.hero-word {
+  display: inline-block;
+  margin-right: 0.14em;
+  font-variation-settings: 'wght' 650, 'opsz' 72;
+  transform: translateY(105%);
+  transition:
+    transform 0.72s var(--ease-expo),
+    color 0.25s ease,
+    font-variation-settings 0.32s var(--ease-expo),
+    -webkit-text-stroke-color 0.25s ease;
+  cursor: default;
+}
+
+.station.active .hero-word {
+  transform: translateY(0);
+}
+
+.station.active .mask-row:nth-child(2) .hero-word {
+  transition-delay: 0.08s;
+}
+
+.hero-word-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.6px var(--ink);
+  margin-right: 0;
+}
+
+.hero-word:hover {
+  transform: translateY(-5px);
+  font-variation-settings: 'wght' 800, 'opsz' 96;
+  color: var(--tsunami);
+}
+
+.hero-word-outline:hover {
+  color: var(--tsunami);
+  -webkit-text-stroke-color: var(--tsunami);
+}
+
+.hero-dot {
+  color: var(--tsunami);
+  display: inline-block;
+}
+
+.st0-lead {
+  font-size: clamp(15px, 1.25vw, 17.5px);
+  color: var(--ink-muted);
+  max-width: 50ch;
+  margin-bottom: 24px;
+}
+
+.st0-lead strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.st0-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Fiche d'identité compacte */
+.id-card {
+  background: var(--bg-panel-soft);
+}
+
+.id-card-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.id-avatar {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  border: 1px solid var(--line-strong);
+}
+
+.id-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.id-sub {
+  font-size: 11px;
+  color: var(--ink-muted);
+  margin-top: 2px;
+}
+
+.id-specs {
+  border-top: 1px solid var(--line);
+}
+
+.id-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+
+.id-row dt {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+}
+
+.id-row dd {
+  font-weight: 600;
+  text-align: right;
+}
+
+.id-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+/* Mention très discrète du profil INTP-A en simple badge secondaire */
+.discreet-badge {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  text-decoration: none;
+  padding: 3px 7px;
+  border: 1px solid var(--line);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.discreet-badge:hover {
+  border-color: var(--tsunami);
+  color: var(--tsunami);
+}
+
+.id-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--tsunami);
+  font-weight: 600;
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--tsunami);
+  display: inline-block;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.75); }
+}
+
+/* ==========================================================================
+   6. ST.01 & ST.02 — SPLIT + ROGNAGE INTELLIGENT DES PHOTOS
+   ========================================================================== */
+.st-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(24px, 4.5vw, 60px);
+  align-items: center;
+}
+
+.st-split-reverse .st-copy {
+  order: 2;
+}
+
+.st-split-reverse .photo-card {
+  order: 1;
+}
+
+.photo-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.smart-photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  max-height: 54dvh;
+  overflow: hidden;
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  transition: aspect-ratio 0.3s ease;
+}
+
+.smart-photo.is-portrait {
+  aspect-ratio: 3 / 4;
+  max-height: 54dvh;
+  max-width: 390px;
+  margin-inline: auto;
+}
+
+.smart-photo.is-landscape {
+  aspect-ratio: 16 / 10;
+}
+
+.smart-photo.is-square {
+  aspect-ratio: 1 / 1;
+}
+
+.smart-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.6s var(--ease-expo);
+}
+
+.smart-photo.is-loaded img {
+  opacity: 1;
+}
+
+.photo-card:hover .smart-photo.is-loaded img {
+  transform: scale(1.03);
+}
+
+.photo-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-panel);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.smart-photo.is-loaded .photo-fallback {
+  display: none;
+}
+
+.photo-fallback-cad svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.fallback-tag {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 3px 8px;
+  background: var(--bg-concrete);
+  border: 1px solid var(--line);
+  font-size: 10px;
+  color: var(--ink-muted);
+}
+
+/* ==========================================================================
+   7. ST.03 — BREAKING, COLLECTIF & VAGUE TSUNAMI 3D
+   ========================================================================== */
+.st3-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(22px, 3.6vw, 48px);
+  align-items: center;
+}
+
+.st3-quote {
+  margin: 16px 0 4px;
+  padding: 14px 16px;
+  border-left: 2px solid var(--tsunami);
+  background: var(--bg-panel-soft);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ink);
+  max-width: 52ch;
+}
+
+.st3-visuals {
+  display: grid;
+  grid-template-columns: 1fr 0.92fr;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.tsunami-stage-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.mini-reset {
+  background: none;
+  border: 1px solid var(--line);
+  padding: 2px 7px;
+  font-size: 9.5px;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.mini-reset:hover {
+  border-color: var(--tsunami);
+  color: var(--tsunami);
+}
+
+.tsunami-canvas-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 250px;
+  cursor: grab;
+  touch-action: none;
+  background:
+    linear-gradient(to right, rgba(18, 18, 18, 0.05) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(to bottom, rgba(18, 18, 18, 0.05) 1px, transparent 1px) 0 0 / 24px 24px;
+}
+
+.tsunami-canvas-wrap:active {
+  cursor: grabbing;
+}
+
+#tsunamiCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.canvas-hint {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  background: rgba(239, 236, 230, 0.86);
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  pointer-events: none;
+}
+
+.st3-photo-card .smart-photo {
+  flex: 1;
+  min-height: 250px;
+  aspect-ratio: 4 / 5;
+}
+
+/* ==========================================================================
+   8. ST.04 — GRANDE FENÊTRE MANIFESTE FUSION 360 / AUTOCAD & CONTACT
+   ========================================================================== */
+.st4-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: min(78dvh, 660px);
+}
+
+.cad-window {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-concrete);
+  box-shadow: 0 18px 40px rgba(18, 18, 18, 0.07);
+}
+
+.cad-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 14px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--line-strong);
+  flex-shrink: 0;
+}
+
+.cad-win-left,
+.cad-win-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+}
+
+.cad-dots {
+  display: inline-flex;
+  gap: 5px;
+}
+
+.cad-dots i {
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--ink);
+  display: inline-block;
+}
+
+.cad-dots i:first-child {
+  background: var(--tsunami);
+  border-color: var(--tsunami);
+}
+
+.cad-app-badge {
+  padding: 2px 6px;
+  background: var(--ink);
+  color: var(--bg-concrete);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.cad-doc-name {
+  color: var(--ink-muted);
+  font-size: 11px;
+}
+
+/* Onglets dans le ruban CAO */
+.cad-tabs {
+  display: inline-flex;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-concrete);
+}
+
+.cad-tab {
+  background: none;
+  border: none;
+  border-right: 1px solid var(--line);
+  padding: 5px 12px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.cad-tab:last-child {
+  border-right: none;
+}
+
+.cad-tab.active {
+  background: var(--tsunami);
+  color: #ffffff;
+}
+
+.cad-zoom-readout {
+  min-width: 44px;
+  text-align: right;
+  font-weight: 700;
+  color: var(--tsunami);
+}
+
+.cad-reset-btn {
+  padding: 3px 9px;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-concrete);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.cad-reset-btn:hover {
+  background: var(--tsunami);
+  border-color: var(--tsunami);
+  color: #ffffff;
+}
+
+/* Workspace CAO : Browser gauche + Viewport */
+.cad-workspace {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 224px minmax(0, 1fr);
+}
+
+.cad-browser {
+  border-right: 1px solid var(--line);
+  background: var(--bg-panel-soft);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.cad-browser-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.cad-tree {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cad-node {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.cad-eye {
+  font-size: 10px;
+  color: var(--ink-muted);
+}
+
+.cad-node:hover,
+.cad-node.active {
+  background: var(--bg-concrete);
+  border-color: var(--tsunami-line);
+  color: var(--tsunami);
+}
+
+.cad-node.active .cad-eye {
+  color: var(--tsunami);
+}
+
+.cad-workshop-note {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.cad-note-label {
+  display: block;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--tsunami);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.cad-workshop-note p {
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--ink-muted);
+}
+
+.cad-viewport-shell {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.cad-panel {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.cad-panel.active {
+  display: block;
+}
+
+/* Viewport CAO 1px grid + X/Y axes + ViewCube */
+.cad-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  background-color: var(--bg-concrete);
+  background-image:
+    linear-gradient(to right, rgba(18, 18, 18, 0.065) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(18, 18, 18, 0.065) 1px, transparent 1px),
+    linear-gradient(to right, rgba(18, 18, 18, 0.14) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(18, 18, 18, 0.14) 1px, transparent 1px);
+  background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+}
+
+.cad-viewport:active {
+  cursor: grabbing;
+}
+
+.cad-axis-x,
+.cad-axis-y {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cad-axis-x {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(38, 44, 232, 0.18);
+}
+
+.cad-axis-x span {
+  position: absolute;
+  right: 12px;
+  top: -16px;
+  font-size: 9.5px;
+  color: var(--tsunami);
+}
+
+.cad-axis-y {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: rgba(18, 18, 18, 0.14);
+}
+
+.cad-axis-y span {
+  position: absolute;
+  left: 6px;
+  top: 10px;
+  font-size: 9.5px;
+  color: var(--ink-muted);
+}
+
+.cad-viewcube {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 8px;
+  background: rgba(239, 236, 230, 0.88);
+  border: 1px solid var(--line);
+  pointer-events: none;
+}
+
+.cad-viewcube svg {
+  width: 42px;
+  height: 42px;
+}
+
+.cad-viewcube span {
+  font-size: 8.5px;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+}
+
+.cad-canvas-content {
+  position: relative;
+  z-index: 3;
+  max-width: 680px;
+  padding: 28px 36px;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.cad-quote-kicker {
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  color: var(--tsunami);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+.cad-manifesto-text {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.35vw, 31px);
+  font-weight: 600;
+  line-height: 1.24;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.m-seg {
+  transition: color 0.25s ease, background-color 0.25s ease;
+  padding: 0 2px;
+}
+
+.m-seg.is-highlighted {
+  color: var(--tsunami);
+  background: var(--tsunami-soft);
+}
+
+.cad-hud-bottom {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
+  z-index: 4;
+  display: flex;
+  justify-content: space-between;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  pointer-events: none;
+}
+
+/* Panneaux discrets S1→S6 & Ikigai dans la fenêtre CAO */
+.cad-info-panel {
+  padding: 24px;
+  background: var(--bg-concrete);
+  overflow-y: auto;
+}
+
+.traj-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  height: 100%;
+  align-items: center;
+}
+
+.traj-step {
+  border: 1px solid var(--line);
+  background: var(--bg-panel-soft);
+  padding: 18px;
+}
+
+.traj-step-accent {
+  border-color: var(--tsunami);
+  background: var(--bg-concrete);
+}
+
+.traj-code {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--tsunami);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.traj-step h3 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  margin-bottom: 8px;
+}
+
+.traj-step p {
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.iki-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  height: 100%;
+  align-content: center;
+}
+
+.iki-mini-cell {
+  border: 1px solid var(--line);
+  background: var(--bg-panel-soft);
+  padding: 16px;
+}
+
+.iki-mini-core {
+  border-color: var(--tsunami);
+  background: var(--bg-concrete);
+}
+
+.iki-mini-cell span {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--tsunami);
+  margin-bottom: 6px;
+}
+
+.iki-mini-cell p {
+  font-size: 13.5px;
+  color: var(--ink);
+}
+
+/* Footer contact ST.04 */
+.st4-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+}
+
+.contact-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.copy-tag {
+  font-size: 9.5px;
+  padding: 2px 6px;
+  background: var(--bg-panel);
+  color: var(--tsunami);
+}
+
+.contact-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.contact-links a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.contact-links a:hover {
+  color: var(--tsunami);
+  border-bottom-color: var(--tsunami);
+}
+
+/* ==========================================================================
+   9. BANDEAU CINÉTIQUE (MARQUEE) INSPIRÉ DE SBWEBDESIGN.CH
+   ========================================================================== */
+.marquee-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--marquee-h);
+  z-index: 40;
+  border-top: 1px solid var(--line-strong);
+  background: var(--ink);
+  color: var(--bg-concrete);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  transition: background-color 0.35s ease;
+}
+
+.marquee-bar.station-pulse {
+  background: var(--tsunami);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 28s linear infinite;
+}
+
+.marquee-bar.station-pulse .marquee-track {
+  animation-duration: 14s;
+}
+
+.marquee-seq {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding-right: 22px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+.m-star {
+  color: var(--tsunami);
+  font-size: 12px;
+  transition: color 0.3s ease;
+}
+
+.marquee-bar.station-pulse .m-star {
+  color: var(--bg-concrete);
+}
+
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ==========================================================================
+   10. MODALE CV COMPLET
+   ========================================================================== */
+.cv-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(18, 18, 18, 0.56);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.cv-modal-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.cv-modal-sheet {
+  width: min(940px, 100%);
+  max-height: 90dvh;
+  background: var(--bg-concrete);
+  border: 1px solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.cv-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px 22px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.cv-kicker {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--tsunami);
+  font-weight: 700;
+}
+
+.cv-modal-header h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.cv-sub {
+  font-size: 11px;
+  color: var(--ink-muted);
+  margin-top: 2px;
+}
+
+.cv-modal-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cv-modal-body {
+  padding: 22px;
+  overflow-y: auto;
+}
+
+.cv-profile-box {
+  padding: 14px 16px;
+  background: var(--bg-panel-soft);
+  border-left: 2px solid var(--tsunami);
+  font-size: 13.5px;
+  margin-bottom: 20px;
+}
+
+.cv-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 24px;
+}
+
+.cv-sec-title {
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  color: var(--tsunami);
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.cv-item {
+  margin-bottom: 14px;
+}
+
+.cv-item-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.cv-item-meta {
+  font-size: 11px;
+  color: var(--ink-muted);
+  margin-bottom: 5px;
+}
+
+.cv-item ul,
+.cv-list {
+  padding-left: 16px;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.cv-list {
+  margin-bottom: 16px;
+}
+
+.cv-item li,
+.cv-list li {
+  margin-bottom: 3px;
+}
+
+/* ==========================================================================
+   11. RESPONSIVE TABLETTE & MOBILE
+   ========================================================================== */
+@media (max-width: 980px) {
+  :root {
+    --altimeter-w: 68px;
+  }
+
+  .st0-layout,
+  .st-split,
+  .st3-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .st-split-reverse .st-copy,
+  .st-split-reverse .photo-card {
+    order: initial;
+  }
+
+  .station {
+    overflow-y: auto;
+    align-items: flex-start;
+    padding: 20px 18px;
+  }
+
+  .cad-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .cad-browser {
+    display: none;
+  }
+
+  .st4-layout {
+    height: auto;
+    min-height: 76dvh;
+  }
+
+  .cad-window {
+    min-height: 360px;
+  }
+
+  .traj-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cv-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --altimeter-w: 0px;
+    --header-h: 52px;
+  }
+
+  .header-loc,
+  .header-sep,
+  .cad-doc-name {
+    display: none;
+  }
+
+  .altimeter {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: var(--marquee-h);
+    width: 100%;
+    height: 46px;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 12px;
+    border-left: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .altimeter-readout {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .altimeter-track {
+    display: none;
+  }
+
+  .altimeter-controls {
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .stage {
+    right: 0;
+    bottom: calc(var(--marquee-h) + 46px);
+  }
+
+  .reticle-layer {
+    right: 0;
+    bottom: calc(var(--marquee-h) + 46px);
+  }
+
+  .st3-visuals {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   12. IMPRESSION A4 (1 SEULE PAGE BLANCHE PROPRE)
+   ========================================================================== */
+#cv-print-root {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  html,
+  body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  body > *:not(#cv-print-root) {
+    display: none !important;
+  }
+
+  #cv-print-root {
+    display: grid !important;
+    grid-template-columns: 74mm 1fr;
+    width: 210mm;
+    min-height: 297mm;
+    background: #ffffff;
+    color: #121212;
+    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+  }
+
+  .print-sidebar {
+    background: #EFECE6;
+    padding: 12mm 8mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid #d5d2ca;
+  }
+
+  .print-name {
+    font-family: 'Bricolage Grotesque', Arial, sans-serif;
+    font-size: 23pt;
+    font-weight: 800;
+    line-height: 0.96;
+    color: #262CE8;
+    text-transform: uppercase;
+  }
+
+  .print-subtitle {
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 4px 0 12px;
+  }
+
+  .print-contact {
+    font-size: 8.5pt;
+    line-height: 1.5;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #c9c5bc;
+  }
+
+  .print-side-sec {
+    margin-bottom: 10px;
+  }
+
+  .print-side-title,
+  .print-main-title {
+    font-size: 9pt;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #262CE8;
+    border-bottom: 1px solid #262CE8;
+    padding-bottom: 3px;
+    margin-bottom: 7px;
+  }
+
+  .print-profile-text {
+    font-size: 8pt;
+    line-height: 1.45;
+  }
+
+  .print-edu-item {
+    margin-bottom: 6px;
+  }
+
+  .print-edu-title {
+    font-size: 8.5pt;
+    font-weight: 700;
+  }
+
+  .print-edu-meta {
+    font-size: 7.8pt;
+    color: #444;
+  }
+
+  .print-side-list {
+    padding-left: 12px;
+    font-size: 8pt;
+    line-height: 1.42;
+  }
+
+  .print-main {
+    padding: 12mm 11mm;
+  }
+
+  .print-exp-item {
+    margin-bottom: 11px;
+  }
+
+  .print-exp-role {
+    font-size: 10pt;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .print-exp-place {
+    font-size: 8.2pt;
+    color: #444;
+    margin-bottom: 4px;
+  }
+
+  .print-exp-list {
+    padding-left: 14px;
+    font-size: 8.5pt;
+    line-height: 1.42;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
