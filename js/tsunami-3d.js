@@ -118,8 +118,8 @@
 
     function resize() {
       const rect = wrap.getBoundingClientRect();
-      cw = Math.max(200, Math.round(rect.width));
-      ch = Math.max(200, Math.round(rect.height));
+      cw = Math.max(160, Math.round(rect.width));
+      ch = Math.max(100, Math.round(rect.height));
       canvas.width = Math.round(cw * DPR);
       canvas.height = Math.round(ch * DPR);
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);

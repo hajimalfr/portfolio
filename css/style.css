@@ -1404,9 +1404,11 @@ body {
   height: 100%;
 }
 
-.tsunami-compact-wrap {
+.tsunami-canvas-wrap.tsunami-compact-wrap {
   min-height: 0;
+  height: 100%;
   flex: 1;
+  overflow: hidden;
 }
 
 .st3-photo-second {
