@@ -8,8 +8,8 @@
      ======================================================================== */
   const CONFIG = {
     preloaderDurationMs: 860, // Durée du chargement initial (ms)
-    stationCooldownMs: 520,   // Anti-rebond entre deux changements de station (ms)
-    wheelThresholdPx: 22,     // Sensibilité minimale de la molette
+    stationCooldownMs: 820,   // Anti-rebond entre deux changements de station (absorbe l'inertie PC/trackpad)
+    wheelThresholdPx: 95,     // Cumul de molette nécessaire pour changer de station
     swipeThresholdPx: 105,    // Distance minimale de swipe vertical sur mobile (px)
     emailFallback: 'victorvalroff@hotmail.com'
   };
@@ -326,12 +326,15 @@
 
     const cvModal = document.getElementById('cvModal');
 
+    let wheelAccum = 0;
+    let wheelResetTimer = null;
+
     window.addEventListener(
       'wheel',
       (e) => {
         if (cvModal && cvModal.classList.contains('open')) return;
         if (e.defaultPrevented) return;
-        if (Math.abs(e.deltaY) < 16) return;
+        if (Math.abs(e.deltaY) < 8) return;
 
         const activeSt = stations[currentIndex];
         if (activeSt) {
@@ -346,12 +349,27 @@
 
         if (currentIndex === 4 && window.CadManifestoController) {
           if (window.CadManifestoController.stepArch(Math.sign(e.deltaY), false)) {
+            wheelAccum = 0;
             return;
           }
         }
 
-        if (e.deltaY > 0) goToStation(currentIndex + 1);
-        else goToStation(currentIndex - 1);
+        if (isTransitioning) {
+          wheelAccum = 0;
+          return;
+        }
+
+        wheelAccum += e.deltaY;
+        clearTimeout(wheelResetTimer);
+        wheelResetTimer = setTimeout(() => {
+          wheelAccum = 0;
+        }, 220);
+
+        if (Math.abs(wheelAccum) < CONFIG.wheelThresholdPx) return;
+
+        const dir = wheelAccum > 0 ? 1 : -1;
+        wheelAccum = 0;
+        goToStation(currentIndex + dir);
       },
       { passive: true }
     );
