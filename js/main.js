@@ -251,8 +251,13 @@
       const clamped = Math.max(0, Math.min(stations.length - 1, nextIndex));
       if (!immediate && (clamped === currentIndex || isTransitioning)) return;
 
+      const prevIndex = currentIndex;
       isTransitioning = true;
       currentIndex = clamped;
+
+      if (currentIndex === 4 && window.CadManifestoController) {
+        window.CadManifestoController.prepareOnEnter(prevIndex);
+      }
 
       stations.forEach((st, idx) => {
         st.classList.toggle('active', idx === currentIndex);
@@ -339,6 +344,12 @@
           }
         }
 
+        if (currentIndex === 4 && window.CadManifestoController) {
+          if (window.CadManifestoController.stepArch(Math.sign(e.deltaY), false)) {
+            return;
+          }
+        }
+
         if (e.deltaY > 0) goToStation(currentIndex + 1);
         else goToStation(currentIndex - 1);
       },
@@ -374,7 +385,7 @@
       'touchstart',
       (e) => {
         if (e.touches.length !== 1) return;
-        if (e.target.closest('#cadViewport') || e.target.closest('#tsunamiWrap')) return;
+        if (e.target.closest('#tsunamiWrap') || e.target.closest('#helmetWrap')) return;
         touchStartY = e.touches[0].clientY;
         touchStartX = e.touches[0].clientX;
       },
@@ -385,14 +396,17 @@
       'touchend',
       (e) => {
         if (!touchStartY || (cvModal && cvModal.classList.contains('open'))) return;
-        if (e.target.closest('#cadViewport') || e.target.closest('#tsunamiWrap')) return;
+        if (e.target.closest('#tsunamiWrap') || e.target.closest('#helmetWrap')) return;
         const dy = touchStartY - e.changedTouches[0].clientY;
         const dx = Math.abs(touchStartX - e.changedTouches[0].clientX);
         touchStartY = 0;
 
-        if (Math.abs(dy) > 54 && Math.abs(dy) > dx * 1.2) {
-          if (dy > 0) goToStation(currentIndex + 1);
-          else goToStation(currentIndex - 1);
+        if (Math.abs(dy) > CONFIG.swipeThresholdPx && Math.abs(dy) > dx * 1.15) {
+          const dir = dy > 0 ? 1 : -1;
+          if (currentIndex === 4 && window.CadManifestoController) {
+            if (window.CadManifestoController.stepArch(dir, true)) return;
+          }
+          goToStation(currentIndex + dir);
         }
       },
       { passive: true }

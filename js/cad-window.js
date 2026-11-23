@@ -13,7 +13,8 @@
     peakExtraScale: 0.95, // Zoom max au milieu de l'arche (0.95 => 195 %, retour à 100 % à la fin)
     baseFontDesktop: 25,  // Taille de base du manifeste sur ordinateur (px)
     baseFontMobile: 19,   // Taille de base du manifeste sur mobile (px)
-    wheelStep: 0.11       // Vitesse de progression à chaque cran de molette
+    wheelStep: 0.16,      // Pas par cran de molette (~6 crans pour faire l'arche complète)
+    swipeStep: 0.34       // Pas par swipe sur téléphone (3 swipes fluides pour faire l'arche)
   };
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -199,34 +200,59 @@
       kickAnim();
     }
 
-    /* Molette dans la fenêtre CAO :
-       - Vers le bas : avance sur l'arche (zoom jusqu'à 195 % puis retour 100 %) ; une fois à 100 % (fin d'arche), laisse descendre vers ST.05 !
-       - Vers le haut : recule sur l'arche ; une fois à 0 %, laisse remonter librement vers ST.03 ! */
+    /* API exposée à main.js pour piloter obligatoirement l'arche zoom→dézoom sur ST.04
+       (molette partout sur ST.04 + swipe tactile sur téléphone, sans jamais bloquer) */
+    function stepArch(direction, isSwipe = false) {
+      if (direction < 0 && targetProgress <= 0.01) return false; // Prêt à remonter vers ST.03
+      if (direction > 0 && targetProgress >= 0.99) return false; // Arche terminée -> descendre vers ST.05
+
+      const step = isSwipe ? CONFIG.swipeStep : CONFIG.wheelStep;
+      targetProgress = clamp(targetProgress + Math.sign(direction) * step, 0, 1);
+
+      if (targetProgress <= 0.05 || targetProgress >= 0.95) {
+        targetPanX = 0;
+        targetPanY = 0;
+      }
+      kickAnim();
+      return true;
+    }
+
+    function prepareOnEnter(fromIndex) {
+      targetProgress = fromIndex > 4 ? 1 : 0;
+      progress = targetProgress;
+      targetPanX = 0;
+      targetPanY = 0;
+      panX = 0;
+      panY = 0;
+      scale = 1.0;
+      manifestoText.style.fontSize = `${BASE_FONT_PX}px`;
+      content.style.transform = 'translate3d(0px, 0px, 0)';
+      applyStep(targetProgress >= 0.9 ? 'choix' : 'realisation');
+      updateReadouts();
+    }
+
+    window.CadManifestoController = {
+      stepArch,
+      prepareOnEnter
+    };
+
+    /* Molette directement dans le viewport CAO */
     viewport.addEventListener(
       'wheel',
       (e) => {
-        if (e.deltaY < 0 && targetProgress <= 0.01) return;
-        if (e.deltaY > 0 && targetProgress >= 0.99) return;
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        const direction = Math.sign(e.deltaY);
-        targetProgress = clamp(targetProgress + direction * CONFIG.wheelStep, 0, 1);
-
-        // Recentrer doucement le pan aux extrémités (taille normale 100 %)
-        if (targetProgress <= 0.05 || targetProgress >= 0.95) {
-          targetPanX = 0;
-          targetPanY = 0;
+        const dir = Math.sign(e.deltaY);
+        if (!dir) return;
+        if (stepArch(dir, false)) {
+          e.preventDefault();
+          e.stopPropagation();
         }
-        kickAnim();
       },
       { passive: false }
     );
 
-    /* Pan au glisser */
+    /* Pan au glisser (souris/trackpad — sur téléphone le swipe vertical pilote l'arche) */
     viewport.addEventListener('pointerdown', (e) => {
-      if (e.button !== 0) return;
+      if (e.button !== 0 || e.pointerType === 'touch') return;
       isPanning = true;
       startX = e.clientX;
       startY = e.clientY;
