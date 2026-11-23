@@ -765,9 +765,11 @@ body {
   margin-bottom: 14px;
 }
 
-.id-avatar {
+.smart-photo.id-avatar {
   width: 58px;
   height: 58px;
+  aspect-ratio: 1 / 1;
+  max-height: 58px;
   flex-shrink: 0;
   border: 1px solid var(--line-strong);
 }
