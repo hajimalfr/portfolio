@@ -152,15 +152,13 @@
     const btnNext = document.getElementById('btnNext');
     const reticleLayer = document.getElementById('reticleLayer');
     const reticleStatus = document.getElementById('reticleStatus');
-    const marqueeBar = document.getElementById('marqueeBar');
 
     let currentIndex = 0;
     let isTransitioning = false;
     let reticleTimer = null;
-    let marqueeTimer = null;
     const COOLDOWN_MS = 620;
 
-    function triggerReticleAndMarquee(code, alt) {
+    function triggerReticle(code, alt) {
       if (reticleLayer && reticleStatus) {
         reticleStatus.textContent = `LOCK // ${code} · ${alt}`;
         reticleLayer.classList.add('calibrating');
@@ -168,14 +166,6 @@
         reticleTimer = setTimeout(() => {
           reticleLayer.classList.remove('calibrating');
         }, 520);
-      }
-
-      if (marqueeBar) {
-        marqueeBar.classList.add('station-pulse');
-        clearTimeout(marqueeTimer);
-        marqueeTimer = setTimeout(() => {
-          marqueeBar.classList.remove('station-pulse');
-        }, 420);
       }
     }
 
@@ -211,7 +201,7 @@
       if (btnNext) btnNext.disabled = currentIndex === stations.length - 1;
 
       if (!immediate) {
-        triggerReticleAndMarquee(code, alt);
+        triggerReticle(code, alt);
       }
 
       setTimeout(() => {
