@@ -1,9 +1,149 @@
 /* ==========================================================================
-   js/main.js — Navigation par stations 100dvh, Altimètre, Mire,
-   Rognage intelligent des photos, Modale CV & Copie e-mail
+   js/main.js — Preloader vertical, Animation lettre-par-lettre sbwebdesign.ch,
+   Navigation par stations 100dvh, Boutons magnétiques, Rognage photo & CV
    ========================================================================== */
 (function () {
   document.addEventListener('DOMContentLoaded', () => {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ----------------------------------------------------------------------
+       0. PRELOADER À REMPLISSAGE VERTICAL (SBWEBDESIGN.CH)
+       ---------------------------------------------------------------------- */
+    const preloader = document.getElementById('preloader');
+    const preloaderFill = document.getElementById('preloaderWordFill');
+    const preloaderPct = document.getElementById('preloaderPct');
+
+    if (preloader && !reducedMotion) {
+      const start = performance.now();
+      const duration = 860;
+
+      function tickPreloader(now) {
+        const t = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const pct = Math.round(eased * 100);
+
+        if (preloaderFill) {
+          preloaderFill.style.clipPath = `inset(${100 - pct}% 0 0 0)`;
+        }
+        if (preloaderPct) {
+          preloaderPct.textContent = `${String(pct).padStart(3, '0')}%`;
+        }
+
+        if (t < 1) {
+          requestAnimationFrame(tickPreloader);
+        } else {
+          setTimeout(() => preloader.classList.add('done'), 140);
+        }
+      }
+      requestAnimationFrame(tickPreloader);
+    } else if (preloader) {
+      preloader.classList.add('done');
+    }
+
+    /* ----------------------------------------------------------------------
+       1. ANIMATION LETTRE PAR LETTRE + BADGE DE DIMENSIONS (SBWEBDESIGN.CH)
+       ---------------------------------------------------------------------- */
+    const heroSelectionBox = document.getElementById('heroSelectionBox');
+    const heroTitle = document.getElementById('heroTitle');
+    const heroSpecBadge = document.getElementById('heroSpecBadge');
+    const heroLetters = [];
+
+    if (heroTitle) {
+      heroTitle.querySelectorAll('.hero-word').forEach((wordEl) => {
+        const text = wordEl.textContent || '';
+        wordEl.textContent = '';
+        Array.from(text).forEach((ch) => {
+          const span = document.createElement('span');
+          span.className = 'hero-letter';
+          span.textContent = ch;
+          wordEl.appendChild(span);
+          heroLetters.push(span);
+        });
+      });
+
+      function updateSpecBadge() {
+        if (!heroSpecBadge || !heroSelectionBox) return;
+        const fs = Math.round(parseFloat(getComputedStyle(heroTitle).fontSize) || 84);
+        const rect = heroSelectionBox.getBoundingClientRect();
+        heroSpecBadge.textContent = `Bricolage · ${fs} px · ${Math.round(rect.width)} × ${Math.round(rect.height)}`;
+      }
+
+      updateSpecBadge();
+      window.addEventListener('resize', updateSpecBadge);
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(updateSpecBadge);
+      }
+
+      if (heroSelectionBox && !reducedMotion) {
+        heroSelectionBox.addEventListener('pointermove', (e) => {
+          const mx = e.clientX;
+          const my = e.clientY;
+
+          heroLetters.forEach((letter) => {
+            const rect = letter.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const dx = mx - cx;
+            const dy = my - cy;
+            const dist = Math.hypot(dx, dy);
+
+            // Onde de proximité gaussienne lettre par lettre
+            const influence = Math.exp(-(dist * dist) / (2 * 92 * 92));
+
+            if (influence > 0.04) {
+              const lift = -influence * 11;
+              const tilt = Math.max(-7, Math.min(7, (dx / 55) * influence * 6.5));
+              const scaleY = 1 + influence * 0.1;
+              const scaleX = 1 + influence * 0.04;
+              const wght = Math.round(740 + influence * 60);
+              const shadowAlpha = (influence * 0.34).toFixed(2);
+              const shadowX = (-influence * 3.2).toFixed(1);
+              const shadowY = (-influence * 2.4).toFixed(1);
+
+              letter.classList.add('is-active');
+              letter.style.transform = `translate3d(0, ${lift.toFixed(1)}px, 0) rotate(${tilt.toFixed(1)}deg) scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)})`;
+              letter.style.fontVariationSettings = `'wght' ${wght}, 'opsz' 96`;
+              letter.style.textShadow = `${shadowX}px ${shadowY}px 0 rgba(18, 18, 18, ${shadowAlpha})`;
+            } else {
+              letter.classList.remove('is-active');
+              letter.style.transform = '';
+              letter.style.fontVariationSettings = '';
+              letter.style.textShadow = '';
+            }
+          });
+        });
+
+        heroSelectionBox.addEventListener('pointerleave', () => {
+          heroLetters.forEach((letter) => {
+            letter.classList.remove('is-active');
+            letter.style.transform = '';
+            letter.style.fontVariationSettings = '';
+            letter.style.textShadow = '';
+          });
+        });
+      }
+    }
+
+    /* ----------------------------------------------------------------------
+       2. PHYSIQUE MAGNÉTIQUE SUR LES BOUTONS CLÉS
+       ---------------------------------------------------------------------- */
+    if (!reducedMotion && window.matchMedia('(pointer: fine)').matches) {
+      document.querySelectorAll('.magnetic').forEach((btn) => {
+        btn.addEventListener('pointermove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const dx = (e.clientX - (rect.left + rect.width / 2)) * 0.18;
+          const dy = (e.clientY - (rect.top + rect.height / 2)) * 0.18;
+          btn.style.transform = `translate3d(${dx.toFixed(1)}px, ${dy.toFixed(1)}px, 0)`;
+        });
+        btn.addEventListener('pointerleave', () => {
+          btn.style.transform = '';
+        });
+      });
+    }
+
+    /* ----------------------------------------------------------------------
+       3. NAVIGATION PAR STATIONS 100dvh, ALTIMÈTRE & MIRE
+       ---------------------------------------------------------------------- */
     const stations = Array.from(document.querySelectorAll('.station'));
     const altStops = Array.from(document.querySelectorAll('.alt-stop'));
     const altValue = document.getElementById('altValue');
@@ -18,7 +158,6 @@
     let isTransitioning = false;
     let reticleTimer = null;
     let marqueeTimer = null;
-
     const COOLDOWN_MS = 620;
 
     function triggerReticleAndMarquee(code, alt) {
@@ -55,11 +194,8 @@
       altStops.forEach((stop, idx) => {
         const active = idx === currentIndex;
         stop.classList.toggle('active', active);
-        if (active) {
-          stop.setAttribute('aria-current', 'true');
-        } else {
-          stop.removeAttribute('aria-current');
-        }
+        if (active) stop.setAttribute('aria-current', 'true');
+        else stop.removeAttribute('aria-current');
       });
 
       const activeStation = stations[currentIndex];
@@ -83,7 +219,6 @@
       }, immediate ? 0 : COOLDOWN_MS);
     }
 
-    /* 1. Clics de navigation (Altimètre, Précédent/Suivant, boutons CTA) */
     document.querySelectorAll('[data-goto]').forEach((el) => {
       el.addEventListener('click', () => {
         const idx = parseInt(el.getAttribute('data-goto'), 10);
@@ -94,7 +229,6 @@
     if (btnPrev) btnPrev.addEventListener('click', () => goToStation(currentIndex - 1));
     if (btnNext) btnNext.addEventListener('click', () => goToStation(currentIndex + 1));
 
-    /* 2. Molette avec anti-rebond (ignore la fenêtre CAO et la modale CV) */
     const cvModal = document.getElementById('cvModal');
 
     window.addEventListener(
@@ -104,7 +238,6 @@
         if (e.target.closest('#cadViewport')) return;
         if (Math.abs(e.deltaY) < 16) return;
 
-        // Sur mobile/tablette si la station scrolle intérieurement, laisser scroller avant de changer
         const activeSt = stations[currentIndex];
         if (activeSt && activeSt.scrollHeight > activeSt.clientHeight + 4) {
           const atTop = activeSt.scrollTop <= 2;
@@ -112,16 +245,12 @@
           if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) return;
         }
 
-        if (e.deltaY > 0) {
-          goToStation(currentIndex + 1);
-        } else {
-          goToStation(currentIndex - 1);
-        }
+        if (e.deltaY > 0) goToStation(currentIndex + 1);
+        else goToStation(currentIndex - 1);
       },
       { passive: true }
     );
 
-    /* 3. Navigation clavier (Flèches, PageUp/Down, Home/End, 1–5) */
     window.addEventListener('keydown', (e) => {
       if (cvModal && cvModal.classList.contains('open')) {
         if (e.key === 'Escape') closeCvModal();
@@ -144,7 +273,6 @@
       }
     });
 
-    /* 4. Swipe tactile mobile */
     let touchStartY = 0;
     let touchStartX = 0;
 
@@ -176,7 +304,9 @@
       { passive: true }
     );
 
-    /* 5. Rognage intelligent des photos (orientation auto + point focal) */
+    /* ----------------------------------------------------------------------
+       4. ROGNAGE INTELLIGENT DES PHOTOS
+       ---------------------------------------------------------------------- */
     document.querySelectorAll('.smart-photo').forEach((frame) => {
       const img = frame.querySelector('img');
       if (!img) return;
@@ -209,12 +339,12 @@
       }
 
       img.addEventListener('load', handleLoaded);
-      if (img.complete && img.naturalWidth > 0) {
-        handleLoaded();
-      }
+      if (img.complete && img.naturalWidth > 0) handleLoaded();
     });
 
-    /* 6. Modale CV complet & Impression A4 */
+    /* ----------------------------------------------------------------------
+       5. MODALE CV & COPIE E-MAIL
+       ---------------------------------------------------------------------- */
     function openCvModal() {
       if (!cvModal) return;
       cvModal.classList.add('open');
@@ -243,7 +373,6 @@
       });
     }
 
-    /* 7. Copie e-mail en un clic */
     const copyEmailBtn = document.getElementById('copyEmailBtn');
     const copyEmailTag = document.getElementById('copyEmailTag');
 
@@ -270,7 +399,6 @@
       });
     }
 
-    // Initialisation station 00
     goToStation(0, true);
   });
 })();

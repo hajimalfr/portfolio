@@ -15,6 +15,24 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <!-- Preloader à remplissage vertical inspiré de sbwebdesign.ch -->
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <div class="preloader-top mono">
+      <span>PORTFOLIO // V2 · BUT GCCD</span>
+      <span>IUT NANCY-BRABOIS</span>
+    </div>
+    <div class="preloader-center">
+      <div class="preloader-wordmark" data-text="VICTOR VALROFF">
+        <span class="pw-base">VICTOR VALROFF</span>
+        <span class="pw-fill" id="preloaderWordFill">VICTOR VALROFF</span>
+      </div>
+    </div>
+    <div class="preloader-bottom mono">
+      <span>48.66°N 6.15°E · BÉTON &amp; CAO</span>
+      <span class="preloader-pct" id="preloaderPct">000%</span>
+    </div>
+  </div>
+
   <!-- Fond béton minéral issu de Téléchargements + voile éditorial pour contraste net -->
   <div class="concrete-backdrop" aria-hidden="true"></div>
   <div class="concrete-veil" aria-hidden="true"></div>
@@ -48,7 +66,7 @@
         <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
       </div>
 
-      <button type="button" class="header-cv-btn" id="openCvHeader">
+      <button type="button" class="header-cv-btn magnetic" id="openCvHeader">
         <span data-i18n="nav.cv">CV COMPLET</span>
         <span class="arrow" aria-hidden="true">↗</span>
       </button>
@@ -112,38 +130,63 @@
   <main class="stage" id="stage">
 
     <!-- ======================================================================
-         ST.00 — OUVERTURE (+00.00m)
+         ST.00 — OUVERTURE (+00.00m) · ARTBOARD SELECTION BOX (SBWEBDESIGN)
          ====================================================================== -->
     <section class="station active" id="station-0" data-index="0" data-alt="+00.00m" data-code="ST.00" aria-label="Station 00 — Ouverture">
+      <!-- Ruban SVG animé discret en arrière-plan -->
+      <svg class="station-ribbon" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="none" aria-hidden="true">
+        <path class="ribbon-path" d="M-40 540 C 260 520, 420 120, 740 240 C 980 330, 1080 140, 1260 110" stroke="#262CE8" stroke-width="2" stroke-opacity="0.22"/>
+      </svg>
+
       <div class="station-inner st0-layout">
         <div class="st0-hero">
           <div class="st-meta-bar mono">
-            <span class="st-tag">ST.00 // <span data-i18n="st0.kicker">OUVERTURE</span></span>
+            <span class="st-tag"># ST.00 · <span data-i18n="st0.kicker">OUVERTURE</span></span>
             <span class="st-dim">ELV +00.00m · 1:1</span>
           </div>
 
-          <!-- Titre interactif inspiré sbwebdesign.ch -->
-          <h1 class="hero-title" id="heroTitle" aria-label="Victor Valroff Chhun.">
-            <span class="mask-row"><span class="hero-word" data-word="VICTOR">VICTOR</span></span>
-            <span class="mask-row">
-              <span class="hero-word" data-word="VALROFF">VALROFF</span>
-              <span class="hero-word hero-word-outline" data-word="CHHUN">CHHUN</span><span class="hero-dot" aria-hidden="true">.</span>
-            </span>
-          </h1>
+          <!-- Boîte de sélection CAO / Figma autour du titre interactif -->
+          <div class="selection-box" id="heroSelectionBox">
+            <span class="sel-handle sh-tl" aria-hidden="true"></span>
+            <span class="sel-handle sh-tr" aria-hidden="true"></span>
+            <span class="sel-handle sh-bl" aria-hidden="true"></span>
+            <span class="sel-handle sh-br" aria-hidden="true"></span>
 
-          <p class="st0-lead" data-i18n="st0.lead">
-            19 ans, étudiant en 1ère année de <strong>BUT Génie Civil – Construction Durable</strong> à l’IUT de Nancy-Brabois (ex-CPGE PCSI au Lycée Loritz). Cap sur un diplôme d’<strong>ingénieur en génie civil</strong>.
-          </p>
+            <!-- Curseur / bulle d'annotation flottante inspirée sbwebdesign.ch -->
+            <div class="atelier-cursor" id="atelierCursor" aria-hidden="true">
+              <svg width="13" height="15" viewBox="0 0 13 15" fill="none">
+                <path d="M1 1L11.5 7.2L6.2 8.4L4.2 13.5L1 1Z" fill="#262CE8" stroke="#EFECE6" stroke-width="1"/>
+              </svg>
+              <span class="mono" data-i18n="st0.cursorPill">BUT GCCD · NANCY</span>
+            </div>
 
-          <div class="st0-actions">
-            <button type="button" class="btn-solid" data-goto="1">
-              <span data-i18n="st0.ctaExplore">Explorer les stations</span>
-              <span aria-hidden="true">↓</span>
-            </button>
-            <button type="button" class="btn-outline" data-goto="4">
-              <span data-i18n="st0.ctaManifesto">Manifeste CAO &amp; CV</span>
-              <span aria-hidden="true">→</span>
-            </button>
+            <h1 class="hero-title" id="heroTitle" aria-label="Victor Valroff Chhun.">
+              <span class="mask-row"><span class="hero-word" data-word="VICTOR">VICTOR</span></span>
+              <span class="mask-row">
+                <span class="hero-word" data-word="VALROFF">VALROFF</span>
+                <span class="hero-word hero-word-outline" data-word="CHHUN">CHHUN</span><span class="hero-dot" aria-hidden="true">.</span>
+              </span>
+            </h1>
+
+            <div class="sel-badge mono" id="heroSpecBadge">Bricolage · 96 px</div>
+          </div>
+
+          <div class="st0-bottom-row">
+            <p class="st0-lead" data-i18n="st0.lead">
+              19 ans, 1ère année <strong>BUT GCCD</strong> (IUT Nancy-Brabois, ex-PCSI Loritz) — cap <strong>ingénieur en génie civil</strong>.
+            </p>
+
+            <!-- Bouton circulaire bleu Tsunami inspiré sbwebdesign.ch -->
+            <div class="st0-actions">
+              <button type="button" class="circle-cta magnetic" data-goto="1" aria-label="Explorer les stations">
+                <span class="circle-cta-label mono" data-i18n="st0.ctaCircle">EXPLORER</span>
+                <span class="circle-cta-arrow" aria-hidden="true">↓</span>
+              </button>
+              <button type="button" class="btn-outline magnetic" data-goto="4">
+                <span data-i18n="st0.ctaManifesto">Manifeste CAO</span>
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -201,56 +244,56 @@
     </section>
 
     <!-- ======================================================================
-         ST.01 — IMPRESSION 3D (+04.20m)
+         ST.01 — IMPRESSION 3D (+04.20m) · 30% TEXTE / 70% FIGURE
          ====================================================================== -->
     <section class="station" id="station-1" data-index="1" data-alt="+04.20m" data-code="ST.01" aria-label="Station 01 — Impression 3D">
-      <div class="station-inner st-split">
-        <div class="st-copy">
+      <svg class="station-ribbon" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="none" aria-hidden="true">
+        <path class="ribbon-path" d="M-30 160 C 280 280, 560 600, 1240 420" stroke="#262CE8" stroke-width="2" stroke-opacity="0.22"/>
+      </svg>
+
+      <div class="station-inner st-figure-dominant">
+        <div class="st-copy-compact">
           <div class="st-meta-bar mono">
-            <span class="st-tag">ST.01 // <span data-i18n="st1.kicker">CONCEPTION &amp; FABRICATION</span></span>
-            <span class="st-dim">ELV +04.20m</span>
+            <span class="st-tag">ST.01</span>
+            <span class="st-dim">+04.20m</span>
           </div>
 
-          <h2 class="st-title" data-i18n="st1.title">Impression 3D<br><span class="accent-text">&amp; Précision utile.</span></h2>
+          <h2 class="st-title-compact" data-i18n="st1.title">Impression 3D<br><span class="accent-text">&amp; Précision.</span></h2>
 
-          <p class="st-text" data-i18n="st1.p1">
-            De l’esquisse paramétrique sous <strong>Fusion 360</strong> jusqu’à la pièce imprimée sur <strong>Bambu Lab</strong>, chaque millimètre répond à un usage réel.
-          </p>
-          <p class="st-text" data-i18n="st1.p2">
-            La cotation, les tolérances d’assemblage et le prototypage rapide nourrissent directement ma rigueur sur AutoDesk et AutoCAD.
+          <p class="st-text-compact" data-i18n="st1.p1">
+            Esquisse paramétrique sous <strong>Fusion 360</strong> et pièces utiles imprimées sur <strong>Bambu Lab</strong>. Cotation et tolérances au service d’AutoCAD.
           </p>
 
           <div class="spec-chips mono">
             <span>FUSION 360</span>
             <span>BAMBU LAB</span>
-            <span>AUTODESK / AUTOCAD</span>
-            <span>TOLÉRANCE ±0.1mm</span>
+            <span>±0.1mm</span>
           </div>
         </div>
 
-        <figure class="dim-frame photo-card">
+        <figure class="dim-frame photo-card photo-card-hero">
           <div class="dim-top mono">
-            <span>FIG.01 // CAD-3D</span>
+            <span>FIG.01 // CAD-3D · FUSION 360</span>
             <span class="photo-ratio-readout" data-ratio-label>RATIO AUTO</span>
           </div>
-          <div class="smart-photo" data-focal="50% 50%">
+          <div class="smart-photo photo-reveal" data-focal="50% 50%">
             <img src="images/impression-3d.jpg" alt="Modélisation 3D sous Fusion 360 et impression Bambu Lab" loading="lazy">
             <div class="photo-fallback photo-fallback-cad" aria-hidden="true">
-              <svg viewBox="0 0 400 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g stroke="currentColor" stroke-opacity="0.16" stroke-width="1">
-                  <path d="M0 40H400M0 80H400M0 120H400M0 160H400M0 200H400M0 240H400"/>
-                  <path d="M40 0V280M80 0V280M120 0V280M160 0V280M200 0V280M240 0V280M280 0V280M320 0V280M360 0V280"/>
+              <svg viewBox="0 0 640 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="currentColor" stroke-opacity="0.14" stroke-width="1">
+                  <path d="M0 50H640M0 100H640M0 150H640M0 200H640M0 250H640M0 300H640M0 350H640"/>
+                  <path d="M64 0V400M128 0V400M192 0V400M256 0V400M320 0V400M384 0V400M448 0V400M512 0V400M576 0V400"/>
                 </g>
-                <g stroke="#262CE8" stroke-width="1.5">
-                  <polygon points="200,56 294,108 200,160 106,108" fill="rgba(38,44,232,0.08)"/>
-                  <polygon points="106,108 200,160 200,218 106,166" fill="rgba(38,44,232,0.04)"/>
-                  <polygon points="294,108 200,160 200,218 294,166" fill="rgba(18,18,18,0.05)"/>
-                  <line x1="200" y1="56" x2="200" y2="218" stroke-dasharray="4 4"/>
+                <g stroke="#262CE8" stroke-width="1.8">
+                  <polygon points="320,74 470,154 320,234 170,154" fill="rgba(38,44,232,0.08)"/>
+                  <polygon points="170,154 320,234 320,322 170,242" fill="rgba(38,44,232,0.04)"/>
+                  <polygon points="470,154 320,234 320,322 470,242" fill="rgba(18,18,18,0.05)"/>
+                  <line x1="320" y1="74" x2="320" y2="322" stroke-dasharray="5 5"/>
                 </g>
-                <g stroke="#121212" stroke-width="1" stroke-opacity="0.55">
-                  <line x1="106" y1="234" x2="200" y2="234"/>
-                  <line x1="106" y1="229" x2="106" y2="239"/>
-                  <line x1="200" y1="229" x2="200" y2="239"/>
+                <g stroke="#121212" stroke-width="1" stroke-opacity="0.6">
+                  <line x1="170" y1="348" x2="320" y2="348"/>
+                  <line x1="170" y1="342" x2="170" y2="354"/>
+                  <line x1="320" y1="342" x2="320" y2="354"/>
                 </g>
               </svg>
               <span class="fallback-tag mono">images/impression-3d.jpg</span>
@@ -265,48 +308,30 @@
     </section>
 
     <!-- ======================================================================
-         ST.02 — VOYAGES (+08.40m)
+         ST.02 — VOYAGES (+08.40m) · 70% FIGURE / 30% TEXTE
          ====================================================================== -->
     <section class="station" id="station-2" data-index="2" data-alt="+08.40m" data-code="ST.02" aria-label="Station 02 — Voyages">
-      <div class="station-inner st-split st-split-reverse">
-        <div class="st-copy">
-          <div class="st-meta-bar mono">
-            <span class="st-tag">ST.02 // <span data-i18n="st2.kicker">OUVERTURE &amp; MOBILITÉ</span></span>
-            <span class="st-dim">ELV +08.40m</span>
-          </div>
+      <svg class="station-ribbon" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="none" aria-hidden="true">
+        <path class="ribbon-path" d="M-40 520 C 340 340, 740 120, 1240 240" stroke="#262CE8" stroke-width="2" stroke-opacity="0.22"/>
+      </svg>
 
-          <h2 class="st-title" data-i18n="st2.title">Voyages<br><span class="accent-text">&amp; Horizon international.</span></h2>
-
-          <p class="st-text" data-i18n="st2.p1">
-            Se déplacer, observer d’autres façons de construire et de vivre la ville : les voyages nourrissent ma curiosité technique et mon ouverture culturelle.
-          </p>
-          <p class="st-text" data-i18n="st2.p2">
-            Appuyé par un <strong>anglais B2 certifié (First Cambridge)</strong>, j’envisage à terme une carrière d’ingénieur ouverte à l’international.
-          </p>
-
-          <div class="spec-chips mono">
-            <span>FIRST CAMBRIDGE B2</span>
-            <span data-i18n="st2.chip1">SECTION EUROPÉENNE</span>
-            <span data-i18n="st2.chip2">MOBILITÉ INTL.</span>
-          </div>
-        </div>
-
-        <figure class="dim-frame photo-card">
+      <div class="station-inner st-figure-dominant st-figure-left">
+        <figure class="dim-frame photo-card photo-card-hero">
           <div class="dim-top mono">
-            <span>FIG.02 // HORIZON</span>
+            <span>FIG.02 // HORIZON &amp; MOBILITÉ</span>
             <span class="photo-ratio-readout" data-ratio-label>RATIO AUTO</span>
           </div>
-          <div class="smart-photo" data-focal="50% 35%">
+          <div class="smart-photo photo-reveal" data-focal="50% 35%">
             <img src="images/voyages.jpg" alt="Voyages et ouverture internationale" loading="lazy">
             <div class="photo-fallback photo-fallback-cad" aria-hidden="true">
-              <svg viewBox="0 0 400 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="200" cy="140" r="92" stroke="#121212" stroke-opacity="0.2" stroke-dasharray="3 5"/>
-                <circle cx="200" cy="140" r="56" stroke="#262CE8" stroke-width="1.3"/>
-                <ellipse cx="200" cy="140" rx="92" ry="34" stroke="#262CE8" stroke-opacity="0.55" stroke-width="1"/>
-                <ellipse cx="200" cy="140" rx="34" ry="92" stroke="#121212" stroke-opacity="0.25" stroke-width="1"/>
-                <line x1="76" y1="140" x2="324" y2="140" stroke="#121212" stroke-opacity="0.25"/>
-                <line x1="200" y1="30" x2="200" y2="250" stroke="#121212" stroke-opacity="0.25"/>
-                <circle cx="256" cy="108" r="4" fill="#262CE8"/>
+              <svg viewBox="0 0 640 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="320" cy="200" r="142" stroke="#121212" stroke-opacity="0.2" stroke-dasharray="4 6"/>
+                <circle cx="320" cy="200" r="88" stroke="#262CE8" stroke-width="1.6"/>
+                <ellipse cx="320" cy="200" rx="142" ry="52" stroke="#262CE8" stroke-opacity="0.55" stroke-width="1.2"/>
+                <ellipse cx="320" cy="200" rx="52" ry="142" stroke="#121212" stroke-opacity="0.25" stroke-width="1.2"/>
+                <line x1="120" y1="200" x2="520" y2="200" stroke="#121212" stroke-opacity="0.25"/>
+                <line x1="320" y1="36" x2="320" y2="364" stroke="#121212" stroke-opacity="0.25"/>
+                <circle cx="408" cy="148" r="6" fill="#262CE8"/>
               </svg>
               <span class="fallback-tag mono">images/voyages.jpg</span>
             </div>
@@ -316,24 +341,47 @@
             <span>FR · EN · ES</span>
           </figcaption>
         </figure>
+
+        <div class="st-copy-compact">
+          <div class="st-meta-bar mono">
+            <span class="st-tag">ST.02</span>
+            <span class="st-dim">+08.40m</span>
+          </div>
+
+          <h2 class="st-title-compact" data-i18n="st2.title">Voyages<br><span class="accent-text">&amp; Horizon.</span></h2>
+
+          <p class="st-text-compact" data-i18n="st2.p1">
+            Observer d’autres villes et cultures, porté par un <strong>anglais B2 (First Cambridge)</strong> et l’envie d’exercer à l’international.
+          </p>
+
+          <div class="spec-chips mono">
+            <span>CAMBRIDGE B2</span>
+            <span data-i18n="st2.chip1">SECTION EURO</span>
+            <span data-i18n="st2.chip2">MOBILITÉ INTL.</span>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- ======================================================================
-         ST.03 — BREAKING & ASSOCIATION TSUNAMI (+12.60m)
+         ST.03 — BREAKING & ASSOCIATION TSUNAMI (+12.60m) · VISUELS DOMINANTS
          ====================================================================== -->
     <section class="station" id="station-3" data-index="3" data-alt="+12.60m" data-code="ST.03" aria-label="Station 03 — Breaking & Association Tsunami">
+      <svg class="station-ribbon" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="none" aria-hidden="true">
+        <path class="ribbon-path" d="M-30 440 C 260 120, 620 620, 960 220 C 1080 90, 1180 180, 1250 150" stroke="#262CE8" stroke-width="2.4" stroke-opacity="0.24"/>
+      </svg>
+
       <div class="station-inner st3-layout">
-        <div class="st-copy">
+        <div class="st-copy-compact">
           <div class="st-meta-bar mono">
-            <span class="st-tag">ST.03 // <span data-i18n="st3.kicker">COLLECTIF &amp; ENGAGEMENT</span></span>
-            <span class="st-dim">ELV +12.60m</span>
+            <span class="st-tag">ST.03</span>
+            <span class="st-dim">+12.60m</span>
           </div>
 
-          <h2 class="st-title" data-i18n="st3.title">Breaking<br><span class="accent-text">&amp; Association Tsunami.</span></h2>
+          <h2 class="st-title-compact" data-i18n="st3.title">Breaking<br><span class="accent-text">&amp; Tsunami.</span></h2>
 
-          <p class="st-text" data-i18n="st3.p1">
-            Pratiquant de breaking, <strong>président et cofondateur de l’Association Tsunami</strong> à Nancy depuis 2024 : gestion associative, événements culturels et participation au Relais de la Flamme des JO.
+          <p class="st-text-compact" data-i18n="st3.p1">
+            Président &amp; cofondateur de l’<strong>Association Tsunami</strong> à Nancy (breaking, événements, Relais de la Flamme JO).
           </p>
 
           <blockquote class="st3-quote" data-i18n="st3.quote">
@@ -341,14 +389,13 @@
           </blockquote>
 
           <div class="spec-chips mono">
-            <span data-i18n="st3.chip1">PRÉSIDENT · COFONDATEUR</span>
-            <span>NANCY · DEPUIS 2024</span>
-            <span data-i18n="st3.chip2">FLAMME OLYMPIQUE</span>
+            <span data-i18n="st3.chip1">PRÉSIDENT · 2024</span>
+            <span data-i18n="st3.chip2">FLAMME JO</span>
           </div>
         </div>
 
         <div class="st3-visuals">
-          <!-- Vague Tsunami 3D interactive (détourage auto canvas + rotation 360°) -->
+          <!-- Vague Tsunami 3D interactive grand format -->
           <div class="dim-frame tsunami-stage-card">
             <div class="dim-top mono">
               <span>OBJ.3D // TSUNAMI WAVE</span>
@@ -360,19 +407,19 @@
             </div>
           </div>
 
-          <!-- Photo Breaking / Collectif à rognage intelligent -->
+          <!-- Photo Breaking / Collectif grand format -->
           <figure class="dim-frame photo-card st3-photo-card">
             <div class="dim-top mono">
               <span>FIG.03 // COLLECTIF</span>
               <span class="photo-ratio-readout" data-ratio-label>RATIO AUTO</span>
             </div>
-            <div class="smart-photo" data-focal="50% 25%">
+            <div class="smart-photo photo-reveal" data-focal="50% 25%">
               <img src="images/breaking-tsunami.jpg" alt="Breaking et Association Tsunami à Nancy" loading="lazy">
               <div class="photo-fallback photo-fallback-cad" aria-hidden="true">
-                <svg viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M24 172 C95 62, 185 48, 250 116 C276 144, 308 148, 336 122" stroke="#262CE8" stroke-width="2"/>
-                  <path d="M24 186 C105 90, 195 76, 260 138" stroke="#121212" stroke-opacity="0.28" stroke-dasharray="4 4"/>
-                  <circle cx="180" cy="84" r="5" fill="#262CE8"/>
+                <svg viewBox="0 0 360 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M24 212 C95 82, 185 68, 250 146 C276 174, 308 178, 336 142" stroke="#262CE8" stroke-width="2.2"/>
+                  <path d="M24 228 C105 112, 195 96, 260 168" stroke="#121212" stroke-opacity="0.28" stroke-dasharray="4 4"/>
+                  <circle cx="180" cy="108" r="6" fill="#262CE8"/>
                 </svg>
                 <span class="fallback-tag mono">images/breaking-tsunami.jpg</span>
               </div>
@@ -413,58 +460,58 @@
 
           <!-- Corps CAO : Browser latéral Fusion 360 + Viewport interactif -->
           <div class="cad-workspace">
-            <!-- Légende latérale personnalisée façon Fusion 360 Browser -->
+            <!-- Légende latérale personnalisée façon Fusion 360 Browser + Inspecteur live -->
             <aside class="cad-browser" aria-label="Arborescence CAO">
-              <div class="cad-browser-head mono">
-                <span data-i18n="cad.browser">ARBORESCENCE</span>
-                <span>v2.0</span>
-              </div>
+              <div>
+                <div class="cad-browser-head mono">
+                  <span data-i18n="cad.browser">ARBORESCENCE</span>
+                  <span id="cadStepCounter">01/04</span>
+                </div>
 
-              <ul class="cad-tree" id="cadTree">
-                <li>
-                  <button type="button" class="cad-node active" data-highlight="realisation">
-                    <span class="cad-eye" aria-hidden="true">◉</span>
-                    <span data-i18n="cad.nReal">Réalisation</span>
-                  </button>
-                </li>
-                <li>
-                  <button type="button" class="cad-node" data-highlight="utilite">
-                    <span class="cad-eye" aria-hidden="true">◉</span>
-                    <span data-i18n="cad.nUtil">Utilité concrète</span>
-                  </button>
-                </li>
-                <li>
-                  <button type="button" class="cad-node" data-highlight="design">
-                    <span class="cad-eye" aria-hidden="true">◉</span>
-                    <span data-i18n="cad.nDesign">Design &amp; Forme</span>
-                  </button>
-                </li>
-                <li>
-                  <button type="button" class="cad-node" data-highlight="choix">
-                    <span class="cad-eye" aria-hidden="true">◉</span>
-                    <span data-i18n="cad.nChoix">Choix Génie Civil</span>
-                  </button>
-                </li>
-              </ul>
+                <ul class="cad-tree" id="cadTree">
+                  <li>
+                    <button type="button" class="cad-node active" data-highlight="realisation" data-step="01/04">
+                      <span class="cad-eye" aria-hidden="true">◉</span>
+                      <span data-i18n="cad.nReal">Réalisation</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" class="cad-node" data-highlight="utilite" data-step="02/04">
+                      <span class="cad-eye" aria-hidden="true">◉</span>
+                      <span data-i18n="cad.nUtil">Utilité concrète</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" class="cad-node" data-highlight="design" data-step="03/04">
+                      <span class="cad-eye" aria-hidden="true">◉</span>
+                      <span data-i18n="cad.nDesign">Design &amp; Forme</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button type="button" class="cad-node" data-highlight="choix" data-step="04/04">
+                      <span class="cad-eye" aria-hidden="true">◉</span>
+                      <span data-i18n="cad.nChoix">Choix Génie Civil</span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
 
               <div class="cad-workshop-note">
                 <span class="mono cad-note-label" data-i18n="cad.noteLabel">NOTE D'ATELIER</span>
                 <p id="cadNoteText" data-i18n="cad.noteDefault">
-                  Molette dans le cadre pour zoomer · Glisser pour déplacer · Double-clic pour recentrer.
+                  Molette vers le bas pour zoomer · Glisser pour déplacer · Double-clic pour recentrer.
                 </p>
               </div>
             </aside>
 
             <!-- Zone centrale (panneaux onglets) -->
             <div class="cad-viewport-shell">
-              <!-- Onglet 1 : Viewport Manifeste Zoomable & Pan -->
+              <!-- Onglet 1 : Viewport Manifeste Zoomable & Pan + Selection Box live -->
               <div class="cad-panel active" id="cadPanel-manifesto" role="tabpanel">
                 <div class="cad-viewport" id="cadViewport" tabindex="0" aria-label="Viewport CAO du manifeste : utiliser la molette pour zoomer et glisser pour déplacer">
-                  <!-- Axes X / Y -->
                   <div class="cad-axis-x" aria-hidden="true"><span class="mono">X+</span></div>
                   <div class="cad-axis-y" aria-hidden="true"><span class="mono">Y+</span></div>
 
-                  <!-- ViewCube filaire -->
                   <div class="cad-viewcube" aria-hidden="true">
                     <svg viewBox="0 0 64 64" fill="none">
                       <polygon points="32,8 54,19 32,30 10,19" stroke="#262CE8" stroke-width="1.2" fill="rgba(38,44,232,0.06)"/>
@@ -474,12 +521,18 @@
                     <span class="mono">TOP / ISO</span>
                   </div>
 
-                  <!-- Contenu transformé par zoom/pan -->
+                  <!-- Contenu transformé par zoom/pan avec cadre de sélection CAO -->
                   <div class="cad-canvas-content" id="cadContent">
-                    <div class="cad-quote-kicker mono" data-i18n="cad.quoteKicker">MANIFESTE // GÉNIE CIVIL VS ARCHITECTURE</div>
-                    <blockquote class="cad-manifesto-text" id="cadManifestoText">
-                      « <span class="m-seg" data-seg="design" data-i18n="cad.segDesign">Le design d’un objet est une chose très importante pour moi,</span> <span class="m-seg" data-seg="realisation" data-i18n="cad.segReal">mais sa réalisation</span> <span class="m-seg" data-seg="utilite" data-i18n="cad.segUtil">et son utilité concrète me paraissent nécessaires à son appréciation.</span> <span class="m-seg" data-seg="choix" data-i18n="cad.segChoix">C’est pourquoi j’ai préféré le génie civil à l’architecture.</span> »
-                    </blockquote>
+                    <div class="cad-quote-box">
+                      <span class="sel-handle sh-tl" aria-hidden="true"></span>
+                      <span class="sel-handle sh-tr" aria-hidden="true"></span>
+                      <span class="sel-handle sh-bl" aria-hidden="true"></span>
+                      <span class="sel-handle sh-br" aria-hidden="true"></span>
+                      <div class="cad-quote-kicker mono" data-i18n="cad.quoteKicker">MANIFESTE // GÉNIE CIVIL VS ARCHITECTURE</div>
+                      <blockquote class="cad-manifesto-text" id="cadManifestoText">
+                        « <span class="m-seg" data-seg="design" data-i18n="cad.segDesign">Le design d’un objet est une chose très importante pour moi,</span> <span class="m-seg" data-seg="realisation" data-i18n="cad.segReal">mais sa réalisation</span> <span class="m-seg" data-seg="utilite" data-i18n="cad.segUtil">et son utilité concrète me paraissent nécessaires à son appréciation.</span> <span class="m-seg" data-seg="choix" data-i18n="cad.segChoix">C’est pourquoi j’ai préféré le génie civil à l’architecture.</span> »
+                      </blockquote>
+                    </div>
                   </div>
 
                   <div class="cad-hud-bottom mono">
@@ -489,23 +542,27 @@
                 </div>
               </div>
 
-              <!-- Onglet 2 : Trajectoire S1 → S6 (discret & synthétique) -->
+              <!-- Onglet 2 : Trajectoire S1 → S6 avec tracé SVG continu (sbwebdesign) -->
               <div class="cad-panel cad-info-panel" id="cadPanel-trajectory" role="tabpanel">
+                <svg class="traj-svg-line" viewBox="0 0 900 120" fill="none" preserveAspectRatio="none" aria-hidden="true">
+                  <path class="traj-path-active" d="M 30 60 C 200 10, 320 110, 480 60" stroke="#262CE8" stroke-width="2"/>
+                  <path d="M 480 60 C 640 10, 740 110, 870 60" stroke="#121212" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="5 6"/>
+                </svg>
                 <div class="traj-grid">
                   <div class="traj-step">
-                    <span class="mono traj-code">S1 · ACTUEL</span>
+                    <span class="mono traj-code">01 · S1 ACTUEL</span>
                     <h3 data-i18n="traj.s1Title">Socle GCCD</h3>
-                    <p data-i18n="traj.s1Text">Plans AutoDesk, matériaux, mécanique des structures, topographie et identité pro.</p>
+                    <p data-i18n="traj.s1Text">Plans AutoDesk, matériaux, mécanique des structures, topographie.</p>
                   </div>
                   <div class="traj-step traj-step-accent">
-                    <span class="mono traj-code">S2 · MAI–JUIN</span>
+                    <span class="mono traj-code">02 · S2 MAI–JUIN</span>
                     <h3 data-i18n="traj.s2Title">Stage 4 semaines</h3>
-                    <p data-i18n="traj.s2Text">Suivi de chantier auprès d’un ingénieur travaux pour relier théorie et exécution.</p>
+                    <p data-i18n="traj.s2Text">Suivi de chantier auprès d’un ingénieur travaux pour relier théorie et terrain.</p>
                   </div>
                   <div class="traj-step">
-                    <span class="mono traj-code">S3 → S6</span>
-                    <h3 data-i18n="traj.s3Title">Cap École d’Ingénieurs</h3>
-                    <p data-i18n="traj.s3Text">Dimensionnement, BIM, stages longs et intégration en école d’ingénieurs (INSA, ESTP, ENTPE).</p>
+                    <span class="mono traj-code">03 · S3 → S6</span>
+                    <h3 data-i18n="traj.s3Title">École d’Ingénieurs</h3>
+                    <p data-i18n="traj.s3Text">Dimensionnement, BIM, stages longs et intégration (INSA, ESTP, ENTPE).</p>
                   </div>
                 </div>
               </div>
@@ -538,11 +595,11 @@
         <!-- Barre Contact & CV en bas de ST.04 -->
         <footer class="st4-footer">
           <div class="contact-group">
-            <button type="button" class="btn-solid" id="openCvFooter">
+            <button type="button" class="btn-solid magnetic" id="openCvFooter">
               <span data-i18n="st4.openCv">Consulter le CV (A4)</span>
               <span aria-hidden="true">↗</span>
             </button>
-            <button type="button" class="btn-outline" id="copyEmailBtn" data-email="victorvalroff@hotmail.com">
+            <button type="button" class="btn-outline magnetic" id="copyEmailBtn" data-email="victorvalroff@hotmail.com">
               <span id="copyEmailLabel">victorvalroff@hotmail.com</span>
               <span class="mono copy-tag" id="copyEmailTag" data-i18n="st4.copy">COPIER</span>
             </button>

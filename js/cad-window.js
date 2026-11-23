@@ -144,14 +144,24 @@
 
     let activeHighlight = 'realisation';
 
-    function applyHighlight(key) {
+    const stepCounter = document.getElementById('cadStepCounter');
+    const manifestoText = document.getElementById('cadManifestoText');
+
+    function applyHighlight(key, stepLabel) {
       activeHighlight = key;
       document.querySelectorAll('.cad-node').forEach((btn) => {
-        btn.classList.toggle('active', btn.getAttribute('data-highlight') === key);
+        const isMatch = btn.getAttribute('data-highlight') === key;
+        btn.classList.toggle('active', isMatch);
+        if (isMatch && stepCounter && (stepLabel || btn.getAttribute('data-step'))) {
+          stepCounter.textContent = stepLabel || btn.getAttribute('data-step');
+        }
       });
       document.querySelectorAll('.m-seg').forEach((seg) => {
         seg.classList.toggle('is-highlighted', seg.getAttribute('data-seg') === key);
       });
+      if (manifestoText) {
+        manifestoText.style.letterSpacing = key === 'design' ? '-0.03em' : '-0.02em';
+      }
       if (noteText && window.PortfolioI18n && noteKeyMap[key]) {
         noteText.textContent = window.PortfolioI18n.t(noteKeyMap[key]);
       }

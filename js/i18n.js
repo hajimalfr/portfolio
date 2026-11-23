@@ -15,10 +15,12 @@
       'st4.nav': 'Manifeste & Contact',
 
       'st0.kicker': 'OUVERTURE',
+      'st0.cursorPill': 'BUT GCCD · NANCY',
+      'st0.ctaCircle': 'EXPLORER',
       'st0.lead':
-        '19 ans, étudiant en 1ère année de <strong>BUT Génie Civil – Construction Durable</strong> à l’IUT de Nancy-Brabois (ex-CPGE PCSI au Lycée Loritz). Cap sur un diplôme d’<strong>ingénieur en génie civil</strong>.',
+        '19 ans, 1ère année <strong>BUT GCCD</strong> (IUT Nancy-Brabois, ex-PCSI Loritz) — cap <strong>ingénieur en génie civil</strong>.',
       'st0.ctaExplore': 'Explorer les stations',
-      'st0.ctaManifesto': 'Manifeste CAO & CV',
+      'st0.ctaManifesto': 'Manifeste CAO',
       'st0.idSub': '19 ans · Permis B',
       'st0.kForm': 'FORMATION',
       'st0.vForm': 'BUT GCCD · 1ère année',
@@ -31,27 +33,23 @@
       'st0.avail': 'DISPO STAGE',
 
       'st1.kicker': 'CONCEPTION & FABRICATION',
-      'st1.title': 'Impression 3D<br><span class="accent-text">&amp; Précision utile.</span>',
+      'st1.title': 'Impression 3D<br><span class="accent-text">&amp; Précision.</span>',
       'st1.p1':
-        'De l’esquisse paramétrique sous <strong>Fusion 360</strong> jusqu’à la pièce imprimée sur <strong>Bambu Lab</strong>, chaque millimètre répond à un usage réel.',
-      'st1.p2':
-        'La cotation, les tolérances d’assemblage et le prototypage rapide nourrissent directement ma rigueur sur AutoDesk et AutoCAD.',
+        'Esquisse paramétrique sous <strong>Fusion 360</strong> et pièces utiles imprimées sur <strong>Bambu Lab</strong>. Cotation et tolérances au service d’AutoCAD.',
       'st1.capLeft': 'PROTOTYPAGE PARAMÉTRIQUE',
 
       'st2.kicker': 'OUVERTURE & MOBILITÉ',
-      'st2.title': 'Voyages<br><span class="accent-text">&amp; Horizon international.</span>',
+      'st2.title': 'Voyages<br><span class="accent-text">&amp; Horizon.</span>',
       'st2.p1':
-        'Se déplacer, observer d’autres façons de construire et de vivre la ville : les voyages nourrissent ma curiosité technique et mon ouverture culturelle.',
-      'st2.p2':
-        'Appuyé par un <strong>anglais B2 certifié (First Cambridge)</strong>, j’envisage à terme une carrière d’ingénieur ouverte à l’international.',
-      'st2.chip1': 'SECTION EUROPÉENNE',
+        'Observer d’autres villes et cultures, porté par un <strong>anglais B2 (First Cambridge)</strong> et l’envie d’exercer à l’international.',
+      'st2.chip1': 'SECTION EURO',
       'st2.chip2': 'MOBILITÉ INTL.',
       'st2.capLeft': 'CAMBRIDGE FIRST · B2',
 
       'st3.kicker': 'COLLECTIF & ENGAGEMENT',
-      'st3.title': 'Breaking<br><span class="accent-text">&amp; Association Tsunami.</span>',
+      'st3.title': 'Breaking<br><span class="accent-text">&amp; Tsunami.</span>',
       'st3.p1':
-        'Pratiquant de breaking, <strong>président et cofondateur de l’Association Tsunami</strong> à Nancy depuis 2024 : gestion associative, événements culturels et participation au Relais de la Flamme des JO.',
+        'Président &amp; cofondateur de l’<strong>Association Tsunami</strong> à Nancy (breaking, événements, Relais de la Flamme JO).',
       'st3.quote':
         '« Rien ne se monte seul : que ce soit au sein de l’Association Tsunami, en session de breaking ou en déplacement, c’est l’énergie du collectif et la confiance entre amis qui donnent du relief à ce que j’entreprends. »',
       'st3.chip1': 'PRÉSIDENT · COFONDATEUR',
@@ -171,10 +169,12 @@
       'st4.nav': 'Manifesto & Contact',
 
       'st0.kicker': 'OPENING',
+      'st0.cursorPill': 'CIVIL ENG. · NANCY',
+      'st0.ctaCircle': 'EXPLORE',
       'st0.lead':
-        '19 years old, 1st-year <strong>Civil Engineering &amp; Sustainable Construction (BUT GCCD)</strong> student at IUT Nancy-Brabois (former CPGE PCSI at Lycée Loritz). Aiming to become a <strong>civil engineer</strong>.',
+        '19 y/o, 1st-year <strong>Civil Eng. (BUT GCCD)</strong> at IUT Nancy-Brabois (ex-CPGE PCSI) — future <strong>civil engineer</strong>.',
       'st0.ctaExplore': 'Explore stations',
-      'st0.ctaManifesto': 'CAD Manifesto & CV',
+      'st0.ctaManifesto': 'CAD Manifesto',
       'st0.idSub': '19 y/o · Driver License',
       'st0.kForm': 'DEGREE',
       'st0.vForm': 'BUT Civil Eng. · Year 1',
@@ -187,27 +187,23 @@
       'st0.avail': 'OPEN TO INTERN',
 
       'st1.kicker': 'DESIGN & FABRICATION',
-      'st1.title': '3D Printing<br><span class="accent-text">&amp; Useful Precision.</span>',
+      'st1.title': '3D Printing<br><span class="accent-text">&amp; Precision.</span>',
       'st1.p1':
-        'From parametric sketches in <strong>Fusion 360</strong> to functional parts printed on <strong>Bambu Lab</strong>, every millimeter serves a real purpose.',
-      'st1.p2':
-        'Dimensioning, assembly tolerances, and rapid prototyping directly sharpen my drafting accuracy in AutoDesk and AutoCAD.',
+        'Parametric sketching in <strong>Fusion 360</strong> and functional parts printed on <strong>Bambu Lab</strong>. Tolerances that sharpen AutoCAD.',
       'st1.capLeft': 'PARAMETRIC PROTOTYPING',
 
       'st2.kicker': 'WORLDVIEW & MOBILITY',
-      'st2.title': 'Travel<br><span class="accent-text">&amp; Global Horizon.</span>',
+      'st2.title': 'Travel<br><span class="accent-text">&amp; Horizon.</span>',
       'st2.p1':
-        'Traveling and observing how cities are built and lived in elsewhere fuels both my technical curiosity and cultural openness.',
-      'st2.p2':
-        'Backed by a <strong>certified B2 English level (Cambridge First)</strong>, I aim to build a civil engineering career open to international projects.',
-      'st2.chip1': 'EUROPEAN SECTION',
+        'Exploring cities and cultures worldwide, backed by <strong>B2 English (Cambridge First)</strong> and an international engineering outlook.',
+      'st2.chip1': 'EURO SECTION',
       'st2.chip2': 'GLOBAL MOBILITY',
       'st2.capLeft': 'CAMBRIDGE FIRST · B2',
 
       'st3.kicker': 'COLLECTIVE & LEADERSHIP',
-      'st3.title': 'Breaking<br><span class="accent-text">&amp; Tsunami Association.</span>',
+      'st3.title': 'Breaking<br><span class="accent-text">&amp; Tsunami.</span>',
       'st3.p1':
-        'Breaker, <strong>president and co-founder of the Tsunami Association</strong> in Nancy since 2024: administration, cultural events, and participation in the Olympic Torch Relay.',
+        'President &amp; co-founder of the <strong>Tsunami Association</strong> in Nancy (breaking, events, Olympic Torch Relay).',
       'st3.quote':
         '“Nothing is built alone: whether within the Tsunami Association, in a breaking session, or on the road, it is the energy of the collective and trust among friends that give depth to everything I undertake.”',
       'st3.chip1': 'PRESIDENT · CO-FOUNDER',
