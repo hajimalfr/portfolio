@@ -28,7 +28,7 @@
     const gl = canvas.getContext('webgl', {
       alpha: true,
       antialias: true,
-      premultipliedAlpha: false
+      premultipliedAlpha: true
     });
 
     if (!gl) {
@@ -139,7 +139,8 @@
         finalRgb = mix(finalRgb, mainColor, alphaMain);
         finalAlpha = max(finalAlpha, alphaMain);
 
-        gl_FragColor = vec4(finalRgb, finalAlpha);
+        // Premultiplied alpha strict : garantit vec4(0,0,0,0) sur fond transparent (zéro rectangle orange sur mobile)
+        gl_FragColor = vec4(finalRgb * finalAlpha, finalAlpha);
       }
     `;
 

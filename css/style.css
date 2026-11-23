@@ -1299,31 +1299,29 @@ body {
   transition: border-color 0.25s ease, color 0.25s ease, transform 0.28s var(--ease-expo);
 }
 
-.cote-block:hover {
-  border-color: var(--tsunami);
-  background: rgba(239, 236, 230, 0.92);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(18, 18, 18, 0.08);
-}
+@media (hover: hover) and (pointer: fine) {
+  .cote-block:hover {
+    border-color: var(--tsunami);
+    background: rgba(239, 236, 230, 0.92);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(18, 18, 18, 0.08);
+  }
 
-.cote-block:hover::before {
-  transform: scaleY(1);
-}
+  .cote-block:hover::before {
+    transform: scaleY(1);
+  }
 
-.cote-block:hover::after {
-  border-color: var(--orange);
-  color: var(--orange);
-  transform: translateY(-2px);
-}
+  .cote-block:hover::after {
+    border-color: var(--orange);
+    color: var(--orange);
+    transform: translateY(-2px);
+  }
 
-.hover-card {
-  transition: transform 0.28s var(--ease-expo), border-color 0.22s ease, box-shadow 0.28s ease;
-}
-
-.hover-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--tsunami);
-  box-shadow: 0 10px 24px rgba(38, 44, 232, 0.1);
+  .hover-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--tsunami);
+    box-shadow: 0 10px 24px rgba(38, 44, 232, 0.1);
+  }
 }
 
 /* Canvas 3D Casque de chantier (ST.01) */
@@ -2227,6 +2225,32 @@ body {
   .st3-visuals { grid-template-columns: 1fr; }
 
   /* Correctifs dédiés téléphone uniquement (desktop intact) */
+  .station {
+    padding: 16px 14px 44px;
+    -webkit-overflow-scrolling: touch;
+    transform: translate3d(0, 12px, 0);
+    transition: opacity 0.36s ease-out, transform 0.38s ease-out, visibility 0.36s;
+  }
+
+  .station.above {
+    transform: translate3d(0, -12px, 0);
+  }
+
+  .photo-reveal,
+  .st-title-compact,
+  .st-text-compact,
+  .spec-chips {
+    clip-path: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+
+  .helmet-canvas-wrap {
+    touch-action: pan-y;
+    cursor: default;
+  }
+
   .st4-layout {
     height: 68dvh;
     min-height: 0;

@@ -238,6 +238,7 @@
     }
 
     wrap.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'touch') return; // Sur téléphone : rotation auto pour laisser scroller librement
       isDragging = true;
       lastX = e.clientX;
       lastY = e.clientY;

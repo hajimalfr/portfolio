@@ -8,9 +8,9 @@
      ======================================================================== */
   const CONFIG = {
     preloaderDurationMs: 860, // Durée du chargement initial (ms)
-    stationCooldownMs: 320,   // Anti-rebond entre deux changements de station (ms)
-    wheelThresholdPx: 16,     // Sensibilité minimale de la molette
-    swipeThresholdPx: 72,     // Distance minimale de swipe vertical sur mobile (px)
+    stationCooldownMs: 520,   // Anti-rebond entre deux changements de station (ms)
+    wheelThresholdPx: 22,     // Sensibilité minimale de la molette
+    swipeThresholdPx: 105,    // Distance minimale de swipe vertical sur mobile (px)
     emailFallback: 'victorvalroff@hotmail.com'
   };
 
@@ -385,7 +385,7 @@
       'touchstart',
       (e) => {
         if (e.touches.length !== 1) return;
-        if (e.target.closest('#tsunamiWrap') || e.target.closest('#helmetWrap')) return;
+        if (e.target.closest('#tsunamiWrap')) return;
         touchStartY = e.touches[0].clientY;
         touchStartX = e.touches[0].clientX;
       },
@@ -396,7 +396,7 @@
       'touchend',
       (e) => {
         if (!touchStartY || (cvModal && cvModal.classList.contains('open'))) return;
-        if (e.target.closest('#tsunamiWrap') || e.target.closest('#helmetWrap')) return;
+        if (e.target.closest('#tsunamiWrap')) return;
         const dy = touchStartY - e.changedTouches[0].clientY;
         const dx = Math.abs(touchStartX - e.changedTouches[0].clientX);
         touchStartY = 0;
