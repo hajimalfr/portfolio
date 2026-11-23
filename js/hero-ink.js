@@ -4,13 +4,25 @@
    pipeline de pinceau liquide (addDrop), avec des trajectoires venant de partout.
    ========================================================================== */
 (function () {
+  /* ========================================================================
+     PARAMÈTRES FACILES À MODIFIER — EFFET ENCRE LIQUIDE (ST.00)
+     ======================================================================== */
+  const CONFIG = {
+    text: 'VICTOR VALROFF CHHUN', // Texte affiché sur la page d'accueil
+    maxDrops: 30,                 // Nombre max de points d'encre actifs
+    strokeDurationMs: 1350,       // Durée d'une onde autonome (ms)
+    pauseBetweenStrokesMs: 1150,  // Pause entre deux ondes autonomes (ms)
+    idleDelayMs: 1700,            // Délai sans souris avant reprise des ondes (ms)
+    dropDecay: 0.013              // Vitesse de retour à l'état normal (plus petit = plus lent)
+  };
+
   document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('heroInkCanvas');
     const wrap = document.getElementById('heroInkWrap');
     if (!canvas || !wrap) return;
 
-    const TEXT = 'VICTOR VALROFF CHHUN';
-    const MAX_DROPS = 30;
+    const TEXT = CONFIG.text;
+    const MAX_DROPS = CONFIG.maxDrops;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const gl = canvas.getContext('webgl', {
@@ -252,7 +264,7 @@
     let nextStrokeAt = performance.now() + 900;
     let ghostPrevX = null;
     let ghostPrevY = null;
-    const STROKE_DURATION = 1350; // ms (fluide à 60 fps)
+    const STROKE_DURATION = CONFIG.strokeDurationMs;
 
     const dropUniforms = new Float32Array(MAX_DROPS * 4);
     const velUniforms = new Float32Array(MAX_DROPS * 2);
@@ -262,7 +274,7 @@
       const t = (now - startTime) * 0.001;
 
       // Exécution fluide du pinceau virtuel quand la souris est inactive
-      if (!reducedMotion && now - lastPointerTime > 1700) {
+      if (!reducedMotion && now - lastPointerTime > CONFIG.idleDelayMs) {
         if (!strokeActive && now >= nextStrokeAt) {
           strokeActive = true;
           strokeStart = now;
@@ -274,10 +286,9 @@
           if (raw >= 1) {
             strokeActive = false;
             pathIdx = (pathIdx + 1) % AUTO_PATHS.length;
-            nextStrokeAt = now + 1150;
+            nextStrokeAt = now + CONFIG.pauseBetweenStrokesMs;
           } else {
             const p = AUTO_PATHS[pathIdx];
-            // Courbe ease-in-out fluide
             const e = raw < 0.5 ? 2 * raw * raw : 1 - Math.pow(-2 * raw + 2, 2) / 2;
             const gx = p.sx + (p.ex - p.sx) * e;
             const gy = p.sy + (p.ey - p.sy) * e + Math.sin(e * Math.PI) * 0.06;
@@ -296,7 +307,7 @@
       for (let i = 0; i < MAX_DROPS; i++) {
         const d = drops[i];
         if (d.life > 0) {
-          d.life = Math.max(0, d.life - 0.013);
+          d.life = Math.max(0, d.life - CONFIG.dropDecay);
           d.vx *= 0.945;
           d.vy *= 0.945;
         }

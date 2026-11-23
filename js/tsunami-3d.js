@@ -4,6 +4,15 @@
    flotter la vague #262CE8 en relief 3D multi-couches + rotation libre 360°
    ========================================================================== */
 (function () {
+  /* ========================================================================
+     PARAMÈTRES FACILES À MODIFIER — LOGO TSUNAMI 3D (ST.03)
+     ======================================================================== */
+  const CONFIG = {
+    logoCandidates: ['images/tsunami-logo.webp', 'images/tsunami-logo.jpg', 'images/tsunami-logo.png'],
+    autoRotateSpeed: 0.0045, // Vitesse de rotation automatique
+    layers: 14               // Nombre de couches de relief 3D
+  };
+
   document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('tsunamiCanvas');
     const wrap = document.getElementById('tsunamiWrap');
@@ -98,7 +107,7 @@
     }
 
     function loadLogo() {
-      const candidates = ['images/tsunami-logo.webp', 'images/tsunami-logo.jpg', 'images/tsunami-logo.png'];
+      const candidates = CONFIG.logoCandidates;
       let idx = 0;
 
       function tryNext() {

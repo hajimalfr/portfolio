@@ -3,6 +3,15 @@
    de chantier (filaire CAO + cotes Fusion 360, rotation libre 360°)
    ========================================================================== */
 (function () {
+  /* ========================================================================
+     PARAMÈTRES FACILES À MODIFIER — CASQUE DE CHANTIER 3D (ST.01)
+     ======================================================================== */
+  const CONFIG = {
+    autoRotateSpeed: 0.005, // Vitesse de rotation automatique
+    primaryColor: '#262CE8',
+    accentColor: '#FF4D1C'
+  };
+
   document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('helmetCanvas');
     const wrap = document.getElementById('helmetWrap');

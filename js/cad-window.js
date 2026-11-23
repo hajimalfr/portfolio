@@ -6,6 +6,16 @@
    - Animations synchronisées : étapes 01/04→04/04, curseur orange & inspecteur
    ========================================================================== */
 (function () {
+  /* ========================================================================
+     PARAMÈTRES FACILES À MODIFIER — FENÊTRE MANIFESTE CAO (ST.04)
+     ======================================================================== */
+  const CONFIG = {
+    peakExtraScale: 0.95, // Zoom max au milieu de l'arche (0.95 => 195 %, retour à 100 % à la fin)
+    baseFontDesktop: 25,  // Taille de base du manifeste sur ordinateur (px)
+    baseFontMobile: 19,   // Taille de base du manifeste sur mobile (px)
+    wheelStep: 0.11       // Vitesse de progression à chaque cran de molette
+  };
+
   document.addEventListener('DOMContentLoaded', () => {
     const viewport = document.getElementById('cadViewport');
     const content = document.getElementById('cadContent');
@@ -24,8 +34,8 @@
 
     if (!viewport || !content || !manifestoText) return;
 
-    const PEAK_EXTRA_SCALE = 0.95; // 100% -> 195% au sommet -> 100% à la fin
-    const BASE_FONT_PX = window.innerWidth < 768 ? 19 : 25;
+    const PEAK_EXTRA_SCALE = CONFIG.peakExtraScale;
+    const BASE_FONT_PX = window.innerWidth < 768 ? CONFIG.baseFontMobile : CONFIG.baseFontDesktop;
 
     let progress = 0; // 0.0 -> 1.0
     let targetProgress = 0;
@@ -202,7 +212,7 @@
         e.stopPropagation();
 
         const direction = Math.sign(e.deltaY);
-        targetProgress = clamp(targetProgress + direction * 0.11, 0, 1);
+        targetProgress = clamp(targetProgress + direction * CONFIG.wheelStep, 0, 1);
 
         // Recentrer doucement le pan aux extrémités (taille normale 100 %)
         if (targetProgress <= 0.05 || targetProgress >= 0.95) {

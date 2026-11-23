@@ -3,6 +3,17 @@
    Navigation par stations 100dvh, Boutons magnétiques, Rognage photo & CV
    ========================================================================== */
 (function () {
+  /* ========================================================================
+     PARAMÈTRES FACILES À MODIFIER — NAVIGATION, PRELOADER & INTERACTIONS
+     ======================================================================== */
+  const CONFIG = {
+    preloaderDurationMs: 860, // Durée du chargement initial (ms)
+    stationCooldownMs: 320,   // Anti-rebond entre deux changements de station (ms)
+    wheelThresholdPx: 16,     // Sensibilité minimale de la molette
+    swipeThresholdPx: 54,     // Distance minimale de swipe vertical sur mobile (px)
+    emailFallback: 'victorvalroff@hotmail.com'
+  };
+
   document.addEventListener('DOMContentLoaded', () => {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -15,7 +26,7 @@
 
     if (preloader && !reducedMotion) {
       const start = performance.now();
-      const duration = 860;
+      const duration = CONFIG.preloaderDurationMs;
 
       function tickPreloader(now) {
         const t = Math.min((now - start) / duration, 1);
@@ -223,7 +234,7 @@
     let currentIndex = 0;
     let isTransitioning = false;
     let reticleTimer = null;
-    const COOLDOWN_MS = 320;
+    const COOLDOWN_MS = CONFIG.stationCooldownMs;
 
     function triggerReticle(code, alt) {
       if (reticleLayer && reticleStatus) {
