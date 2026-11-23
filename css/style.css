@@ -781,7 +781,7 @@ body {
 }
 
 .orange-stain-field.active {
-  opacity: 0.55;
+  opacity: 0.92;
 }
 
 .stain-blob {
@@ -789,7 +789,7 @@ body {
   top: 0;
   left: 0;
   border-radius: 58% 42% 66% 34% / 44% 62% 38% 56%;
-  background: radial-gradient(circle at 42% 45%, rgba(255, 77, 28, 0.52), rgba(255, 77, 28, 0.14) 55%, rgba(255, 77, 28, 0) 76%);
+  background: radial-gradient(circle at 42% 45%, rgba(255, 77, 28, 0.88), rgba(255, 77, 28, 0.45) 52%, rgba(255, 77, 28, 0) 76%);
   filter: blur(11px);
   mix-blend-mode: multiply;
   will-change: transform;

@@ -121,11 +121,11 @@
               moving = true;
               st.el.style.transform = `translate3d(0, ${st.y.toFixed(1)}px, 0) rotate(${st.rot.toFixed(1)}deg) scale(${st.scale.toFixed(3)})`;
               if (st.glow > 0.04) {
-                const a = Math.min(1, st.glow).toFixed(2);
-                const ox = (-st.glow * 2.4).toFixed(1);
-                const oy = (-st.glow * 2.0).toFixed(1);
-                // Liseré orange #FF4D1C net façon sbwebdesign.ch + très léger flou
-                st.el.style.textShadow = `${ox}px ${oy}px 0 rgba(255, 77, 28, ${a}), 0 0 6px rgba(255, 77, 28, ${(st.glow * 0.32).toFixed(2)})`;
+                const a = Math.min(1, st.glow * 1.15).toFixed(2);
+                const ox = (-st.glow * 3.8).toFixed(1);
+                const oy = (-st.glow * 3.0).toFixed(1);
+                // Liseré orange #FF4D1C franc et marqué façon sbwebdesign.ch
+                st.el.style.textShadow = `${ox}px ${oy}px 0 rgba(255, 77, 28, ${a}), ${(st.glow * 2.2).toFixed(1)}px ${(st.glow * 1.8).toFixed(1)}px 0 rgba(255, 77, 28, ${(st.glow * 0.65).toFixed(2)}), 0 0 10px rgba(255, 77, 28, ${(st.glow * 0.55).toFixed(2)})`;
               } else {
                 st.el.style.textShadow = '';
               }
