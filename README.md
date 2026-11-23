@@ -1,6 +1,6 @@
-# Portfolio V2 — Victor Valroff Chhun
+# Portfolio — Victor Valroff Chhun
 
-Portfolio éditorial & architectural (1ère année **BUT Génie Civil – Construction Durable**, IUT de Nancy-Brabois), conçu en navigation par stations `100dvh` sur fond béton minéral (`#EFECE6` / `#E2DFD7` / `#121212` / Bleu Tsunami `#262CE8`).
+Portfolio éditorial & architectural (1ère année **BUT Génie Civil – Construction Durable**, IUT de Nancy-Brabois), conçu en navigation par stations `100dvh` sur fond béton minéral (`#EFECE6` / `#E2DFD7` / `#121212` / Bleu Tsunami `#262CE8` & Orange `#FF4D1C`).
 
 ## Structure du projet
 

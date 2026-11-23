@@ -1,6 +1,6 @@
 /* ==========================================================================
-   PORTFOLIO V2 — VICTOR VALROFF CHHUN
-   Béton brut éditorial × Animations sbwebdesign.ch × Repères CAO × Bleu Tsunami
+   PORTFOLIO — VICTOR VALROFF CHHUN
+   Béton brut éditorial × Animations sbwebdesign.ch × Repères CAO × Bleu Tsunami & Orange
    ========================================================================== */
 
 :root {
@@ -15,10 +15,12 @@
   --line: rgba(18, 18, 18, 0.18);
   --line-strong: rgba(18, 18, 18, 0.82);
 
-  /* Accent signature unique : Bleu Tsunami */
+  /* Accents : Bleu Tsunami + Orange sbwebdesign.ch */
   --tsunami: #262CE8;
   --tsunami-soft: rgba(38, 44, 232, 0.1);
   --tsunami-line: rgba(38, 44, 232, 0.48);
+  --orange: #FF4D1C;
+  --orange-soft: rgba(255, 77, 28, 0.14);
 
   --font-display: 'Bricolage Grotesque', 'Barlow Condensed', -apple-system, sans-serif;
   --font-condensed: 'Barlow Condensed', 'Bricolage Grotesque', sans-serif;
@@ -156,10 +158,11 @@ body {
   inset: 0;
   z-index: 0;
   background-image: url('../images/beton-fond.jpg');
-  background-size: cover;
+  background-size: 760px 760px;
+  background-repeat: repeat;
   background-position: center;
-  filter: grayscale(100%) contrast(1.06);
-  opacity: 0.34;
+  filter: grayscale(100%) brightness(1.52) contrast(1.24);
+  opacity: 0.92;
   pointer-events: none;
 }
 
@@ -167,9 +170,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 1;
-  background:
-    radial-gradient(circle at 18% 20%, rgba(239, 236, 230, 0.46), rgba(239, 236, 230, 0.78) 65%),
-    linear-gradient(180deg, rgba(239, 236, 230, 0.54) 0%, rgba(226, 223, 215, 0.42) 100%);
+  background: radial-gradient(circle at 50% 45%, rgba(239, 236, 230, 0.14), rgba(226, 223, 215, 0.34) 80%);
   pointer-events: none;
 }
 
@@ -745,6 +746,69 @@ body {
 /* ==========================================================================
    5. ST.00 — BOÎTE DE SÉLECTION + ANIMATION LETTRE PAR LETTRE (SBWEBDESIGN)
    ========================================================================== */
+/* ST.00 — Ouverture 100 % centrée sur le nom seul */
+.st0-name-only {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  min-height: 70dvh;
+}
+
+.selection-box-hero {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: clamp(22px, 3vw, 38px) clamp(24px, 3.6vw, 48px);
+  background: rgba(239, 236, 230, 0.28);
+  backdrop-filter: blur(2px);
+}
+
+.hero-title-monumental {
+  font-size: clamp(54px, 9.2vw, 142px);
+  line-height: 0.92;
+  text-align: center;
+}
+
+.scroll-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(239, 236, 230, 0.78);
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.scroll-cue:hover {
+  border-color: var(--tsunami);
+  background: var(--tsunami);
+  color: #ffffff;
+}
+
+.st4-id-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  background: rgba(239, 236, 230, 0.82);
+  font-size: 10.5px;
+  color: var(--ink-muted);
+}
+
+.st4-id-strip strong {
+  color: var(--ink);
+}
+
 .st0-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.48fr) minmax(276px, 336px);
@@ -809,14 +873,14 @@ body {
 
 .atelier-cursor span {
   margin-top: 8px;
-  padding: 2px 8px;
+  padding: 2px 9px;
   border-radius: 999px;
-  background: var(--tsunami);
+  background: var(--orange);
   color: #ffffff;
   font-size: 9.5px;
   font-weight: 600;
   letter-spacing: 0.06em;
-  box-shadow: 0 4px 12px rgba(38, 44, 232, 0.28);
+  box-shadow: 0 4px 12px rgba(255, 77, 28, 0.32);
 }
 
 @keyframes floatCursor {
@@ -872,7 +936,7 @@ body {
 }
 
 .hero-dot {
-  color: var(--ink);
+  color: var(--orange);
   display: inline-block;
 }
 
@@ -1197,7 +1261,8 @@ body {
 
 .cad-dots { display: inline-flex; gap: 5px; }
 .cad-dots i { width: 8px; height: 8px; border: 1px solid var(--ink); display: inline-block; }
-.cad-dots i:first-child { background: var(--tsunami); border-color: var(--tsunami); }
+.cad-dots i:first-child { background: var(--orange); border-color: var(--orange); }
+.cad-dots i:nth-child(2) { background: var(--tsunami); border-color: var(--tsunami); }
 
 .cad-app-badge {
   padding: 2px 6px;
@@ -1309,8 +1374,30 @@ body {
 
 .cad-node.active .cad-eye { color: var(--tsunami); }
 
+.cad-inspector-metrics {
+  margin-top: 10px;
+  padding: 8px 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 10px;
+}
+
+.cad-metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--ink-muted);
+}
+
+.cad-metric-row strong {
+  color: var(--tsunami);
+  font-weight: 700;
+}
+
 .cad-workshop-note {
-  margin-top: 12px;
+  margin-top: 8px;
   padding-top: 10px;
   border-top: 1px solid var(--line);
 }
@@ -1319,7 +1406,7 @@ body {
   display: block;
   font-size: 9.5px;
   letter-spacing: 0.1em;
-  color: var(--tsunami);
+  color: var(--orange);
   font-weight: 700;
   margin-bottom: 4px;
 }
@@ -1389,9 +1476,35 @@ body {
 
 .cad-quote-box {
   position: relative;
-  border: 1px solid var(--tsunami-line);
-  background: rgba(239, 236, 230, 0.72);
-  padding: 24px 28px;
+  border: 1px solid var(--tsunami);
+  background: rgba(239, 236, 230, 0.82);
+  padding: 24px 28px 28px;
+  transition: box-shadow 0.3s ease;
+}
+
+.cad-live-cursor {
+  position: absolute;
+  top: -18px;
+  right: 22px;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 3px;
+  pointer-events: none;
+  transition: transform 0.55s var(--ease-expo);
+  z-index: 6;
+}
+
+.cad-live-cursor span {
+  margin-top: 8px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--orange);
+  color: #ffffff;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(255, 77, 28, 0.3);
 }
 
 .cad-quote-kicker {
@@ -1409,18 +1522,22 @@ body {
   line-height: 1.24;
   letter-spacing: -0.02em;
   color: var(--ink);
-  transition: letter-spacing 0.35s var(--ease-expo);
+  transition: letter-spacing 0.35s var(--ease-expo), line-height 0.35s var(--ease-expo);
 }
 
 .m-seg {
-  transition: color 0.25s ease, background-color 0.25s ease, font-variation-settings 0.3s ease;
+  position: relative;
+  transition: color 0.25s ease, background-color 0.25s ease, font-variation-settings 0.3s ease, text-decoration-color 0.25s ease;
   padding: 0 2px;
+  text-decoration: underline 2px transparent;
+  text-underline-offset: 4px;
 }
 
 .m-seg.is-highlighted {
   color: var(--tsunami);
   background: var(--tsunami-soft);
-  font-variation-settings: 'wght' 760;
+  font-variation-settings: 'wght' 780;
+  text-decoration-color: var(--orange);
 }
 
 .cad-hud-bottom {
@@ -1558,7 +1675,7 @@ body {
   white-space: nowrap;
 }
 
-.m-star { color: var(--tsunami); font-size: 12px; transition: color 0.3s ease; }
+.m-star { color: var(--orange); font-size: 12px; transition: color 0.3s ease; }
 .marquee-bar.station-pulse .m-star { color: var(--bg-concrete); }
 
 @keyframes marqueeScroll {

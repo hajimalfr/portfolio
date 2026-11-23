@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#EFECE6">
   <meta name="description" content="Portfolio de Victor Valroff Chhun — Étudiant en 1ère année de BUT Génie Civil – Construction Durable (IUT de Nancy-Brabois), objectif ingénieur en génie civil.">
-  <title>Victor Valroff Chhun — Portfolio V2 · BUT GCCD</title>
+  <title>Victor Valroff Chhun — Portfolio · BUT GCCD</title>
 
   <!-- Typographies éditoriales & techniques : Bricolage Grotesque, Barlow Condensed, Plus Jakarta Sans, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +18,7 @@
   <!-- Preloader à remplissage vertical inspiré de sbwebdesign.ch -->
   <div class="preloader" id="preloader" aria-hidden="true">
     <div class="preloader-top mono">
-      <span>PORTFOLIO // V2 · BUT GCCD</span>
+      <span>PORTFOLIO // BUT GCCD</span>
       <span>IUT NANCY-BRABOIS</span>
     </div>
     <div class="preloader-center">
@@ -53,7 +53,7 @@
     <div class="header-left">
       <button type="button" class="brand-btn" data-goto="0" aria-label="Retour à la station 00">
         <span class="brand-dot" aria-hidden="true"></span>
-        <span class="brand-code">VVC // V2</span>
+        <span class="brand-code">VVC // GCCD</span>
       </button>
       <span class="header-sep" aria-hidden="true">/</span>
       <span class="header-loc mono">48.66°N 6.15°E · NANCY</span>
@@ -138,108 +138,37 @@
         <path class="ribbon-path" d="M-40 540 C 260 520, 420 120, 740 240 C 980 330, 1080 140, 1260 110" stroke="#262CE8" stroke-width="2" stroke-opacity="0.22"/>
       </svg>
 
-      <div class="station-inner st0-layout">
-        <div class="st0-hero">
-          <div class="st-meta-bar mono">
-            <span class="st-tag"># ST.00 · <span data-i18n="st0.kicker">OUVERTURE</span></span>
-            <span class="st-dim">ELV +00.00m · 1:1</span>
+      <div class="station-inner st0-name-only">
+        <!-- Boîte de sélection CAO / Figma autour du nom seul en très grand -->
+        <div class="selection-box selection-box-hero" id="heroSelectionBox">
+          <span class="sel-handle sh-tl" aria-hidden="true"></span>
+          <span class="sel-handle sh-tr" aria-hidden="true"></span>
+          <span class="sel-handle sh-bl" aria-hidden="true"></span>
+          <span class="sel-handle sh-br" aria-hidden="true"></span>
+
+          <!-- Curseur / bulle d'annotation flottante orange inspirée sbwebdesign.ch -->
+          <div class="atelier-cursor" id="atelierCursor" aria-hidden="true">
+            <svg width="13" height="15" viewBox="0 0 13 15" fill="none">
+              <path d="M1 1L11.5 7.2L6.2 8.4L4.2 13.5L1 1Z" fill="#FF4D1C" stroke="#EFECE6" stroke-width="1"/>
+            </svg>
+            <span class="mono" data-i18n="st0.cursorPill">BUT GCCD · NANCY</span>
           </div>
 
-          <!-- Boîte de sélection CAO / Figma autour du titre interactif -->
-          <div class="selection-box" id="heroSelectionBox">
-            <span class="sel-handle sh-tl" aria-hidden="true"></span>
-            <span class="sel-handle sh-tr" aria-hidden="true"></span>
-            <span class="sel-handle sh-bl" aria-hidden="true"></span>
-            <span class="sel-handle sh-br" aria-hidden="true"></span>
+          <h1 class="hero-title hero-title-monumental" id="heroTitle" aria-label="Victor Valroff Chhun.">
+            <span class="mask-row"><span class="hero-word" data-word="VICTOR">VICTOR</span></span>
+            <span class="mask-row">
+              <span class="hero-word" data-word="VALROFF">VALROFF</span>
+              <span class="hero-word hero-word-outline" data-word="CHHUN">CHHUN</span><span class="hero-dot" aria-hidden="true">.</span>
+            </span>
+          </h1>
 
-            <!-- Curseur / bulle d'annotation flottante inspirée sbwebdesign.ch -->
-            <div class="atelier-cursor" id="atelierCursor" aria-hidden="true">
-              <svg width="13" height="15" viewBox="0 0 13 15" fill="none">
-                <path d="M1 1L11.5 7.2L6.2 8.4L4.2 13.5L1 1Z" fill="#262CE8" stroke="#EFECE6" stroke-width="1"/>
-              </svg>
-              <span class="mono" data-i18n="st0.cursorPill">BUT GCCD · NANCY</span>
-            </div>
-
-            <h1 class="hero-title" id="heroTitle" aria-label="Victor Valroff Chhun.">
-              <span class="mask-row"><span class="hero-word" data-word="VICTOR">VICTOR</span></span>
-              <span class="mask-row">
-                <span class="hero-word" data-word="VALROFF">VALROFF</span>
-                <span class="hero-word hero-word-outline" data-word="CHHUN">CHHUN</span><span class="hero-dot" aria-hidden="true">.</span>
-              </span>
-            </h1>
-
-            <div class="sel-badge mono" id="heroSpecBadge">Bricolage · 96 px</div>
-          </div>
-
-          <div class="st0-bottom-row">
-            <p class="st0-lead" data-i18n="st0.lead">
-              19 ans, 1ère année <strong>BUT GCCD</strong> (IUT Nancy-Brabois, ex-PCSI Loritz) — cap <strong>ingénieur en génie civil</strong>.
-            </p>
-
-            <!-- Bouton circulaire bleu Tsunami inspiré sbwebdesign.ch -->
-            <div class="st0-actions">
-              <button type="button" class="circle-cta magnetic" data-goto="1" aria-label="Explorer les stations">
-                <span class="circle-cta-label mono" data-i18n="st0.ctaCircle">EXPLORER</span>
-                <span class="circle-cta-arrow" aria-hidden="true">↓</span>
-              </button>
-              <button type="button" class="btn-outline magnetic" data-goto="4">
-                <span data-i18n="st0.ctaManifesto">Manifeste CAO</span>
-                <span aria-hidden="true">→</span>
-              </button>
-            </div>
-          </div>
+          <div class="sel-badge mono" id="heroSpecBadge">Bricolage · 116 px</div>
         </div>
 
-        <!-- Fiche d'identité compacte + cotations 1px -->
-        <aside class="dim-frame id-card" aria-label="Fiche d'identité">
-          <div class="dim-top mono">
-            <span>REF // ID-00</span>
-            <span>NANCY · FR</span>
-          </div>
-
-          <div class="id-card-head">
-            <div class="smart-photo id-avatar" data-focal="50% 20%" data-fixed-ratio="1/1">
-              <img src="images/portrait-victor.jpg" alt="Portrait de Victor Valroff Chhun" loading="eager">
-              <div class="photo-fallback" aria-hidden="true">
-                <span class="mono">VVC</span>
-              </div>
-            </div>
-            <div>
-              <div class="id-name">Victor Valroff Chhun</div>
-              <div class="id-sub mono" data-i18n="st0.idSub">19 ans · Permis B</div>
-            </div>
-          </div>
-
-          <dl class="id-specs">
-            <div class="id-row">
-              <dt class="mono" data-i18n="st0.kForm">FORMATION</dt>
-              <dd data-i18n="st0.vForm">BUT GCCD · 1ère année</dd>
-            </div>
-            <div class="id-row">
-              <dt class="mono" data-i18n="st0.kInst">IUT</dt>
-              <dd>Nancy-Brabois (UL)</dd>
-            </div>
-            <div class="id-row">
-              <dt class="mono" data-i18n="st0.kPrev">PARCOURS</dt>
-              <dd>CPGE PCSI → BUT GCCD</dd>
-            </div>
-            <div class="id-row">
-              <dt class="mono" data-i18n="st0.kGoal">OBJECTIF</dt>
-              <dd data-i18n="st0.vGoal">Ingénieur Génie Civil</dd>
-            </div>
-            <div class="id-row">
-              <dt class="mono" data-i18n="st0.kStage">STAGE S2</dt>
-              <dd data-i18n="st0.vStage">4 sem. · Mai–Juin</dd>
-            </div>
-          </dl>
-
-          <div class="id-card-foot">
-            <a href="https://www.16personalities.com/fr/profils/af633b606aec5" target="_blank" rel="noopener noreferrer" class="discreet-badge mono" title="Profil de personnalité">
-              INTP-A ↗
-            </a>
-            <span class="mono id-status"><i class="pulse-dot"></i> <span data-i18n="st0.avail">DISPO STAGE</span></span>
-          </div>
-        </aside>
+        <button type="button" class="scroll-cue mono magnetic" data-goto="1" aria-label="Explorer les stations">
+          <span data-i18n="st0.ctaCircle">EXPLORER</span>
+          <span class="scroll-cue-arrow" aria-hidden="true">↓</span>
+        </button>
       </div>
     </section>
 
@@ -435,6 +364,12 @@
     <section class="station" id="station-4" data-index="4" data-alt="+16.80m" data-code="ST.04" aria-label="Station 04 — Manifeste CAO, Parcours & Contact">
       <div class="station-inner st4-layout">
 
+        <!-- Bandeau identité compacte (déplacé de ST.00 pour garder l'ouverture 100% pure) -->
+        <div class="st4-id-strip mono">
+          <span data-i18n="st0.lead">19 ans · 1ère année <strong>BUT GCCD</strong> (IUT Nancy-Brabois, ex-PCSI Loritz) · Cap <strong>ingénieur génie civil</strong> · Stage 4 sem. Mai–Juin</span>
+          <a href="https://www.16personalities.com/fr/profils/af633b606aec5" target="_blank" rel="noopener noreferrer" class="discreet-badge">INTP-A ↗</a>
+        </div>
+
         <!-- Grande fenêtre Manifeste façon Fusion 360 / AutoCAD -->
         <div class="cad-window" id="cadWindow">
           <!-- Barre supérieure fenêtre CAO -->
@@ -442,7 +377,7 @@
             <div class="cad-win-left">
               <span class="cad-dots" aria-hidden="true"><i></i><i></i><i></i></span>
               <span class="cad-app-badge mono">FUSION // CAO</span>
-              <span class="cad-doc-name mono">MANIFESTE_GCCD_V2.f3d</span>
+              <span class="cad-doc-name mono">MANIFESTE_GCCD.f3d</span>
             </div>
 
             <!-- Ruban d'onglets : Manifeste CAO + mini-onglets discrets S1→S6 & Ikigai -->
@@ -496,6 +431,22 @@
                 </ul>
               </div>
 
+              <!-- Inspecteur live inspiré sbwebdesign.ch -->
+              <div class="cad-inspector-metrics mono">
+                <div class="cad-metric-row">
+                  <span data-i18n="cad.mScale">ÉCHELLE</span>
+                  <strong id="cadMetricScale">100%</strong>
+                </div>
+                <div class="cad-metric-row">
+                  <span data-i18n="cad.mWeight">GRAISSE</span>
+                  <strong id="cadMetricWeight">640</strong>
+                </div>
+                <div class="cad-metric-row">
+                  <span data-i18n="cad.mTrack">APPROCHE</span>
+                  <strong id="cadMetricTrack">-0.02em</strong>
+                </div>
+              </div>
+
               <div class="cad-workshop-note">
                 <span class="mono cad-note-label" data-i18n="cad.noteLabel">NOTE D'ATELIER</span>
                 <p id="cadNoteText" data-i18n="cad.noteDefault">
@@ -521,17 +472,28 @@
                     <span class="mono">TOP / ISO</span>
                   </div>
 
-                  <!-- Contenu transformé par zoom/pan avec cadre de sélection CAO -->
+                  <!-- Contenu transformé par zoom/pan avec cadre de sélection CAO & curseur orange -->
                   <div class="cad-canvas-content" id="cadContent">
-                    <div class="cad-quote-box">
+                    <div class="cad-quote-box" id="cadQuoteBox">
                       <span class="sel-handle sh-tl" aria-hidden="true"></span>
                       <span class="sel-handle sh-tr" aria-hidden="true"></span>
                       <span class="sel-handle sh-bl" aria-hidden="true"></span>
                       <span class="sel-handle sh-br" aria-hidden="true"></span>
+
+                      <!-- Curseur d'atelier orange synchronisé au zoom -->
+                      <div class="cad-live-cursor" id="cadLiveCursor" aria-hidden="true">
+                        <svg width="13" height="15" viewBox="0 0 13 15" fill="none">
+                          <path d="M1 1L11.5 7.2L6.2 8.4L4.2 13.5L1 1Z" fill="#FF4D1C" stroke="#EFECE6" stroke-width="1"/>
+                        </svg>
+                        <span class="mono" id="cadCursorComment">Du plan au réel ✓</span>
+                      </div>
+
                       <div class="cad-quote-kicker mono" data-i18n="cad.quoteKicker">MANIFESTE // GÉNIE CIVIL VS ARCHITECTURE</div>
                       <blockquote class="cad-manifesto-text" id="cadManifestoText">
                         « <span class="m-seg" data-seg="design" data-i18n="cad.segDesign">Le design d’un objet est une chose très importante pour moi,</span> <span class="m-seg" data-seg="realisation" data-i18n="cad.segReal">mais sa réalisation</span> <span class="m-seg" data-seg="utilite" data-i18n="cad.segUtil">et son utilité concrète me paraissent nécessaires à son appréciation.</span> <span class="m-seg" data-seg="choix" data-i18n="cad.segChoix">C’est pourquoi j’ai préféré le génie civil à l’architecture.</span> »
                       </blockquote>
+
+                      <div class="sel-badge mono" id="cadQuoteBadge">Bricolage · 28 px · 100%</div>
                     </div>
                   </div>
 

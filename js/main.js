@@ -87,23 +87,23 @@
             const dy = my - cy;
             const dist = Math.hypot(dx, dy);
 
-            // Onde de proximité gaussienne lettre par lettre
-            const influence = Math.exp(-(dist * dist) / (2 * 92 * 92));
+            // Onde de proximité gaussienne ample et expressive lettre par lettre
+            const influence = Math.exp(-(dist * dist) / (2 * 155 * 155));
 
-            if (influence > 0.04) {
-              const lift = -influence * 11;
-              const tilt = Math.max(-7, Math.min(7, (dx / 55) * influence * 6.5));
-              const scaleY = 1 + influence * 0.1;
-              const scaleX = 1 + influence * 0.04;
-              const wght = Math.round(740 + influence * 60);
-              const shadowAlpha = (influence * 0.34).toFixed(2);
-              const shadowX = (-influence * 3.2).toFixed(1);
-              const shadowY = (-influence * 2.4).toFixed(1);
+            if (influence > 0.03) {
+              const lift = -influence * 26;
+              const tilt = Math.max(-13, Math.min(13, (dx / 42) * influence * 12));
+              const scaleY = 1 + influence * 0.22;
+              const scaleX = 1 + influence * 0.1;
+              const wght = Math.round(700 + influence * 100);
+              const shadowAlpha = (influence * 0.96).toFixed(2);
+              const shadowX = (-influence * 5.2).toFixed(1);
+              const shadowY = (-influence * 3.6).toFixed(1);
 
               letter.classList.add('is-active');
               letter.style.transform = `translate3d(0, ${lift.toFixed(1)}px, 0) rotate(${tilt.toFixed(1)}deg) scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)})`;
               letter.style.fontVariationSettings = `'wght' ${wght}, 'opsz' 96`;
-              letter.style.textShadow = `${shadowX}px ${shadowY}px 0 rgba(18, 18, 18, ${shadowAlpha})`;
+              letter.style.textShadow = `${shadowX}px ${shadowY}px 0 rgba(255, 77, 28, ${shadowAlpha})`;
             } else {
               letter.classList.remove('is-active');
               letter.style.transform = '';
@@ -235,7 +235,7 @@
       'wheel',
       (e) => {
         if (cvModal && cvModal.classList.contains('open')) return;
-        if (e.target.closest('#cadViewport')) return;
+        if (e.defaultPrevented) return;
         if (Math.abs(e.deltaY) < 16) return;
 
         const activeSt = stations[currentIndex];
