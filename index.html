@@ -258,7 +258,7 @@
             <span class="photo-ratio-readout" data-ratio-label>RATIO AUTO</span>
           </div>
           <div class="smart-photo photo-reveal" data-focal="50% 35%">
-            <img src="images/voyages.jpg" alt="Voyages et ouverture internationale" loading="lazy">
+            <img id="voyagesImg" src="images/voyages.jpg" alt="Voyages et ouverture internationale" loading="lazy">
             <div class="photo-fallback photo-fallback-cad" aria-hidden="true">
               <svg viewBox="0 0 640 400" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="320" cy="200" r="142" stroke="#121212" stroke-opacity="0.2" stroke-dasharray="4 6"/>
@@ -273,8 +273,13 @@
             </div>
           </div>
           <figcaption class="dim-bottom mono">
+            <div class="photo-switcher" role="group" aria-label="Galerie Voyages">
+              <button type="button" class="photo-sw-btn active" data-swap-target="voyagesImg" data-swap-src="images/voyages.jpg">01</button>
+              <button type="button" class="photo-sw-btn" data-swap-target="voyagesImg" data-swap-src="images/voyages-2.jpg">02</button>
+              <button type="button" class="photo-sw-btn" data-swap-target="voyagesImg" data-swap-src="images/voyages-3.jpg">03</button>
+              <button type="button" class="photo-sw-btn" data-swap-target="voyagesImg" data-swap-src="images/voyages-4.jpg">04</button>
+            </div>
             <span data-i18n="st2.capLeft">CAMBRIDGE FIRST · B2</span>
-            <span>FR · EN · ES</span>
           </figcaption>
         </figure>
 
@@ -350,7 +355,7 @@
               <span class="photo-ratio-readout" data-ratio-label>RATIO AUTO</span>
             </div>
             <div class="smart-photo photo-reveal" data-focal="50% 25%">
-              <img src="images/breaking-tsunami.jpg" alt="Breaking et Association Tsunami à Nancy" loading="lazy">
+              <img id="breakingImg" src="images/breaking-tsunami.jpg" alt="Breaking et Association Tsunami à Nancy" loading="lazy">
               <div class="photo-fallback photo-fallback-cad" aria-hidden="true">
                 <svg viewBox="0 0 360 280" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M24 212 C95 82, 185 68, 250 146 C276 174, 308 178, 336 142" stroke="#262CE8" stroke-width="2.2"/>
@@ -360,6 +365,13 @@
                 <span class="fallback-tag mono">images/breaking-tsunami.jpg</span>
               </div>
             </div>
+            <figcaption class="dim-bottom mono">
+              <div class="photo-switcher" role="group" aria-label="Galerie Breaking">
+                <button type="button" class="photo-sw-btn active" data-swap-target="breakingImg" data-swap-src="images/breaking-tsunami.jpg">01</button>
+                <button type="button" class="photo-sw-btn" data-swap-target="breakingImg" data-swap-src="images/breaking-2.jpg">02</button>
+              </div>
+              <span>BREAKING · COLLECTIF</span>
+            </figcaption>
           </figure>
         </div>
       </div>

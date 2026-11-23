@@ -399,6 +399,27 @@
       if (img.complete && img.naturalWidth > 0) handleLoaded();
     });
 
+    /* Sélecteur multi-photos (ST.02 Voyages & ST.03 Breaking) */
+    document.querySelectorAll('.photo-sw-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-swap-target');
+        const nextSrc = btn.getAttribute('data-swap-src');
+        const img = targetId ? document.getElementById(targetId) : null;
+        if (!img || !nextSrc) return;
+
+        const group = btn.closest('.photo-switcher');
+        if (group) {
+          group.querySelectorAll('.photo-sw-btn').forEach((b) => b.classList.toggle('active', b === btn));
+        }
+
+        img.style.opacity = '0.25';
+        img.src = nextSrc;
+        img.onload = () => {
+          img.style.opacity = '';
+        };
+      });
+    });
+
     /* ----------------------------------------------------------------------
        5. MODALE CV & COPIE E-MAIL
        ---------------------------------------------------------------------- */
