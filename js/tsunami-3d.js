@@ -118,8 +118,9 @@
 
     function resize() {
       const rect = wrap.getBoundingClientRect();
-      cw = Math.max(160, Math.round(rect.width));
-      ch = Math.max(100, Math.round(rect.height));
+      if (rect.width < 10 || rect.height < 10) return;
+      cw = Math.round(rect.width);
+      ch = Math.round(rect.height);
       canvas.width = Math.round(cw * DPR);
       canvas.height = Math.round(ch * DPR);
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
@@ -141,41 +142,41 @@
       ctx.clearRect(0, 0, cw, ch);
 
       const cx = cw / 2;
-      const cy = ch / 2 + Math.sin(time * 1.8) * 4;
+      const cy = ch * 0.45 + Math.sin(time * 1.6) * 2.5;
 
-      // Ombre portée douce sur le béton
+      // Ombre portée douce proportionnée au cadre compact
       ctx.save();
       ctx.beginPath();
-      ctx.ellipse(cx, ch * 0.84, cw * 0.28, 10, 0, 0, Math.PI * 2);
+      ctx.ellipse(cx, ch * 0.78, Math.min(cw * 0.24, ch * 0.55), 6, 0, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(18, 18, 18, 0.12)';
       ctx.fill();
       ctx.restore();
 
       if (frontSprite) {
-        const baseW = Math.min(cw * 0.82, ch * 0.72 * spriteRatio);
+        const baseW = Math.min(cw * 0.72, ch * 0.62 * spriteRatio);
         const baseH = baseW / spriteRatio;
 
         const cosY = Math.cos(rotY);
         const sinY = Math.sin(rotY);
         const sinX = Math.sin(rotX);
 
-        // Extrusion 3D en 18 couches empilées
-        const layers = 18;
-        const thickness = 18;
+        // Extrusion 3D en 14 couches proportionnées au cadre compact
+        const layers = 14;
+        const thickness = Math.min(12, ch * 0.085);
         const scaleX = Math.abs(cosY) < 0.04 ? (cosY >= 0 ? 0.04 : -0.04) : cosY;
-        const skewY = sinY * sinX * 0.28;
+        const skewY = sinY * sinX * 0.22;
 
         for (let i = 0; i < layers; i++) {
-          const t = i / (layers - 1) - 0.5; // -0.5 (arrière) à +0.5 (avant)
+          const t = i / (layers - 1) - 0.5;
           const z = t * thickness;
-          const offsetX = sinY * z * 1.45;
-          const offsetY = -sinX * z * 0.9;
+          const offsetX = sinY * z * 1.25;
+          const offsetY = -sinX * z * 0.75;
 
           const isFrontFace = (cosY >= 0 && i === layers - 1) || (cosY < 0 && i === 0);
 
           ctx.save();
           ctx.translate(cx + offsetX, cy + offsetY);
-          ctx.transform(scaleX, skewY, 0, Math.cos(rotX * 0.5), 0, 0);
+          ctx.transform(scaleX, skewY, 0, Math.cos(rotX * 0.45), 0, 0);
 
           if (isFrontFace) {
             ctx.globalAlpha = 1;
@@ -248,6 +249,9 @@
       });
     }
 
+    if (typeof ResizeObserver !== 'undefined') {
+      new ResizeObserver(resize).observe(wrap);
+    }
     window.addEventListener('resize', resize);
     resize();
     loadLogo();

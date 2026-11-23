@@ -267,15 +267,15 @@
     function render(now) {
       const t = (now - startTime) * 0.001;
 
-      // Onde liquide autonome quand la souris n'est pas sur le titre
-      if (!reducedMotion && now - lastPointerTime > 1800) {
-        ambientPhase += 0.014;
-        const cycle = ambientPhase % 2.6;
-        if (cycle < 1.15) {
-          const waveX = 0.06 + (cycle / 1.15) * 0.88;
-          const waveY = 0.5 + Math.sin(cycle * 6.0) * 0.07;
-          if (Math.floor(ambientPhase * 60) % 3 === 0) {
-            addDrop(waveX, waveY, 0.022, Math.cos(cycle * 6.0) * 0.008, 0.85);
+      // Onde liquide autonome lente et fluide quand la souris n'est pas sur le titre
+      if (!reducedMotion && now - lastPointerTime > 2400) {
+        ambientPhase += 0.0045;
+        const cycle = ambientPhase % 4.2;
+        if (cycle < 1.9) {
+          const waveX = 0.06 + (cycle / 1.9) * 0.88;
+          const waveY = 0.5 + Math.sin(cycle * 3.4) * 0.06;
+          if (Math.floor(ambientPhase * 120) % 4 === 0) {
+            addDrop(waveX, waveY, 0.013, Math.cos(cycle * 3.4) * 0.004, 0.82);
           }
         }
       }
@@ -283,9 +283,9 @@
       for (let i = 0; i < MAX_DROPS; i++) {
         const d = drops[i];
         if (d.life > 0) {
-          d.life = Math.max(0, d.life - 0.013); // retour fluide légèrement plus long
-          d.vx *= 0.945;
-          d.vy *= 0.945;
+          d.life = Math.max(0, d.life - 0.0095); // retour plus doux et progressif
+          d.vx *= 0.955;
+          d.vy *= 0.955;
         }
         dropUniforms[i * 4] = d.x;
         dropUniforms[i * 4 + 1] = d.y;
