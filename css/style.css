@@ -2622,7 +2622,8 @@ body {
 
 .mobile-progress,
 .mobile-st-pill,
-.li-mobile {
+.li-mobile,
+.traj-dots {
   display: none;
 }
 
@@ -2888,10 +2889,14 @@ body {
     display: flex !important;
     flex-direction: row;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    scroll-padding-left: 16px;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
     -webkit-overflow-scrolling: touch;
     gap: 12px;
-    padding: 4px 16px 12px;
+    padding: 4px 20vw 12px 16px;
     margin: 0 -16px;
     scrollbar-width: none;
   }
@@ -2899,8 +2904,8 @@ body {
   .traj-grid::-webkit-scrollbar { display: none; }
 
   .traj-step {
-    flex: 0 0 78vw;
-    scroll-snap-align: center;
+    flex: 0 0 76vw;
+    scroll-snap-align: start;
     border-radius: 14px;
     padding: 16px;
     border: 1px solid var(--line);
@@ -2908,6 +2913,31 @@ body {
     background: rgba(239, 236, 230, 0.88);
     backdrop-filter: blur(8px);
     box-shadow: 0 10px 24px -10px rgba(18, 18, 18, 0.14);
+    cursor: pointer;
+  }
+
+  .traj-dots {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 2px;
+  }
+
+  .traj-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    border: none;
+    padding: 0;
+    background: var(--line-strong);
+    opacity: 0.35;
+    transition: width 0.25s var(--ease-expo), opacity 0.2s ease, background-color 0.2s ease;
+  }
+
+  .traj-dot.active {
+    width: 22px;
+    opacity: 1;
+    background: var(--tsunami);
   }
 
   .traj-step-accent {

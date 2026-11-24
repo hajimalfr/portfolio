@@ -494,6 +494,38 @@
         mobileBlocks.forEach((el) => blockObs.observe(el));
       }
 
+      // Swipe fluide ST.02A : tap sur une carte qui dépasse ou sur les points S1/S2/S3
+      const trajGrid = document.querySelector('.traj-grid');
+      const trajSteps = trajGrid ? Array.from(trajGrid.querySelectorAll('.traj-step')) : [];
+      const trajDots = Array.from(document.querySelectorAll('.traj-dot'));
+      if (trajGrid && trajSteps.length) {
+        const focusTraj = (idx) => {
+          const card = trajSteps[idx];
+          if (!card) return;
+          trajGrid.scrollTo({ left: Math.max(0, card.offsetLeft - 16), behavior: 'smooth' });
+        };
+
+        trajSteps.forEach((step, idx) => {
+          step.addEventListener('click', () => focusTraj(idx));
+        });
+        trajDots.forEach((dot, idx) => {
+          dot.addEventListener('click', () => focusTraj(idx));
+        });
+
+        trajGrid.addEventListener(
+          'scroll',
+          () => {
+            const left = trajGrid.scrollLeft + 24;
+            let active = 0;
+            trajSteps.forEach((step, idx) => {
+              if (step.offsetLeft <= left + step.offsetWidth * 0.45) active = idx;
+            });
+            trajDots.forEach((d, i) => d.classList.toggle('active', i === active));
+          },
+          { passive: true }
+        );
+      }
+
       mobileBlocks.forEach((el) => {
         let touchTimer = null;
         el.addEventListener(
