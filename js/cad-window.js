@@ -202,55 +202,34 @@
       kickAnim();
     }
 
-    /* API exposée à main.js pour piloter obligatoirement l'arche zoom→dézoom sur ST.04
-       (molette partout sur ST.04 + swipe tactile sur téléphone, sans jamais bloquer) */
-    function stepArch(direction, isSwipe = false) {
-      if (direction < 0 && targetProgress <= 0.01) return false; // Prêt à remonter vers ST.03
-      if (direction > 0 && targetProgress >= 0.99) return false; // Arche terminée -> descendre vers ST.05
+    /* Scrollytelling sticky synchronisé sur le défilement continu de #stage (PC & mobile)
+       => Zoom 100 % -> pic -> retour 100 % au fil du scroll, zéro blocage possible */
+    const stageEl = document.getElementById('stage');
+    const st4El = document.getElementById('station-4');
 
-      const step = isSwipe ? CONFIG.swipeStep : CONFIG.wheelStep;
-      targetProgress = clamp(targetProgress + Math.sign(direction) * step, 0, 1);
-
-      if (targetProgress <= 0.05 || targetProgress >= 0.95) {
-        targetPanX = 0;
-        targetPanY = 0;
+    function syncFromScroll() {
+      if (!stageEl || !st4El) return;
+      const track = Math.max(1, st4El.offsetHeight - stageEl.clientHeight);
+      const scrolled = stageEl.scrollTop - st4El.offsetTop;
+      const nextP = clamp(scrolled / track, 0, 1);
+      if (Math.abs(nextP - targetProgress) > 0.002) {
+        targetProgress = nextP;
+        if (targetProgress <= 0.05 || targetProgress >= 0.95) {
+          targetPanX = 0;
+          targetPanY = 0;
+        }
+        kickAnim();
       }
-      kickAnim();
-      return true;
     }
 
-    function prepareOnEnter(fromIndex) {
-      targetProgress = fromIndex > 4 ? 1 : 0;
-      progress = targetProgress;
-      targetPanX = 0;
-      targetPanY = 0;
-      panX = 0;
-      panY = 0;
-      scale = 1.0;
-      manifestoText.style.fontSize = `${BASE_FONT_PX}px`;
-      content.style.transform = 'translate3d(0px, 0px, 0)';
-      applyStep(targetProgress >= 0.9 ? 'choix' : 'realisation');
-      updateReadouts();
+    if (stageEl) {
+      stageEl.addEventListener('scroll', syncFromScroll, { passive: true });
+      window.addEventListener('resize', syncFromScroll);
     }
 
     window.CadManifestoController = {
-      stepArch,
-      prepareOnEnter
+      syncFromScroll
     };
-
-    /* Molette directement dans le viewport CAO */
-    viewport.addEventListener(
-      'wheel',
-      (e) => {
-        const dir = Math.sign(e.deltaY);
-        if (!dir) return;
-        if (stepArch(dir, false)) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
-      },
-      { passive: false }
-    );
 
     /* Pan au glisser (souris/trackpad — sur téléphone le swipe vertical pilote l'arche) */
     viewport.addEventListener('pointerdown', (e) => {

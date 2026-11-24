@@ -8,9 +8,8 @@
      ======================================================================== */
   const CONFIG = {
     preloaderDurationMs: 860, // Durée du chargement initial (ms)
-    stationCooldownMs: 820,   // Anti-rebond entre deux changements de station (absorbe l'inertie PC/trackpad)
-    wheelThresholdPx: 95,     // Cumul de molette nécessaire pour changer de station
-    swipeThresholdPx: 105,    // Distance minimale de swipe vertical sur mobile (px)
+    desktopWheelFactor: 0.45, // Vitesse du défilé continu sur PC (plus petit = plus lent et posé)
+    desktopWheelLerp: 0.1,    // Douceur de l'inertie sur PC (0.08–0.14)
     emailFallback: 'victorvalroff@hotmail.com'
   };
 
@@ -248,10 +247,39 @@
     }
 
     const stageEl = document.getElementById('stage');
-    const isMobileFeed = () => window.innerWidth <= 640;
+    const isDesktopPointer = () => window.matchMedia('(pointer: fine)').matches && window.innerWidth > 640;
 
-    function updateAltimeterUi(idx) {
+    let smoothTargetY = 0;
+    let smoothRaf = null;
+
+    function stopSmoothWheel() {
+      if (smoothRaf) {
+        cancelAnimationFrame(smoothRaf);
+        smoothRaf = null;
+      }
+      if (stageEl) smoothTargetY = stageEl.scrollTop;
+    }
+
+    function runSmoothWheel() {
+      if (!stageEl) return;
+      const diff = smoothTargetY - stageEl.scrollTop;
+      if (Math.abs(diff) < 0.6) {
+        stageEl.scrollTop = smoothTargetY;
+        smoothRaf = null;
+        return;
+      }
+      stageEl.scrollTop += diff * CONFIG.desktopWheelLerp;
+      smoothRaf = requestAnimationFrame(runSmoothWheel);
+    }
+
+    function updateAltimeterUi(idx, triggerLock = false) {
+      const changed = idx !== currentIndex;
       currentIndex = idx;
+
+      stations.forEach((st, i) => {
+        st.classList.toggle('active', i === currentIndex);
+      });
+
       altStops.forEach((stop, i) => {
         const active = i === currentIndex;
         stop.classList.toggle('active', active);
@@ -261,6 +289,8 @@
 
       const activeStation = stations[currentIndex];
       const alt = activeStation.getAttribute('data-alt') || '+00.00m';
+      const code = activeStation.getAttribute('data-code') || 'ST.00';
+
       if (altValue) altValue.textContent = alt;
       if (altProgress) {
         const pct = (currentIndex / Math.max(1, stations.length - 1)) * 100;
@@ -268,65 +298,43 @@
       }
       if (btnPrev) btnPrev.disabled = currentIndex === 0;
       if (btnNext) btnNext.disabled = currentIndex === stations.length - 1;
+
+      if (triggerLock && changed) {
+        triggerReticle(code, alt);
+      }
     }
 
     function goToStation(nextIndex, immediate = false) {
       const clamped = Math.max(0, Math.min(stations.length - 1, nextIndex));
+      stopSmoothWheel();
+      updateAltimeterUi(clamped, !immediate);
 
-      // Sur téléphone : défilement continu fluide vers la station (jamais brusque)
-      if (isMobileFeed()) {
-        updateAltimeterUi(clamped);
-        if (!immediate && stations[clamped]) {
-          stations[clamped].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (stageEl && stations[clamped]) {
+        const destTop = stations[clamped].offsetTop;
+        if (immediate) {
+          stageEl.scrollTop = destTop;
+          smoothTargetY = destTop;
+        } else {
+          stageEl.scrollTo({ top: destTop, behavior: 'smooth' });
+          smoothTargetY = destTop;
         }
-        return;
       }
-
-      if (!immediate && (clamped === currentIndex || isTransitioning)) return;
-
-      const prevIndex = currentIndex;
-      isTransitioning = true;
-      currentIndex = clamped;
-
-      if (currentIndex === 4 && window.CadManifestoController) {
-        window.CadManifestoController.prepareOnEnter(prevIndex);
-      }
-
-      stations.forEach((st, idx) => {
-        st.classList.toggle('active', idx === currentIndex);
-        st.classList.toggle('above', idx < currentIndex);
-      });
-
-      updateAltimeterUi(currentIndex);
-
-      const activeStation = stations[currentIndex];
-      const alt = activeStation.getAttribute('data-alt') || '+00.00m';
-      const code = activeStation.getAttribute('data-code') || 'ST.00';
-
-      if (!immediate) {
-        triggerReticle(code, alt);
-      }
-
-      setTimeout(() => {
-        isTransitioning = false;
-      }, immediate ? 0 : COOLDOWN_MS);
     }
 
-    // Sur téléphone : synchronisation en direct de l'altimètre pendant le défilement continu
+    // Synchronisation continue de la station active pendant le défilé (PC & téléphone)
     if (stageEl && typeof IntersectionObserver !== 'undefined') {
-      const mobileObs = new IntersectionObserver(
+      const obs = new IntersectionObserver(
         (entries) => {
-          if (!isMobileFeed()) return;
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               const idx = parseInt(entry.target.getAttribute('data-index'), 10);
-              if (!Number.isNaN(idx)) updateAltimeterUi(idx);
+              if (!Number.isNaN(idx)) updateAltimeterUi(idx, true);
             }
           });
         },
-        { root: stageEl, threshold: 0.45 }
+        { root: stageEl, threshold: 0.35 }
       );
-      stations.forEach((st) => mobileObs.observe(st));
+      stations.forEach((st) => obs.observe(st));
     }
 
     document.querySelectorAll('[data-goto]').forEach((el) => {
@@ -363,52 +371,20 @@
 
     const cvModal = document.getElementById('cvModal');
 
-    let wheelAccum = 0;
-    let wheelResetTimer = null;
-
+    // Défilement vertical continu ralenti et doux sur PC (façon Lenis)
     window.addEventListener(
       'wheel',
       (e) => {
-        if (cvModal && cvModal.classList.contains('open')) return;
-        if (e.defaultPrevented) return;
-        if (Math.abs(e.deltaY) < 8) return;
+        if (!stageEl || (cvModal && cvModal.classList.contains('open'))) return;
+        if (!isDesktopPointer() || reducedMotion) return;
 
-        const activeSt = stations[currentIndex];
-        if (activeSt) {
-          const oy = getComputedStyle(activeSt).overflowY;
-          const isScrollable = (oy === 'auto' || oy === 'scroll') && activeSt.scrollHeight > activeSt.clientHeight + 6;
-          if (isScrollable) {
-            const atTop = activeSt.scrollTop <= 2;
-            const atBottom = activeSt.scrollTop + activeSt.clientHeight >= activeSt.scrollHeight - 2;
-            if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) return;
-          }
-        }
-
-        if (currentIndex === 4 && window.CadManifestoController) {
-          if (window.CadManifestoController.stepArch(Math.sign(e.deltaY), false)) {
-            wheelAccum = 0;
-            return;
-          }
-        }
-
-        if (isTransitioning) {
-          wheelAccum = 0;
-          return;
-        }
-
-        wheelAccum += e.deltaY;
-        clearTimeout(wheelResetTimer);
-        wheelResetTimer = setTimeout(() => {
-          wheelAccum = 0;
-        }, 220);
-
-        if (Math.abs(wheelAccum) < CONFIG.wheelThresholdPx) return;
-
-        const dir = wheelAccum > 0 ? 1 : -1;
-        wheelAccum = 0;
-        goToStation(currentIndex + dir);
+        e.preventDefault();
+        if (!smoothRaf) smoothTargetY = stageEl.scrollTop;
+        const maxScroll = Math.max(0, stageEl.scrollHeight - stageEl.clientHeight);
+        smoothTargetY = Math.max(0, Math.min(maxScroll, smoothTargetY + e.deltaY * CONFIG.desktopWheelFactor));
+        if (!smoothRaf) smoothRaf = requestAnimationFrame(runSmoothWheel);
       },
-      { passive: true }
+      { passive: false }
     );
 
     window.addEventListener('keydown', (e) => {
@@ -432,55 +408,6 @@
         goToStation(stations.length - 1);
       }
     });
-
-    let touchStartY = 0;
-    let touchStartX = 0;
-
-    window.addEventListener(
-      'touchstart',
-      (e) => {
-        if (isMobileFeed()) return; // Défilement continu natif sur téléphone
-        if (e.touches.length !== 1) return;
-        if (e.target.closest('#tsunamiWrap')) return;
-        touchStartY = e.touches[0].clientY;
-        touchStartX = e.touches[0].clientX;
-      },
-      { passive: true }
-    );
-
-    window.addEventListener(
-      'touchend',
-      (e) => {
-        if (isMobileFeed()) return; // Défilement continu natif sur téléphone
-        if (!touchStartY || (cvModal && cvModal.classList.contains('open'))) return;
-        if (e.target.closest('#tsunamiWrap')) return;
-        const dy = touchStartY - e.changedTouches[0].clientY;
-        const dx = Math.abs(touchStartX - e.changedTouches[0].clientX);
-        touchStartY = 0;
-
-        if (Math.abs(dy) > CONFIG.swipeThresholdPx && Math.abs(dy) > dx * 1.15) {
-          const dir = dy > 0 ? 1 : -1;
-
-          // Sur mobile, laisser finir le scroll interne si la station déborde en hauteur
-          const activeSt = stations[currentIndex];
-          if (activeSt && currentIndex !== 4) {
-            const oy = getComputedStyle(activeSt).overflowY;
-            const isScrollable = (oy === 'auto' || oy === 'scroll') && activeSt.scrollHeight > activeSt.clientHeight + 8;
-            if (isScrollable) {
-              const atTop = activeSt.scrollTop <= 4;
-              const atBottom = activeSt.scrollTop + activeSt.clientHeight >= activeSt.scrollHeight - 4;
-              if ((dir > 0 && !atBottom) || (dir < 0 && !atTop)) return;
-            }
-          }
-
-          if (currentIndex === 4 && window.CadManifestoController) {
-            if (window.CadManifestoController.stepArch(dir, true)) return;
-          }
-          goToStation(currentIndex + dir);
-        }
-      },
-      { passive: true }
-    );
 
     /* ----------------------------------------------------------------------
        4. ROGNAGE INTELLIGENT DES PHOTOS
