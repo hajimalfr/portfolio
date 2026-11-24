@@ -17,6 +17,42 @@
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     /* ----------------------------------------------------------------------
+       00. MODE SOMBRE AUTOMATIQUE (SYSTÈME TÉLÉPHONE / PC) + BOUTON MANUEL
+       ---------------------------------------------------------------------- */
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const darkMedia = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function applyTheme(theme) {
+      const isDark = theme === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      if (themeToggleBtn) {
+        themeToggleBtn.textContent = isDark ? '☀' : '☾';
+        themeToggleBtn.setAttribute('aria-pressed', String(isDark));
+      }
+    }
+
+    const savedTheme = (() => {
+      try { return localStorage.getItem('portfolio_theme'); } catch (_) { return null; }
+    })();
+
+    applyTheme(savedTheme || (darkMedia.matches ? 'dark' : 'light'));
+
+    darkMedia.addEventListener('change', (e) => {
+      const manual = (() => {
+        try { return localStorage.getItem('portfolio_theme'); } catch (_) { return null; }
+      })();
+      if (!manual) applyTheme(e.matches ? 'dark' : 'light');
+    });
+
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        try { localStorage.setItem('portfolio_theme', next); } catch (_) {}
+      });
+    }
+
+    /* ----------------------------------------------------------------------
        0. PRELOADER À REMPLISSAGE VERTICAL (SBWEBDESIGN.CH)
        ---------------------------------------------------------------------- */
     const preloader = document.getElementById('preloader');
@@ -414,6 +450,39 @@
         setTimeout(() => {
           copyEmailTag.textContent = copyText;
         }, 1800);
+      });
+    }
+
+    /* ----------------------------------------------------------------------
+       6. INTERACTIVITÉ TACTILE & FOCUS AU SCROLL SUR TÉLÉPHONE (100 % PASSIVE)
+       ---------------------------------------------------------------------- */
+    const isTouchUi = window.matchMedia('(pointer: coarse)').matches || window.innerWidth <= 640;
+    if (isTouchUi && !reducedMotion) {
+      const mobileBlocks = Array.from(document.querySelectorAll('.cote-block, .hover-card, .dim-frame'));
+
+      if (stageEl && typeof IntersectionObserver !== 'undefined') {
+        const blockObs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              entry.target.classList.toggle('is-inview', entry.isIntersecting);
+            });
+          },
+          { root: stageEl, rootMargin: '-18% 0px -18% 0px', threshold: 0.25 }
+        );
+        mobileBlocks.forEach((el) => blockObs.observe(el));
+      }
+
+      mobileBlocks.forEach((el) => {
+        let touchTimer = null;
+        el.addEventListener(
+          'touchstart',
+          () => {
+            el.classList.add('is-touched');
+            clearTimeout(touchTimer);
+            touchTimer = setTimeout(() => el.classList.remove('is-touched'), 420);
+          },
+          { passive: true }
+        );
       });
     }
 

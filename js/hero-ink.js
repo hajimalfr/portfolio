@@ -53,6 +53,7 @@
       uniform sampler2D uText;
       uniform vec2 uRes;
       uniform float uTime;
+      uniform float uDark;
       uniform vec4 uDrops[${MAX_DROPS}];
       uniform vec2 uVels[${MAX_DROPS}];
 
@@ -122,8 +123,8 @@
         vec2 uvTrail = clamp(vUv - disp * 2.65 + vec2(n1, n2) * 0.036 * min(1.5, splashMask), 0.0, 1.0);
         float alphaTrail = texture2D(uText, uvTrail).a;
 
-        vec3 colBlue   = vec3(0.149, 0.173, 0.910); // #262CE8
-        vec3 colOrange = vec3(1.000, 0.302, 0.110); // #FF4D1C
+        vec3 colBlue   = mix(vec3(0.149, 0.173, 0.910), vec3(0.320, 0.435, 1.000), uDark); // #262CE8 -> #526FFF en mode sombre
+        vec3 colOrange = mix(vec3(1.000, 0.302, 0.110), vec3(1.000, 0.380, 0.200), uDark); // #FF4D1C
         vec3 colPeach  = vec3(1.000, 0.675, 0.545);
 
         float mixOrange = smoothstep(0.16, 1.0, inkEnergy + n1 * 0.25);
@@ -166,6 +167,7 @@
 
     const uRes = gl.getUniformLocation(prog, 'uRes');
     const uTime = gl.getUniformLocation(prog, 'uTime');
+    const uDark = gl.getUniformLocation(prog, 'uDark');
     const uDropsLoc = gl.getUniformLocation(prog, 'uDrops');
     const uVelsLoc = gl.getUniformLocation(prog, 'uVels');
 
@@ -325,6 +327,7 @@
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.uniform2f(uRes, cw, ch);
       gl.uniform1f(uTime, t);
+      gl.uniform1f(uDark, document.documentElement.getAttribute('data-theme') === 'dark' ? 1.0 : 0.0);
       gl.uniform4fv(uDropsLoc, dropUniforms);
       gl.uniform2fv(uVelsLoc, velUniforms);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
