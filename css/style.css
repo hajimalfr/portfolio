@@ -2300,11 +2300,23 @@ body {
     transition: none !important;
   }
 
-  /* Allègement des blocs de texte non nécessaires sur téléphone */
+  /* Allègement & lisibilité Awwwards sur téléphone uniquement (desktop intact) */
+  .concrete-backdrop {
+    opacity: 0.74;
+    filter: grayscale(100%) brightness(1.56) contrast(1.14);
+  }
+
+  .concrete-veil {
+    background: radial-gradient(circle at 50% 45%, rgba(239, 236, 230, 0.34), rgba(226, 223, 215, 0.5) 85%);
+  }
+
   .cote-block {
     border: none;
-    background: transparent;
-    padding: 4px 2px;
+    border-left: 2px solid var(--tsunami);
+    background: rgba(239, 236, 230, 0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 10px 12px 10px 14px;
   }
 
   .cote-block::before,
@@ -2318,13 +2330,27 @@ body {
   }
 
   .st-title-compact {
-    font-size: 28px;
+    font-size: 33px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--ink);
     margin-bottom: 8px;
   }
 
-  .st-text-compact {
-    font-size: 13.5px;
+  .st-text-compact,
+  .st6-sub {
+    font-size: 15.5px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: rgba(18, 18, 18, 0.92);
     margin-bottom: 6px;
+  }
+
+  .st3-quote {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--ink);
+    background: rgba(239, 236, 230, 0.84);
   }
 
   .helmet-canvas-wrap {
