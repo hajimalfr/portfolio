@@ -618,7 +618,8 @@ body {
   transition: stroke-dashoffset 1.2s var(--ease-expo) 0.1s;
 }
 
-.station.active .ribbon-path {
+.station.active .ribbon-path,
+.station.aw-visible .ribbon-path {
   stroke-dashoffset: 0;
 }
 
@@ -658,7 +659,8 @@ body {
   transition: opacity 0.55s var(--ease-expo) 0.1s, transform 0.65s var(--ease-expo) 0.1s;
 }
 
-.station.active .st-title-compact {
+.station.active .st-title-compact,
+.station.aw-visible .st-title-compact {
   opacity: 1;
   transform: translateY(0);
 }
@@ -674,7 +676,8 @@ body {
   transition: opacity 0.55s var(--ease-expo) 0.18s, transform 0.65s var(--ease-expo) 0.18s;
 }
 
-.station.active .st-text-compact {
+.station.active .st-text-compact,
+.station.aw-visible .st-text-compact {
   opacity: 1;
   transform: translateY(0);
 }
@@ -691,7 +694,8 @@ body {
   transition: opacity 0.55s var(--ease-expo) 0.26s, transform 0.65s var(--ease-expo) 0.26s;
 }
 
-.station.active .spec-chips {
+.station.active .spec-chips,
+.station.aw-visible .spec-chips {
   opacity: 1;
   transform: translateY(0);
 }
