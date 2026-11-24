@@ -487,28 +487,32 @@ body {
 .station {
   position: relative;
   width: 100%;
-  min-height: calc(100dvh - var(--header-h));
+  min-height: 88dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(24px, 3vw, 44px) clamp(24px, 3.8vw, 52px);
+  padding: clamp(18px, 2.4vw, 32px) clamp(24px, 3.8vw, 52px);
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transform: none;
 }
 
-/* ST.04 — Piste de scrollytelling sticky pour le zoom → dézoom (PC & mobile, zéro blocage) */
+.station-inner {
+  will-change: transform, opacity;
+}
+
+/* ST.04 — Piste de scrollytelling sticky compacte (zéro grand espace avant ST.05) */
 #station-4 {
-  min-height: 220dvh;
+  min-height: 175dvh;
   align-items: flex-start;
-  padding-top: 24px;
-  padding-bottom: 24px;
+  padding-top: 20px;
+  padding-bottom: 0;
 }
 
 .st4-layout {
   position: sticky;
-  top: 24px;
+  top: 20px;
 }
 
 /* Ruban discret en arrière-plan (netteté retrouvée, très peu de flou) */

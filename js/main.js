@@ -8,8 +8,8 @@
      ======================================================================== */
   const CONFIG = {
     preloaderDurationMs: 860, // Durée du chargement initial (ms)
-    desktopWheelFactor: 0.45, // Vitesse du défilé continu sur PC (plus petit = plus lent et posé)
-    desktopWheelLerp: 0.1,    // Douceur de l'inertie sur PC (0.08–0.14)
+    desktopWheelFactor: 0.66, // Vitesse du défilé continu sur PC (fluide et réactif)
+    desktopWheelLerp: 0.13,   // Douceur de l'inertie sur PC
     emailFallback: 'victorvalroff@hotmail.com'
   };
 
@@ -319,6 +319,49 @@
           smoothTargetY = destTop;
         }
       }
+    }
+
+    // Transition continue façon Apple (échelle + opacité + micro-parallaxe au fil du scroll)
+    function updateAppleTransitions() {
+      if (!stageEl || reducedMotion) return;
+      const vh = stageEl.clientHeight || window.innerHeight;
+      const stageRect = stageEl.getBoundingClientRect();
+      const isPhone = window.innerWidth <= 640;
+
+      stations.forEach((st) => {
+        // Ne pas transformer .st4-layout (sticky) pour garder le zoom vectoriel net
+        if (st.id === 'station-4') return;
+        const inner = st.querySelector('.station-inner');
+        if (!inner) return;
+
+        const rect = st.getBoundingClientRect();
+        const centerOffset = (rect.top - stageRect.top + rect.height / 2 - vh / 2) / vh;
+        const dist = Math.min(1, Math.abs(centerOffset));
+
+        // Courbe douce façon Apple : net au centre, léger recul & fondu aux bords
+        const ease = 1 - Math.pow(dist, 1.65);
+        const opacity = 0.28 + ease * 0.72;
+        const scale = isPhone ? 0.97 + ease * 0.03 : 0.94 + ease * 0.06;
+        const shiftY = centerOffset * (isPhone ? 14 : 26);
+
+        inner.style.opacity = opacity.toFixed(3);
+        inner.style.transform = `translate3d(0, ${shiftY.toFixed(1)}px, 0) scale(${scale.toFixed(4)})`;
+      });
+    }
+
+    if (stageEl) {
+      let appleRaf = null;
+      const scheduleApple = () => {
+        if (!appleRaf) {
+          appleRaf = requestAnimationFrame(() => {
+            updateAppleTransitions();
+            appleRaf = null;
+          });
+        }
+      };
+      stageEl.addEventListener('scroll', scheduleApple, { passive: true });
+      window.addEventListener('resize', scheduleApple);
+      updateAppleTransitions();
     }
 
     // Synchronisation continue de la station active pendant le défilé (PC & téléphone)
