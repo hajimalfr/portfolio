@@ -1,15 +1,19 @@
 /* ==========================================================================
-   js/helmet-3d.js — Modélisation 3D interactive d'un casque de protection
-   de chantier (filaire CAO + cotes Fusion 360, rotation libre 360°)
+   js/helmet-3d.js — Pont à Haubans 3D (WebGL 100 % filaire CAO)
+   - Deux pylônes en losange (A-frame), tablier caisson aérodynamique cintré,
+     64 haubans en éventail bleu Tsunami #262CE8 & têtes d'ancrage corail #FF4D1C
+   - Onde de charge structurale façon calcul éléments finis (FEA / Fusion 360)
+   - Rotation 360° fluide à 60 ips, compatible mode clair & mode sombre
    ========================================================================== */
 (function () {
   /* ========================================================================
-     PARAMÈTRES FACILES À MODIFIER — CASQUE DE CHANTIER 3D (ST.01)
+     PARAMÈTRES FACILES À MODIFIER — PONT À HAUBANS 3D (ST.01)
      ======================================================================== */
   const CONFIG = {
-    autoRotateSpeed: 0.005, // Vitesse de rotation automatique
-    primaryColor: '#262CE8',
-    accentColor: '#FF4D1C'
+    autoRotateSpeed: 0.0038, // Vitesse de rotation automatique (rad/frame)
+    initialRotY: -0.58,      // Angle 3/4 architectural initial
+    initialRotX: 0.22,       // Plongée initiale
+    staysPerSide: 7          // Nombre de paires de haubans par côté de pylône
   };
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -18,227 +22,349 @@
     const resetBtn = document.getElementById('resetHelmetBtn');
     if (!canvas || !wrap) return;
 
-    const ctx = canvas.getContext('2d');
-    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+    const gl = canvas.getContext('webgl', { alpha: true, antialias: true, premultipliedAlpha: true });
+    if (!gl) return;
 
-    let cw = 520;
-    let ch = 360;
-    let rotY = -0.55;
-    let rotX = 0.28;
-    let targetRotY = -0.55;
-    let targetRotX = 0.28;
+    /* ----------------------------------------------------------------------
+       1. GÉNÉRATION DU PONT À HAUBANS 3D (TYPE VIADUC / NORMANDIE)
+       ---------------------------------------------------------------------- */
+    const pos = [];
+    const kind = []; // 0 = grille sol, 1 = tablier & pylônes, 2 = haubans bleu Tsunami, 3 = ancrages corail
+
+    function addLine(ax, ay, az, bx, by, bz, k) {
+      pos.push(ax, ay, az, bx, by, bz);
+      kind.push(k, k);
+    }
+
+    const halfL = 2.35;
+    const halfW = 0.34;
+    const floorY = -0.82;
+    const baseDeckY = -0.16;
+    const pylonTopY = 1.16;
+    const pylonXs = [-0.94, 0.94];
+
+    // Légère cambrure architecturale du tablier (flèche douce au centre)
+    function deckYAt(x) {
+      const u = x / halfL;
+      return baseDeckY + (1 - u * u) * 0.085;
+    }
+
+    // 1. Grille topographique au sol
+    for (let gx = -2.5; gx <= 2.51; gx += 0.5) {
+      addLine(gx, floorY, -1.1, gx, floorY, 1.1, 0);
+    }
+    for (let gz = -1.1; gz <= 1.11; gz += 0.366) {
+      addLine(-2.5, floorY, gz, 2.5, floorY, gz, 0);
+    }
+
+    // 2. Tablier caisson aérodynamique (20 segments, section trapézoïdale profilée)
+    const deckSegs = 20;
+    const deckThick = 0.095;
+    for (let i = 0; i < deckSegs; i++) {
+      const x0 = -halfL + (i / deckSegs) * (halfL * 2);
+      const x1 = -halfL + ((i + 1) / deckSegs) * (halfL * 2);
+      const y0 = deckYAt(x0);
+      const y1 = deckYAt(x1);
+
+      for (const s of [-1, 1]) {
+        // Bord supérieur extérieur du tablier
+        addLine(x0, y0, s * halfW, x1, y1, s * halfW, 1);
+        // Garde-corps / corniche fine
+        addLine(x0, y0 + 0.04, s * halfW, x1, y1 + 0.04, s * halfW, 1);
+        // Fond de caisson profilé (plus étroit dessous)
+        addLine(x0, y0 - deckThick, s * (halfW * 0.62), x1, y1 - deckThick, s * (halfW * 0.62), 1);
+      }
+      // Axe central de chaussée
+      addLine(x0, y0, 0, x1, y1, 0, 1);
+
+      // Entretoises & profils transversaux du caisson
+      addLine(x0, y0, -halfW, x0, y0, halfW, 1);
+      addLine(x0, y0, -halfW, x0, y0 - deckThick, -halfW * 0.62, 1);
+      addLine(x0, y0, halfW, x0, y0 - deckThick, halfW * 0.62, 1);
+      addLine(x0, y0 - deckThick, -halfW * 0.62, x0, y0 - deckThick, halfW * 0.62, 1);
+
+      if (i === deckSegs - 1) {
+        addLine(x1, y1, -halfW, x1, y1, halfW, 1);
+        addLine(x1, y1, -halfW, x1, y1 - deckThick, -halfW * 0.62, 1);
+        addLine(x1, y1, halfW, x1, y1 - deckThick, halfW * 0.62, 1);
+        addLine(x1, y1 - deckThick, -halfW * 0.62, x1, y1 - deckThick, halfW * 0.62, 1);
+      }
+    }
+
+    // Culées d'extrémité
+    for (const ex of [-halfL, halfL]) {
+      const ey = deckYAt(ex) - deckThick;
+      for (const s of [-1, 1]) {
+        addLine(ex, ey, s * halfW * 0.65, ex, floorY, s * halfW * 0.8, 1);
+      }
+      addLine(ex, floorY, -halfW * 0.8, ex, floorY, halfW * 0.8, 1);
+    }
+
+    // 3. Deux pylônes architecturaux en losange (Y inversé / diamant) + haubans en éventail
+    const nodePos = [];
+
+    for (const px of pylonXs) {
+      const dy = deckYAt(px);
+      const legHalfX = 0.075;
+      const baseZ = 0.56;
+      const deckZ = 0.44;
+      const kneeY = 0.58;
+      const topZ = 0.08;
+
+      // Jambes doubles du pylône (épaisseur réelle en X : px - legHalfX et px + legHalfX)
+      for (const s of [-1, 1]) {
+        for (const ox of [-legHalfX, legHalfX]) {
+          // Fût inférieur (sol -> niveau tablier)
+          addLine(px + ox, floorY, s * baseZ, px + ox, dy, s * deckZ, 1);
+          // Jambe supérieure convergente (tablier -> tête de pylône)
+          addLine(px + ox, dy, s * deckZ, px + ox, kneeY, s * 0.24, 1);
+          addLine(px + ox, kneeY, s * 0.24, px + ox, pylonTopY, s * topZ, 1);
+        }
+        // Entretoises d'épaisseur sur chaque jambe
+        addLine(px - legHalfX, floorY, s * baseZ, px + legHalfX, floorY, s * baseZ, 1);
+        addLine(px - legHalfX, dy, s * deckZ, px + legHalfX, dy, s * deckZ, 1);
+        addLine(px - legHalfX, kneeY, s * 0.24, px + legHalfX, kneeY, s * 0.24, 1);
+        addLine(px - legHalfX, pylonTopY, s * topZ, px + legHalfX, pylonTopY, s * topZ, 1);
+      }
+
+      // Traverses horizontales de liaison du pylône (sous tablier, mi-hauteur, sommet)
+      addLine(px, dy - deckThick - 0.03, -deckZ, px, dy - deckThick - 0.03, deckZ, 1);
+      addLine(px, kneeY, -0.24, px, kneeY, 0.24, 1);
+      addLine(px, pylonTopY, -topZ, px, pylonTopY, topZ, 3);
+      addLine(px, pylonTopY - 0.12, -topZ * 1.35, px, pylonTopY - 0.12, topZ * 1.35, 1);
+
+      // Tête d'ancrage corail au sommet du pylône
+      nodePos.push(px, pylonTopY, -topZ, px, pylonTopY, topZ);
+
+      // Haubans en semi-éventail (des deux côtés du pylône, sur les 2 nappes Z = ±halfW)
+      const count = CONFIG.staysPerSide;
+      for (const dir of [-1, 1]) {
+        for (let k = 0; k < count; k++) {
+          const frac = (k + 1) / count; // 0.14 .. 1.0
+          // Hauteur d'ancrage étagée en tête de mât
+          const anchorY = pylonTopY - (1 - frac) * 0.44;
+          const anchorZRatio = topZ + (1 - frac) * 0.09;
+          // Distance d'ancrage sur le tablier (ne dépasse pas le milieu entre les 2 pylônes ou les culées)
+          const maxSpan = dir === (px < 0 ? 1 : -1) ? 0.88 : 1.24;
+          const deckX = px + dir * (0.16 + frac * maxSpan);
+          const dY = deckYAt(deckX);
+
+          for (const s of [-1, 1]) {
+            addLine(px, anchorY, s * anchorZRatio, deckX, dY + 0.015, s * halfW, 2);
+            // Marque les ancrages extrêmes en corail
+            if (k === count - 1) {
+              nodePos.push(deckX, dY + 0.015, s * halfW);
+            }
+          }
+        }
+      }
+    }
+
+    /* ----------------------------------------------------------------------
+       2. SHADERS WEBGL (FILAIRE ARCHITECTURAL + IMPULSION DE CHARGE FEA)
+       ---------------------------------------------------------------------- */
+    const VS = `
+      attribute vec3 aPos;
+      attribute float aKind;
+      uniform mat4 uMvp;
+      uniform mat4 uModelView;
+      uniform float uPulseX;
+      varying float vKind;
+      varying float vDepth;
+      varying float vPulse;
+      void main() {
+        vec4 mv = uModelView * vec4(aPos, 1.0);
+        vDepth = clamp((mv.z + 6.0) / 3.8, 0.0, 1.0);
+        vKind = aKind;
+        float dx = abs(aPos.x - uPulseX);
+        vPulse = smoothstep(0.42, 0.0, dx) * step(0.5, aKind);
+        gl_Position = uMvp * vec4(aPos, 1.0);
+        gl_PointSize = 5.5;
+      }
+    `;
+
+    const FS = `
+      precision mediump float;
+      varying float vKind;
+      varying float vDepth;
+      varying float vPulse;
+      uniform float uDark;
+      void main() {
+        vec3 colInk    = mix(vec3(0.08, 0.09, 0.12), vec3(0.78, 0.82, 0.92), uDark);
+        vec3 colBlue   = mix(vec3(0.15, 0.17, 0.91), vec3(0.38, 0.56, 1.00), uDark);
+        vec3 colOrange = vec3(1.00, 0.32, 0.13);
+        vec3 colGrid   = mix(vec3(0.10, 0.10, 0.12), vec3(0.65, 0.72, 0.88), uDark);
+
+        vec3 col = colInk;
+        float alpha = 0.28 + pow(vDepth, 1.2) * 0.64;
+
+        if (vKind < 0.5) {
+          col = colGrid;
+          alpha = mix(0.10, 0.14, uDark) * (0.4 + 0.6 * vDepth);
+        } else if (vKind > 2.5) {
+          col = colOrange;
+          alpha = 0.96;
+        } else if (vKind > 1.5) {
+          col = colBlue;
+          alpha = 0.32 + pow(vDepth, 1.1) * 0.64;
+        }
+
+        // Onde de charge corail traversant tablier et haubans
+        col = mix(col, colOrange, vPulse * 0.62);
+        alpha = min(1.0, alpha + vPulse * 0.22);
+
+        gl_FragColor = vec4(col * alpha, alpha);
+      }
+    `;
+
+    function compile(type, src) {
+      const sh = gl.createShader(type);
+      gl.shaderSource(sh, src);
+      gl.compileShader(sh);
+      return sh;
+    }
+
+    const prog = gl.createProgram();
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, VS));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FS));
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+
+    const aPos = gl.getAttribLocation(prog, 'aPos');
+    const aKind = gl.getAttribLocation(prog, 'aKind');
+    const uMvp = gl.getUniformLocation(prog, 'uMvp');
+    const uModelView = gl.getUniformLocation(prog, 'uModelView');
+    const uPulseX = gl.getUniformLocation(prog, 'uPulseX');
+    const uDark = gl.getUniformLocation(prog, 'uDark');
+
+    const linePosBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, linePosBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(pos), gl.STATIC_DRAW);
+
+    const lineKindBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, lineKindBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(kind), gl.STATIC_DRAW);
+
+    const nodePosBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, nodePosBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(nodePos), gl.STATIC_DRAW);
+
+    const nodeKinds = new Float32Array(nodePos.length / 3).fill(3);
+    const nodeKindBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, nodeKindBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, nodeKinds, gl.STATIC_DRAW);
+
+    /* ----------------------------------------------------------------------
+       3. MATRICES 4x4 & ORBITE 360° FLUIDE (PC & MOBILE)
+       ---------------------------------------------------------------------- */
+    function mul(a, b) {
+      const out = new Float32Array(16);
+      for (let r = 0; r < 4; r++) {
+        for (let c = 0; c < 4; c++) {
+          out[c * 4 + r] =
+            a[0 * 4 + r] * b[c * 4 + 0] +
+            a[1 * 4 + r] * b[c * 4 + 1] +
+            a[2 * 4 + r] * b[c * 4 + 2] +
+            a[3 * 4 + r] * b[c * 4 + 3];
+        }
+      }
+      return out;
+    }
+
+    function perspective(fovy, aspect, near, far) {
+      const f = 1 / Math.tan(fovy / 2);
+      const nf = 1 / (near - far);
+      return new Float32Array([
+        f / aspect, 0, 0, 0,
+        0, f, 0, 0,
+        0, 0, (far + near) * nf, -1,
+        0, 0, 2 * far * near * nf, 0
+      ]);
+    }
+
+    function rotYMat(a) {
+      const c = Math.cos(a), s = Math.sin(a);
+      return new Float32Array([c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1]);
+    }
+
+    function rotXMat(a) {
+      const c = Math.cos(a), s = Math.sin(a);
+      return new Float32Array([1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1]);
+    }
+
+    function transMat(x, y, z) {
+      return new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1]);
+    }
+
+    let rotY = CONFIG.initialRotY;
+    let rotX = CONFIG.initialRotX;
+    let targetRotY = rotY;
+    let targetRotX = rotX;
     let isDragging = false;
     let lastX = 0;
     let lastY = 0;
-
-    // Génération paramétrique du casque de chantier (coque, crête centrale, visière, harnais)
-    function shellPoint(u, v) {
-      // u: 0 (sommet) -> 1 (bord inférieur), v: 0 -> 2*PI (autour du casque)
-      const phi = u * (Math.PI * 0.54);
-      const sinP = Math.sin(phi);
-      const cosP = Math.cos(phi);
-
-      // Forme légèrement ovale (plus longue avant/arrière sur Z)
-      let rx = 1.0 * sinP;
-      let rz = 1.18 * sinP;
-      let y = -0.92 * cosP + 0.22;
-
-      // Crête structurelle supérieure caractéristique d'un casque de chantier (le long de Z, autour de x=0)
-      const ridgeFactor = Math.exp(-Math.pow(Math.cos(v) * 4.5, 2)) * Math.sin(u * Math.PI * 0.92);
-      y -= ridgeFactor * 0.16;
-
-      // Légère nervure latérale de renfort
-      const sideRib = Math.exp(-Math.pow((Math.abs(Math.cos(v)) - 0.55) * 8.0, 2)) * Math.sin(u * Math.PI * 0.85);
-      y -= sideRib * 0.045;
-
-      let x = rx * Math.cos(v);
-      let z = rz * Math.sin(v);
-
-      // Rebord inférieur + visière avant (sin(v) > 0 => avant du casque)
-      if (u > 0.86) {
-        const brimT = (u - 0.86) / 0.14;
-        const frontMask = Math.max(0, Math.sin(v));
-        const visorExtend = Math.pow(frontMask, 1.8) * 0.42 * brimT;
-        const sideRim = 0.08 * brimT;
-        x *= 1 + sideRim;
-        z += visorExtend + sideRim * Math.sin(v) * 0.6;
-        y += brimT * 0.06 - visorExtend * 0.08;
-      }
-
-      return [x, y, z];
-    }
-
-    const latRings = [];
-    const uSteps = 12;
-    const vSteps = 34;
-
-    for (let iu = 1; iu <= uSteps; iu++) {
-      const u = iu / uSteps;
-      const ring = [];
-      for (let iv = 0; iv <= vSteps; iv++) {
-        const v = (iv / vSteps) * Math.PI * 2;
-        ring.push(shellPoint(u, v));
-      }
-      latRings.push({ u, pts: ring });
-    }
-
-    const meridians = [];
-    const mCount = 16;
-    for (let im = 0; im < mCount; im++) {
-      const v = (im / mCount) * Math.PI * 2;
-      const line = [];
-      for (let iu = 0; iu <= uSteps; iu++) {
-        line.push(shellPoint(iu / uSteps, v));
-      }
-      meridians.push({ v, pts: line });
-    }
-
-    // Crête centrale mise en valeur en orange #FF4D1C
-    const crestLine = [];
-    for (let i = -14; i <= 14; i++) {
-      const t = i / 14;
-      const u = Math.abs(t) * 0.94;
-      const v = t >= 0 ? Math.PI * 0.5 : -Math.PI * 0.5;
-      const p = shellPoint(u, v);
-      crestLine.push([p[0], p[1] - 0.015, p[2]]);
-    }
-
-    // Anneau de harnais intérieur
-    const harnessRing = [];
-    for (let iv = 0; iv <= 28; iv++) {
-      const v = (iv / 28) * Math.PI * 2;
-      harnessRing.push([0.82 * Math.cos(v), 0.34, 0.96 * Math.sin(v)]);
-    }
-
-    function project(pt) {
-      const [x0, y0, z0] = pt;
-      const cy = Math.cos(rotY);
-      const sy = Math.sin(rotY);
-      const cx = Math.cos(rotX);
-      const sx = Math.sin(rotX);
-
-      // Rotation Y
-      const x1 = x0 * cy - z0 * sy;
-      const z1 = x0 * sy + z0 * cy;
-      // Rotation X
-      const y2 = y0 * cx - z1 * sx;
-      const z2 = y0 * sx + z1 * cx;
-
-      const fov = 4.4;
-      const depth = fov / (fov + z2 + 1.4);
-      const scale = Math.min(cw, ch) * 0.34;
-      return {
-        x: cw / 2 + x1 * scale * depth,
-        y: ch / 2 + y2 * scale * depth,
-        z: z2,
-        depth
-      };
-    }
-
-    function drawPolyline(pts, stroke, lineWidth, dashed = false) {
-      ctx.save();
-      ctx.beginPath();
-      if (dashed) ctx.setLineDash([4, 4]);
-      pts.forEach((p, idx) => {
-        const pr = project(p);
-        if (idx === 0) ctx.moveTo(pr.x, pr.y);
-        else ctx.lineTo(pr.x, pr.y);
-      });
-      ctx.strokeStyle = stroke;
-      ctx.lineWidth = lineWidth;
-      ctx.stroke();
-      ctx.restore();
-    }
+    const t0 = performance.now();
 
     function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const rect = wrap.getBoundingClientRect();
-      cw = Math.max(240, Math.round(rect.width));
-      ch = Math.max(220, Math.round(rect.height));
-      canvas.width = Math.round(cw * DPR);
-      canvas.height = Math.round(ch * DPR);
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      canvas.width = Math.max(1, Math.round(rect.width * dpr));
+      canvas.height = Math.max(1, Math.round(rect.height * dpr));
+      gl.viewport(0, 0, canvas.width, canvas.height);
     }
 
-    function render() {
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.disable(gl.DEPTH_TEST);
+
+    function render(now) {
       if (!isDragging) {
-        targetRotY += 0.005;
+        targetRotY += CONFIG.autoRotateSpeed;
       }
-      rotY += (targetRotY - rotY) * 0.12;
-      rotX += (targetRotX - rotX) * 0.12;
+      rotY += (targetRotY - rotY) * 0.11;
+      rotX += (targetRotX - rotX) * 0.11;
 
-      ctx.clearRect(0, 0, cw, ch);
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
 
-      // Ombre elliptique douce au sol
-      ctx.save();
-      ctx.beginPath();
-      ctx.ellipse(cw / 2, ch * 0.78, Math.min(cw, ch) * 0.28, 12, 0, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(18, 18, 18, 0.09)';
-      ctx.fill();
-      ctx.restore();
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ? 1.0 : 0.0;
+      const aspect = canvas.width / Math.max(1, canvas.height);
+      const dist = aspect < 1.15 ? 6.8 : 5.15;
+      const proj = perspective(0.62, aspect, 0.1, 30.0);
+      const mv = mul(transMat(0, -0.08, -dist), mul(rotXMat(rotX), rotYMat(rotY)));
+      const mvp = mul(proj, mv);
 
-      // Remplissage translucide de la silhouette de la coque
-      const brimPts = latRings[latRings.length - 1].pts.map(project);
-      ctx.save();
-      ctx.beginPath();
-      brimPts.forEach((p, i) => (i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y)));
-      ctx.closePath();
-      ctx.fillStyle = 'rgba(38, 44, 232, 0.06)';
-      ctx.fill();
-      ctx.restore();
+      const cycle = ((now - t0) % 5600) / 5600;
+      const pulseX = -2.8 + cycle * 5.6;
 
-      // Harnais interne en pointillés
-      drawPolyline(harnessRing, 'rgba(18, 18, 18, 0.28)', 1, true);
+      gl.uniformMatrix4fv(uMvp, false, mvp);
+      gl.uniformMatrix4fv(uModelView, false, mv);
+      gl.uniform1f(uPulseX, pulseX);
+      gl.uniform1f(uDark, isDark);
 
-      // Méridiens
-      meridians.forEach((m) => {
-        drawPolyline(m.pts, 'rgba(38, 44, 232, 0.34)', 1.0);
-      });
+      gl.bindBuffer(gl.ARRAY_BUFFER, linePosBuf);
+      gl.enableVertexAttribArray(aPos);
+      gl.vertexAttribPointer(aPos, 3, gl.FLOAT, false, 0, 0);
 
-      // Anneaux horizontaux (rebord final plus appuyé)
-      latRings.forEach((r, idx) => {
-        const isRim = idx === latRings.length - 1;
-        drawPolyline(
-          r.pts,
-          isRim ? '#262CE8' : 'rgba(38, 44, 232, 0.45)',
-          isRim ? 2.0 : 1.05
-        );
-      });
+      gl.bindBuffer(gl.ARRAY_BUFFER, lineKindBuf);
+      gl.enableVertexAttribArray(aKind);
+      gl.vertexAttribPointer(aKind, 1, gl.FLOAT, false, 0, 0);
 
-      // Crête structurelle du casque en orange #FF4D1C
-      drawPolyline(crestLine, '#FF4D1C', 2.2);
+      gl.drawArrays(gl.LINES, 0, pos.length / 3);
 
-      // Cotes CAO 1px dynamiques autour du casque
-      const topPt = project([0, -0.84, 0]);
-      const botPt = project([0, 0.32, 0]);
-      const leftX = cw * 0.12;
-      ctx.save();
-      ctx.strokeStyle = 'rgba(18, 18, 18, 0.45)';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(leftX, topPt.y);
-      ctx.lineTo(leftX, botPt.y);
-      ctx.moveTo(leftX - 5, topPt.y);
-      ctx.lineTo(leftX + 5, topPt.y);
-      ctx.moveTo(leftX - 5, botPt.y);
-      ctx.lineTo(leftX + 5, botPt.y);
-      ctx.stroke();
+      gl.bindBuffer(gl.ARRAY_BUFFER, nodePosBuf);
+      gl.vertexAttribPointer(aPos, 3, gl.FLOAT, false, 0, 0);
 
-      ctx.fillStyle = '#121212';
-      ctx.font = '600 10px "JetBrains Mono", monospace';
-      ctx.fillText('H=155mm', leftX + 8, (topPt.y + botPt.y) / 2 + 3);
-      ctx.fillStyle = '#262CE8';
-      ctx.fillText('EN 397 · CASQUE 3D', 12, 20);
-      ctx.fillStyle = '#FF4D1C';
-      ctx.textAlign = 'right';
-      ctx.fillText('L=290 · Ø 580mm', cw - 12, 20);
-      ctx.textAlign = 'left';
-      ctx.restore();
+      gl.bindBuffer(gl.ARRAY_BUFFER, nodeKindBuf);
+      gl.vertexAttribPointer(aKind, 1, gl.FLOAT, false, 0, 0);
+
+      gl.drawArrays(gl.POINTS, 0, nodePos.length / 3);
 
       requestAnimationFrame(render);
     }
 
     wrap.addEventListener('pointerdown', (e) => {
-      if (e.pointerType === 'touch') return; // Sur téléphone : rotation auto pour laisser scroller librement
+      if (e.pointerType === 'touch' && window.innerWidth <= 640) return;
       isDragging = true;
       lastX = e.clientX;
       lastY = e.clientY;
@@ -247,29 +373,24 @@
 
     wrap.addEventListener('pointermove', (e) => {
       if (!isDragging) return;
-      const dx = e.clientX - lastX;
-      const dy = e.clientY - lastY;
+      targetRotY += (e.clientX - lastX) * 0.011;
+      targetRotX = Math.max(-0.55, Math.min(0.85, targetRotX + (e.clientY - lastY) * 0.009));
       lastX = e.clientX;
       lastY = e.clientY;
-      targetRotY += dx * 0.012;
-      targetRotX = Math.max(-0.65, Math.min(0.85, targetRotX + dy * 0.01));
     });
 
-    function endDrag(e) {
+    const endDrag = (e) => {
       if (!isDragging) return;
       isDragging = false;
-      try {
-        wrap.releasePointerCapture(e.pointerId);
-      } catch (_) {}
-    }
-
+      try { wrap.releasePointerCapture(e.pointerId); } catch (_) {}
+    };
     wrap.addEventListener('pointerup', endDrag);
     wrap.addEventListener('pointercancel', endDrag);
 
     if (resetBtn) {
       resetBtn.addEventListener('click', () => {
-        targetRotY = -0.55;
-        targetRotX = 0.28;
+        targetRotY = CONFIG.initialRotY;
+        targetRotX = CONFIG.initialRotX;
       });
     }
 

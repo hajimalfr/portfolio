@@ -60,11 +60,11 @@
       'st0.avail': 'DISPO STAGE',
 
       'st1.kicker': 'CONCEPTION & FABRICATION',
-      'st1.figTitle': 'FIG.01 // MODÉLISATION 3D · CASQUE CHANTIER',
+      'st1.figTitle': 'FIG.01 // MODÉLISATION 3D · PONT À HAUBANS',
       'st1.title': 'Impression 3D<br><span class="accent-text">&amp; Précision.</span>',
       'st1.p1':
         'Esquisse paramétrique sous <strong>Fusion 360</strong> et pièces utiles imprimées sur <strong>Bambu Lab</strong>. Cotation et tolérances au service d’AutoCAD.',
-      'st1.capLeft': 'PROTOTYPAGE PARAMÉTRIQUE',
+      'st1.capLeft': "OUVRAGE D'ART · FILAIRE CAO",
 
       'st2.kicker': 'OUVERTURE & MOBILITÉ',
       'st2.title': 'Voyages <span class="accent-text">&amp; Horizon.</span>',
@@ -251,11 +251,11 @@
       'st0.avail': 'OPEN TO INTERN',
 
       'st1.kicker': 'DESIGN & FABRICATION',
-      'st1.figTitle': 'FIG.01 // 3D MODELING · SAFETY HELMET',
+      'st1.figTitle': 'FIG.01 // 3D MODELING · CABLE-STAYED BRIDGE',
       'st1.title': '3D Printing<br><span class="accent-text">&amp; Precision.</span>',
       'st1.p1':
         'Parametric sketching in <strong>Fusion 360</strong> and functional parts printed on <strong>Bambu Lab</strong>. Tolerances that sharpen AutoCAD.',
-      'st1.capLeft': 'PARAMETRIC PROTOTYPING',
+      'st1.capLeft': 'CIVIL STRUCTURE · CAD WIREFRAME',
 
       'st2.kicker': 'WORLDVIEW & MOBILITY',
       'st2.title': 'Travel <span class="accent-text">&amp; Horizon.</span>',
