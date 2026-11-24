@@ -42,6 +42,7 @@
 
       'st0.kicker': 'OUVERTURE',
       'st0.cursorPill': 'BUT GCCD · NANCY',
+      'st0.subline': 'BUT GÉNIE CIVIL & CONSTRUCTION DURABLE',
       'st0.ctaCircle': 'EXPLORER',
       'st0.lead':
         '19 ans, 1ère année <strong>BUT GCCD</strong> (IUT Nancy-Brabois, ex-PCSI Loritz) — cap <strong>ingénieur en génie civil</strong>.',
@@ -59,21 +60,24 @@
       'st0.avail': 'DISPO STAGE',
 
       'st1.kicker': 'CONCEPTION & FABRICATION',
+      'st1.figTitle': 'FIG.01 // MODÉLISATION 3D · CASQUE CHANTIER',
       'st1.title': 'Impression 3D<br><span class="accent-text">&amp; Précision.</span>',
       'st1.p1':
         'Esquisse paramétrique sous <strong>Fusion 360</strong> et pièces utiles imprimées sur <strong>Bambu Lab</strong>. Cotation et tolérances au service d’AutoCAD.',
       'st1.capLeft': 'PROTOTYPAGE PARAMÉTRIQUE',
 
       'st2.kicker': 'OUVERTURE & MOBILITÉ',
-      'st2.title': 'Voyages<br><span class="accent-text">&amp; Horizon.</span>',
+      'st2.title': 'Voyages <span class="accent-text">&amp; Horizon.</span>',
       'st2.p1':
         'Observer d’autres villes et cultures, porté par un <strong>anglais B2 (First Cambridge)</strong> et l’envie d’exercer à l’international.',
+      'st2.rulerLabel': 'ÉCH. 1:1 · USA · LUX · CHN · FRA',
       'st2.chip1': 'SECTION EURO',
       'st2.chip2': 'MOBILITÉ INTL.',
       'st2.capLeft': 'CAMBRIDGE FIRST · B2',
 
       'st3.kicker': 'COLLECTIF & ENGAGEMENT',
-      'st3.title': 'Breaking<br><span class="accent-text">&amp; Tsunami.</span>',
+      'st3.title': 'Breaking <span class="accent-text">&amp; Tsunami.</span>',
+      'st3.figB': 'FIG.04B // COLLECTIF',
       'st3.p1':
         'Président &amp; cofondateur de l’<strong>Association Tsunami</strong> à Nancy (breaking, événements, Relais de la Flamme JO).',
       'st3.quote':
@@ -229,6 +233,7 @@
 
       'st0.kicker': 'OPENING',
       'st0.cursorPill': 'CIVIL ENG. · NANCY',
+      'st0.subline': 'CIVIL ENGINEERING & SUSTAINABLE CONSTRUCTION',
       'st0.ctaCircle': 'EXPLORE',
       'st0.lead':
         '19 y/o, 1st-year <strong>Civil Eng. (BUT GCCD)</strong> at IUT Nancy-Brabois (ex-CPGE PCSI) — future <strong>civil engineer</strong>.',
@@ -246,21 +251,24 @@
       'st0.avail': 'OPEN TO INTERN',
 
       'st1.kicker': 'DESIGN & FABRICATION',
+      'st1.figTitle': 'FIG.01 // 3D MODELING · SAFETY HELMET',
       'st1.title': '3D Printing<br><span class="accent-text">&amp; Precision.</span>',
       'st1.p1':
         'Parametric sketching in <strong>Fusion 360</strong> and functional parts printed on <strong>Bambu Lab</strong>. Tolerances that sharpen AutoCAD.',
       'st1.capLeft': 'PARAMETRIC PROTOTYPING',
 
       'st2.kicker': 'WORLDVIEW & MOBILITY',
-      'st2.title': 'Travel<br><span class="accent-text">&amp; Horizon.</span>',
+      'st2.title': 'Travel <span class="accent-text">&amp; Horizon.</span>',
       'st2.p1':
         'Exploring cities and cultures worldwide, backed by <strong>B2 English (Cambridge First)</strong> and an international engineering outlook.',
+      'st2.rulerLabel': 'SCALE 1:1 · USA · LUX · CHN · FRA',
       'st2.chip1': 'EURO SECTION',
       'st2.chip2': 'GLOBAL MOBILITY',
       'st2.capLeft': 'CAMBRIDGE FIRST · B2',
 
       'st3.kicker': 'COLLECTIVE & LEADERSHIP',
-      'st3.title': 'Breaking<br><span class="accent-text">&amp; Tsunami.</span>',
+      'st3.title': 'Breaking <span class="accent-text">&amp; Tsunami.</span>',
+      'st3.figB': 'FIG.04B // COLLECTIVE',
       'st3.p1':
         'President &amp; co-founder of the <strong>Tsunami Association</strong> in Nancy (breaking, events, Olympic Torch Relay).',
       'st3.quote':

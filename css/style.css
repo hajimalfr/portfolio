@@ -549,41 +549,54 @@ body {
 .station {
   position: relative;
   width: 100%;
-  min-height: 86dvh;
+  min-height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(54px, 5vw, 66px) calc(var(--altimeter-w) + clamp(24px, 3.8vw, 52px)) clamp(20px, 2.4vw, 32px) clamp(24px, 3.8vw, 52px);
+  padding: clamp(56px, 5vw, 72px) calc(var(--altimeter-w) + clamp(24px, 3.8vw, 52px)) clamp(32px, 3.6vw, 48px) clamp(24px, 3.8vw, 52px);
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transform: none;
 }
 
+#station-0 {
+  min-height: 100dvh;
+  padding-top: 48px;
+  padding-bottom: 36px;
+}
+
 .station-inner {
   will-change: transform, opacity;
 }
 
-/* Manifeste CAO (#station-4, désormais ST.03) — piste sticky généreuse pour savourer les 4 étapes */
+/* Manifeste CAO (#station-4, ST.03) — piste sticky calibrée sans vide avant/après */
 #station-4 {
-  min-height: 220dvh;
+  min-height: 195dvh;
   align-items: flex-start;
-  margin-top: 24px;
-  padding-top: 20px;
-  padding-bottom: 24px;
+  margin-top: 0;
+  padding-top: 12px;
+  padding-bottom: 16px;
 }
 
-.st4-layout {
+#station-4 .st4-layout {
   position: sticky;
   top: 56px;
   height: calc(100dvh - 76px);
 }
 
-/* Trajectoire S1–S6 & Ikigai (#station-5, désormais ST.02) */
+/* Trajectoire S1–S6 & Ikigai (#station-5, ST.02) */
 #station-5 {
   min-height: auto;
-  padding-top: 58px;
-  padding-bottom: 36px;
+  padding-top: 44px;
+  padding-bottom: 24px;
+}
+
+/* Contact & CV (#station-6) — respiration compacte */
+#station-6 {
+  min-height: auto;
+  padding-top: 48px;
+  padding-bottom: 56px;
 }
 
 /* Ruban discret en arrière-plan (netteté retrouvée, très peu de flou) */
@@ -1826,7 +1839,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  height: calc(100dvh - 86px);
 }
 
 /* ST.05 — Parcours S1 → S6, Ikigai & Contact */
@@ -2526,10 +2538,52 @@ body {
 .cv-item li, .cv-list li { margin-bottom: 3px; }
 
 /* ==========================================================================
-   11. RESPONSIVE TABLETTE & MOBILE
+   11. RESPONSIVE FENÊTRES RÉDUITES, TABLETTE & MOBILE
    ========================================================================== */
+@media (max-width: 1120px) and (min-width: 641px) {
+  .st3-top-bar {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .st-figure-dominant {
+    grid-template-columns: minmax(250px, 0.9fr) minmax(0, 1.35fr);
+    gap: 18px;
+  }
+
+  .cad-workspace {
+    grid-template-columns: 176px minmax(0, 1fr);
+  }
+}
+
+@media (max-height: 700px) and (min-width: 641px) {
+  .hero-ink-wrap {
+    height: min(44dvh, 270px);
+  }
+
+  #station-4 .st4-layout,
+  .st2-sticky-layout {
+    top: 48px;
+    height: calc(100dvh - 58px);
+  }
+
+  .v-card {
+    width: min(310px, 54vw);
+    height: min(290px, 44dvh);
+  }
+
+  .voyages-viewfinder {
+    width: min(334px, 58vw);
+    height: min(312px, 47dvh);
+  }
+
+  .helmet-canvas-wrap {
+    height: min(48dvh, 320px);
+  }
+}
+
 @media (max-width: 980px) {
-  :root { --altimeter-w: 68px; }
+  :root { --altimeter-w: 32px; }
 
   .st0-layout,
   .st-figure-dominant,
@@ -2542,14 +2596,21 @@ body {
   .st3-visuals { height: auto; }
 
   .station {
-    overflow-y: auto;
+    overflow: visible;
+    min-height: auto;
     align-items: flex-start;
-    padding: 18px 16px;
+    padding: 62px 44px 32px 20px;
+  }
+
+  #station-0 {
+    min-height: 100dvh;
+    align-items: center;
   }
 
   .cad-workspace { grid-template-columns: 1fr; }
   .cad-browser { display: none; }
-  .st4-layout { height: auto; min-height: 76dvh; }
+  #station-4 { min-height: 180dvh; padding-top: 12px; padding-bottom: 16px; }
+  .st4-layout { height: calc(100dvh - 78px); min-height: 420px; }
   .cad-window { min-height: 360px; }
   .traj-grid, .cv-grid { grid-template-columns: 1fr; }
   .traj-svg-line { display: none; }
@@ -2599,7 +2660,7 @@ body {
   .station {
     position: relative;
     inset: auto;
-    min-height: 86dvh;
+    min-height: auto;
     height: auto;
     opacity: 1 !important;
     visibility: visible !important;
@@ -2607,13 +2668,24 @@ body {
     transform: none !important;
     transition: none !important;
     overflow: visible;
-    align-items: center;
-    padding: 62px 14px 32px;
+    align-items: flex-start;
+    padding: 54px 14px 26px;
   }
 
   #station-0 {
     min-height: 100dvh;
-    padding-top: 56px;
+    align-items: center;
+    padding-top: 52px;
+  }
+
+  #station-5 {
+    padding-top: 44px;
+    padding-bottom: 20px;
+  }
+
+  #station-6 {
+    padding-top: 38px;
+    padding-bottom: 44px;
   }
 
   .hero-ink-wrap {
@@ -2747,20 +2819,15 @@ body {
     height: min(44dvh, 300px);
   }
 
-  #station-5 {
-    padding-top: 62px;
-    padding-bottom: 24px;
-  }
-
   .ikigai-venn-svg {
     max-height: 275px;
   }
 
   #station-2 {
-    min-height: 215dvh;
+    min-height: 190dvh;
     align-items: flex-start;
-    padding-top: 14px;
-    padding-bottom: 16px;
+    padding-top: 10px;
+    padding-bottom: 12px;
   }
 
   .st2-sticky-layout {
@@ -2811,11 +2878,11 @@ body {
   }
 
   #station-4 {
-    min-height: 215dvh;
+    min-height: 185dvh;
     align-items: flex-start;
     margin-top: 0;
-    padding-top: 16px;
-    padding-bottom: 24px;
+    padding-top: 10px;
+    padding-bottom: 14px;
   }
 
   .st4-layout {
@@ -2977,6 +3044,260 @@ html[data-theme="dark"] .ikigai-venn-svg text {
 html[data-theme="dark"] .ikigai-venn-svg g[data-pole="talents"] circle {
   fill: rgba(242, 239, 233, 0.1);
   stroke: rgba(242, 239, 233, 0.7);
+}
+
+/* ==========================================================================
+   11C. CHORÉGRAPHIE & MICRO-INTERACTIONS AWWWARDS (ST.01, ST.02, ST.04, ST.06)
+   ========================================================================== */
+/* 1. Révélation typographique masquée mot par mot */
+.aw-word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.aw-word {
+  display: inline-block;
+  transform: translate3d(0, 112%, 0);
+  opacity: 0;
+  transition:
+    transform 0.85s var(--ease-expo) calc(var(--aw-i, 0) * 58ms),
+    opacity 0.55s ease calc(var(--aw-i, 0) * 58ms);
+  will-change: transform, opacity;
+}
+
+.station.aw-visible .aw-word {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+/* 2. ST.01 — Entrée rideau architectural du cadre 3D + cascade spec-chips */
+#station-1 .photo-card-hero {
+  clip-path: inset(8% 0 0 0);
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    clip-path 0.95s var(--ease-expo) 0.12s,
+    opacity 0.65s ease 0.12s,
+    transform 0.95s var(--ease-expo) 0.12s;
+}
+
+#station-1.aw-visible .photo-card-hero {
+  clip-path: inset(0 0 0 0);
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+#station-1 .spec-chips span {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+  transition: opacity 0.45s ease, transform 0.6s var(--ease-expo);
+}
+
+#station-1.aw-visible .spec-chips span { opacity: 1; transform: translate3d(0, 0, 0); }
+#station-1.aw-visible .spec-chips span:nth-child(1) { transition-delay: 0.24s; }
+#station-1.aw-visible .spec-chips span:nth-child(2) { transition-delay: 0.32s; }
+#station-1.aw-visible .spec-chips span:nth-child(3) { transition-delay: 0.4s; }
+
+/* 3. ST.02 — Cascade S1->S6 + balise lumineuse SVG + déploiement radial Ikigai */
+#station-5 .traj-step {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity 0.6s ease,
+    transform 0.8s var(--ease-expo),
+    border-color 0.25s ease,
+    box-shadow 0.28s ease;
+}
+
+#station-5.aw-visible .traj-step { opacity: 1; transform: translate3d(0, 0, 0); }
+#station-5.aw-visible .traj-step:nth-child(1) { transition-delay: 0.08s; }
+#station-5.aw-visible .traj-step:nth-child(2) { transition-delay: 0.18s; }
+#station-5.aw-visible .traj-step:nth-child(3) { transition-delay: 0.28s; }
+
+.traj-beacon {
+  fill: var(--orange);
+  filter: drop-shadow(0 0 5px rgba(255, 77, 28, 0.75));
+}
+
+#station-5 .venn-circle {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  transform: scale(0.84);
+  transition:
+    opacity 0.75s ease,
+    transform 0.9s var(--ease-expo);
+}
+
+#station-5.aw-visible .venn-circle { opacity: 1; transform: scale(1); }
+#station-5.aw-visible .venn-circle:nth-of-type(1) { transition-delay: 0.1s; }
+#station-5.aw-visible .venn-circle:nth-of-type(2) { transition-delay: 0.2s; }
+#station-5.aw-visible .venn-circle:nth-of-type(3) { transition-delay: 0.3s; }
+#station-5.aw-visible .venn-circle:nth-of-type(4) { transition-delay: 0.4s; }
+
+#station-5 .iki-mini-cell {
+  opacity: 0;
+  transform: translate3d(16px, 0, 0);
+  transition:
+    opacity 0.55s ease,
+    transform 0.75s var(--ease-expo),
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+#station-5.aw-visible .iki-mini-cell { opacity: 1; transform: translate3d(0, 0, 0); }
+#station-5.aw-visible .iki-mini-cell:nth-child(1) { transition-delay: 0.14s; }
+#station-5.aw-visible .iki-mini-cell:nth-child(2) { transition-delay: 0.22s; }
+#station-5.aw-visible .iki-mini-cell:nth-child(3) { transition-delay: 0.3s; }
+#station-5.aw-visible .iki-mini-cell:nth-child(4) { transition-delay: 0.38s; }
+
+/* 4. ST.04 — Rideau cinéma sur les 2 photos Breaking + entrée décalée 3D Tsunami */
+#station-3 .st3-trio-photo .smart-photo {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.05s var(--ease-circ) 0.14s;
+}
+
+#station-3.aw-visible .st3-trio-photo .smart-photo {
+  clip-path: inset(0 0 0 0);
+}
+
+#station-3 .st3-trio-photo .smart-photo img {
+  transform: scale(1.13);
+  transition: opacity 0.35s ease, transform 1.25s var(--ease-expo) 0.16s;
+}
+
+#station-3.aw-visible .st3-trio-photo .smart-photo img {
+  transform: scale(1);
+}
+
+#station-3 .st3-trio-3d {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  transition: opacity 0.7s ease 0.24s, transform 0.9s var(--ease-expo) 0.24s;
+}
+
+#station-3.aw-visible .st3-trio-3d {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* 5. ST.06 — Cascade des tuiles contact + rideau éditorial bleu au survol (PC) */
+#station-6 .contact-tile {
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity 0.55s ease,
+    transform 0.75s var(--ease-expo),
+    border-color 0.25s ease,
+    box-shadow 0.28s ease;
+}
+
+#station-6.aw-visible .contact-tile { opacity: 1; transform: translate3d(0, 0, 0); }
+#station-6.aw-visible .contact-tile:nth-child(1) { transition-delay: 0.06s; }
+#station-6.aw-visible .contact-tile:nth-child(2) { transition-delay: 0.14s; }
+#station-6.aw-visible .contact-tile:nth-child(3) { transition-delay: 0.22s; }
+#station-6.aw-visible .contact-tile:nth-child(4) { transition-delay: 0.3s; }
+
+@media (hover: hover) and (pointer: fine) {
+  #station-6 .contact-tile::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--tsunami);
+    transform: translate3d(0, 102%, 0);
+    transition: transform 0.42s var(--ease-expo);
+    z-index: 0;
+  }
+
+  #station-6 .contact-tile > * {
+    position: relative;
+    z-index: 1;
+    transition: color 0.25s ease;
+  }
+
+  #station-6 .contact-tile:hover::before {
+    transform: translate3d(0, 0, 0);
+  }
+
+  #station-6 .contact-tile:hover,
+  #station-6 .contact-tile:hover .dim-top,
+  #station-6 .contact-tile:hover .dim-bottom,
+  #station-6 .contact-tile:hover strong,
+  #station-6 .contact-tile:hover .contact-arrow {
+    color: #ffffff;
+    border-color: var(--tsunami);
+  }
+
+  #station-6 .contact-tile:hover .contact-arrow {
+    transform: translate3d(4px, -4px, 0);
+  }
+}
+
+.contact-arrow {
+  display: inline-block;
+  transition: transform 0.35s var(--ease-expo);
+}
+
+/* 6. Curseur architectural de précision (PC uniquement) */
+.aw-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  margin-left: -13px;
+  margin-top: -13px;
+  border-radius: 999px;
+  border: 1px solid var(--tsunami);
+  pointer-events: none;
+  z-index: 90;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    width 0.28s var(--ease-expo),
+    height 0.28s var(--ease-expo),
+    margin 0.28s var(--ease-expo),
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    opacity 0.25s ease;
+  will-change: transform;
+}
+
+.aw-cursor-ring.is-visible {
+  opacity: 0.85;
+}
+
+.aw-cursor-ring.is-active {
+  width: 40px;
+  height: 40px;
+  margin-left: -20px;
+  margin-top: -20px;
+  border-color: var(--orange);
+  background: rgba(255, 77, 28, 0.08);
+}
+
+.aw-cursor-ring.is-label {
+  width: 52px;
+  height: 52px;
+  margin-left: -26px;
+  margin-top: -26px;
+  border-color: var(--tsunami);
+  background: var(--tsunami);
+  opacity: 0.94;
+}
+
+.aw-cursor-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #ffffff;
 }
 
 /* ==========================================================================

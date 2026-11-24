@@ -156,11 +156,11 @@
     }
 
     function animate() {
-      progress += (targetProgress - progress) * 0.16;
+      progress += (targetProgress - progress) * 0.22;
       panX += (targetPanX - panX) * 0.2;
       panY += (targetPanY - panY) * 0.2;
 
-      // Arche sinusoïdale : 100% au début -> 195% au milieu -> retour propre à 100% à la fin
+      // Arche sinusoïdale : 100% au début -> 195% au milieu -> retour propre à 100% avant de quitter la station
       scale = 1.0 + Math.sin(progress * Math.PI) * PEAK_EXTRA_SCALE;
 
       // Zoom vectoriel pur (font-size réel) : zéro pixellisation
@@ -211,7 +211,10 @@
       if (!stageEl || !st4El) return;
       const track = Math.max(1, st4El.offsetHeight - stageEl.clientHeight);
       const scrolled = stageEl.scrollTop - st4El.offsetTop;
-      const nextP = clamp(scrolled / track, 0, 1);
+      // L'arche zoom + dézoom complet (100% -> 195% -> 100%) se termine à 78% de la piste sticky :
+      // les 22% restants maintiennent la fenêtre posée à 100% avant de quitter le Manifeste
+      const rawP = clamp(scrolled / track, 0, 1);
+      const nextP = clamp(rawP / 0.78, 0, 1);
       if (Math.abs(nextP - targetProgress) > 0.002) {
         targetProgress = nextP;
         if (targetProgress <= 0.05 || targetProgress >= 0.95) {
