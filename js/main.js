@@ -338,11 +338,11 @@
         const centerOffset = (rect.top - stageRect.top + rect.height / 2 - vh / 2) / vh;
         const dist = Math.min(1, Math.abs(centerOffset));
 
-        // Courbe douce façon Apple : net au centre, léger recul & fondu aux bords
-        const ease = 1 - Math.pow(dist, 1.65);
-        const opacity = 0.28 + ease * 0.72;
-        const scale = isPhone ? 0.97 + ease * 0.03 : 0.94 + ease * 0.06;
-        const shiftY = centerOffset * (isPhone ? 14 : 26);
+        // Courbe douce façon Apple identique sur PC & téléphone : net au centre, léger recul & fondu aux bords
+        const ease = 1 - Math.pow(dist, 1.6);
+        const opacity = 0.24 + ease * 0.76;
+        const scale = 0.94 + ease * 0.06;
+        const shiftY = centerOffset * (isPhone ? 22 : 26);
 
         inner.style.opacity = opacity.toFixed(3);
         inner.style.transform = `translate3d(0, ${shiftY.toFixed(1)}px, 0) scale(${scale.toFixed(4)})`;

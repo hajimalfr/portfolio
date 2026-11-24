@@ -2232,19 +2232,18 @@ body {
   .reticle-layer { display: none; }
   .st3-visuals { grid-template-columns: 1fr; }
 
-  /* Mode défilé continu doux façon Insta (uniquement téléphone <= 640px, desktop intact) */
+  /* Mode défilé continu doux façon Apple (uniquement téléphone <= 640px, desktop intact) */
   .stage {
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
-    scroll-snap-type: y proximity;
     -webkit-overflow-scrolling: touch;
   }
 
   .station {
     position: relative;
     inset: auto;
-    min-height: 88dvh;
+    min-height: 86dvh;
     height: auto;
     opacity: 1 !important;
     visibility: visible !important;
@@ -2253,8 +2252,11 @@ body {
     transition: none !important;
     overflow: visible;
     align-items: center;
-    padding: 26px 14px 36px;
-    scroll-snap-align: start;
+    padding: 24px 14px 32px;
+  }
+
+  .station-inner {
+    transition: transform 0.08s linear, opacity 0.08s linear;
   }
 
   .station.above {
