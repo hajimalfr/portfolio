@@ -502,9 +502,9 @@ body {
   will-change: transform, opacity;
 }
 
-/* ST.04 — Piste de scrollytelling sticky compacte (zéro grand espace avant ST.05) */
+/* ST.04 — Piste de scrollytelling sticky compacte (zéro espace vide avant ST.05) */
 #station-4 {
-  min-height: 175dvh;
+  min-height: 155dvh;
   align-items: flex-start;
   padding-top: 20px;
   padding-bottom: 0;
@@ -513,6 +513,13 @@ body {
 .st4-layout {
   position: sticky;
   top: 20px;
+  height: calc(100dvh - var(--header-h) - 44px);
+}
+
+#station-5 {
+  min-height: auto;
+  padding-top: 28px;
+  padding-bottom: 40px;
 }
 
 /* Ruban discret en arrière-plan (netteté retrouvée, très peu de flou) */
@@ -1485,7 +1492,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  height: min(82dvh, 720px);
+  height: calc(100dvh - var(--header-h) - 44px);
 }
 
 /* ST.05 — Parcours S1 → S6, Ikigai & Contact */
