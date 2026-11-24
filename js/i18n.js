@@ -419,6 +419,11 @@
       }
     });
 
+    document.querySelectorAll('[data-cote-fr]').forEach((el) => {
+      const val = el.getAttribute(currentLang === 'en' ? 'data-cote-en' : 'data-cote-fr');
+      if (val) el.setAttribute('data-cote', val);
+    });
+
     document.querySelectorAll('.lang-btn').forEach((btn) => {
       const isMatch = btn.getAttribute('data-lang') === currentLang;
       btn.classList.toggle('active', isMatch);
@@ -436,6 +441,11 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     applyLang(currentLang, false);
+    document.querySelectorAll('[data-cote-fr]').forEach((el) => {
+      const val = el.getAttribute(currentLang === 'en' ? 'data-cote-en' : 'data-cote-fr');
+      if (val) el.setAttribute('data-cote', val);
+    });
+
     document.querySelectorAll('.lang-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
         applyLang(btn.getAttribute('data-lang'), true);

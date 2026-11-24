@@ -10,12 +10,13 @@
      PARAMÈTRES FACILES À MODIFIER — FENÊTRE MANIFESTE CAO (ST.04)
      ======================================================================== */
   const CONFIG = {
-    peakExtraScale: 0.95,       // Zoom max desktop (195 %, retour à 100 % à la fin)
-    peakExtraScaleMobile: 0.42, // Zoom max téléphone (142 %, reste bien dans le cadre)
-    baseFontDesktop: 25,        // Taille de base sur ordinateur (px)
-    baseFontMobile: 15,         // Taille de base sur mobile (px)
+    peakExtraScale: 0.72,       // Zoom max grand écran (172 %, zéro rognage)
+    peakExtraScaleLaptop: 0.52, // Zoom max écran 720p (152 %, reste au-dessus du HUD)
+    peakExtraScaleMobile: 0.30, // Zoom max téléphone (130 %, reste dans le cadre)
+    baseFontDesktop: 24,        // Taille de base sur ordinateur (px)
+    baseFontMobile: 14.5,       // Taille de base sur mobile (px)
     wheelStep: 0.16,            // Pas par cran de molette
-    swipeStep: 0.34             // Pas par swipe sur téléphone (3 swipes pour l'arche)
+    swipeStep: 0.34             // Pas par swipe sur téléphone
   };
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -36,9 +37,24 @@
 
     if (!viewport || !content || !manifestoText) return;
 
-    const isMobile = window.innerWidth <= 640;
-    const PEAK_EXTRA_SCALE = isMobile ? CONFIG.peakExtraScaleMobile : CONFIG.peakExtraScale;
-    const BASE_FONT_PX = isMobile ? CONFIG.baseFontMobile : CONFIG.baseFontDesktop;
+    function getMetrics() {
+      const mobile = window.innerWidth <= 640;
+      const shortScreen = window.innerHeight <= 760;
+      return {
+        peak: mobile ? CONFIG.peakExtraScaleMobile : (shortScreen ? CONFIG.peakExtraScaleLaptop : CONFIG.peakExtraScale),
+        base: mobile ? CONFIG.baseFontMobile : CONFIG.baseFontDesktop
+      };
+    }
+
+    let PEAK_EXTRA_SCALE = getMetrics().peak;
+    let BASE_FONT_PX = getMetrics().base;
+
+    window.addEventListener('resize', () => {
+      const m = getMetrics();
+      PEAK_EXTRA_SCALE = m.peak;
+      BASE_FONT_PX = m.base;
+      manifestoText.style.fontSize = `${(BASE_FONT_PX * scale).toFixed(2)}px`;
+    });
 
     let progress = 0; // 0.0 -> 1.0
     let targetProgress = 0;

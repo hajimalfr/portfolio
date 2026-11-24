@@ -2989,9 +2989,22 @@ html[data-theme="dark"] .header-cv-btn:hover {
   color: #ffffff;
 }
 
-html[data-theme="dark"] .alt-stop-name {
-  background: rgba(18, 20, 25, 0.94);
-  border-color: rgba(242, 239, 233, 0.18);
+html[data-theme="dark"] .alt-stop-name,
+html[data-theme="dark"] .altimeter-readout,
+html[data-theme="dark"] .cad-viewcube {
+  background: rgba(18, 20, 26, 0.94);
+  border-color: rgba(242, 239, 233, 0.24);
+  color: #F2EFE9;
+}
+
+html[data-theme="dark"] .alt-value,
+html[data-theme="dark"] .alt-label,
+html[data-theme="dark"] .cad-viewcube span {
+  color: #F2EFE9;
+}
+
+html[data-theme="dark"] .voyages-caption-sub {
+  color: #7D96FF;
 }
 
 html[data-theme="dark"] .nav-step-btn,
