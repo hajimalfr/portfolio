@@ -2222,28 +2222,73 @@ body {
   .altimeter-track { display: none; }
   .altimeter-controls { padding-top: 0; border-top: none; }
   .stage, .reticle-layer { right: 0; bottom: calc(var(--marquee-h) + 46px); }
+  .reticle-layer { display: none; }
   .st3-visuals { grid-template-columns: 1fr; }
 
-  /* Correctifs dédiés téléphone uniquement (desktop intact) */
-  .station {
-    padding: 16px 14px 44px;
+  /* Mode défilé continu doux façon Insta (uniquement téléphone <= 640px, desktop intact) */
+  .stage {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
     -webkit-overflow-scrolling: touch;
-    transform: translate3d(0, 12px, 0);
-    transition: opacity 0.36s ease-out, transform 0.38s ease-out, visibility 0.36s;
+  }
+
+  .station {
+    position: relative;
+    inset: auto;
+    min-height: 88dvh;
+    height: auto;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    transition: none !important;
+    overflow: visible;
+    align-items: center;
+    padding: 26px 14px 36px;
+    scroll-snap-align: start;
   }
 
   .station.above {
-    transform: translate3d(0, -12px, 0);
+    transform: none !important;
   }
 
+  .station-ribbon,
   .photo-reveal,
   .st-title-compact,
-  .st-text-compact,
-  .spec-chips {
+  .st-text-compact {
     clip-path: none !important;
     transform: none !important;
     opacity: 1 !important;
     transition: none !important;
+  }
+
+  /* Allègement des blocs de texte non nécessaires sur téléphone */
+  .cote-block {
+    border: none;
+    background: transparent;
+    padding: 4px 2px;
+  }
+
+  .cote-block::before,
+  .cote-block::after,
+  .st-meta-bar,
+  .spec-chips,
+  .ikigai-venn-cards,
+  .contact-tile .dim-top,
+  .contact-tile .dim-bottom {
+    display: none !important;
+  }
+
+  .st-title-compact {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .st-text-compact {
+    font-size: 13.5px;
+    margin-bottom: 6px;
   }
 
   .helmet-canvas-wrap {
@@ -2252,9 +2297,9 @@ body {
   }
 
   .st4-layout {
-    height: 68dvh;
-    min-height: 0;
-    padding: 0 4px;
+    height: 62dvh;
+    min-height: 320px;
+    padding: 0 2px;
   }
 
   .cad-window {
@@ -2283,6 +2328,11 @@ body {
 
   .cad-hud-bottom {
     font-size: 8.5px;
+  }
+
+  .contact-tile {
+    min-height: 62px;
+    padding: 10px 14px;
   }
 }
 

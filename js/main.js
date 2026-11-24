@@ -247,8 +247,41 @@
       }
     }
 
+    const stageEl = document.getElementById('stage');
+    const isMobileFeed = () => window.innerWidth <= 640;
+
+    function updateAltimeterUi(idx) {
+      currentIndex = idx;
+      altStops.forEach((stop, i) => {
+        const active = i === currentIndex;
+        stop.classList.toggle('active', active);
+        if (active) stop.setAttribute('aria-current', 'true');
+        else stop.removeAttribute('aria-current');
+      });
+
+      const activeStation = stations[currentIndex];
+      const alt = activeStation.getAttribute('data-alt') || '+00.00m';
+      if (altValue) altValue.textContent = alt;
+      if (altProgress) {
+        const pct = (currentIndex / Math.max(1, stations.length - 1)) * 100;
+        altProgress.style.height = `${pct}%`;
+      }
+      if (btnPrev) btnPrev.disabled = currentIndex === 0;
+      if (btnNext) btnNext.disabled = currentIndex === stations.length - 1;
+    }
+
     function goToStation(nextIndex, immediate = false) {
       const clamped = Math.max(0, Math.min(stations.length - 1, nextIndex));
+
+      // Sur téléphone : défilement continu fluide vers la station (jamais brusque)
+      if (isMobileFeed()) {
+        updateAltimeterUi(clamped);
+        if (!immediate && stations[clamped]) {
+          stations[clamped].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        return;
+      }
+
       if (!immediate && (clamped === currentIndex || isTransitioning)) return;
 
       const prevIndex = currentIndex;
@@ -264,24 +297,11 @@
         st.classList.toggle('above', idx < currentIndex);
       });
 
-      altStops.forEach((stop, idx) => {
-        const active = idx === currentIndex;
-        stop.classList.toggle('active', active);
-        if (active) stop.setAttribute('aria-current', 'true');
-        else stop.removeAttribute('aria-current');
-      });
+      updateAltimeterUi(currentIndex);
 
       const activeStation = stations[currentIndex];
       const alt = activeStation.getAttribute('data-alt') || '+00.00m';
       const code = activeStation.getAttribute('data-code') || 'ST.00';
-
-      if (altValue) altValue.textContent = alt;
-      if (altProgress) {
-        const pct = (currentIndex / Math.max(1, stations.length - 1)) * 100;
-        altProgress.style.height = `${pct}%`;
-      }
-      if (btnPrev) btnPrev.disabled = currentIndex === 0;
-      if (btnNext) btnNext.disabled = currentIndex === stations.length - 1;
 
       if (!immediate) {
         triggerReticle(code, alt);
@@ -290,6 +310,23 @@
       setTimeout(() => {
         isTransitioning = false;
       }, immediate ? 0 : COOLDOWN_MS);
+    }
+
+    // Sur téléphone : synchronisation en direct de l'altimètre pendant le défilement continu
+    if (stageEl && typeof IntersectionObserver !== 'undefined') {
+      const mobileObs = new IntersectionObserver(
+        (entries) => {
+          if (!isMobileFeed()) return;
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const idx = parseInt(entry.target.getAttribute('data-index'), 10);
+              if (!Number.isNaN(idx)) updateAltimeterUi(idx);
+            }
+          });
+        },
+        { root: stageEl, threshold: 0.45 }
+      );
+      stations.forEach((st) => mobileObs.observe(st));
     }
 
     document.querySelectorAll('[data-goto]').forEach((el) => {
@@ -402,6 +439,7 @@
     window.addEventListener(
       'touchstart',
       (e) => {
+        if (isMobileFeed()) return; // Défilement continu natif sur téléphone
         if (e.touches.length !== 1) return;
         if (e.target.closest('#tsunamiWrap')) return;
         touchStartY = e.touches[0].clientY;
@@ -413,6 +451,7 @@
     window.addEventListener(
       'touchend',
       (e) => {
+        if (isMobileFeed()) return; // Défilement continu natif sur téléphone
         if (!touchStartY || (cvModal && cvModal.classList.contains('open'))) return;
         if (e.target.closest('#tsunamiWrap')) return;
         const dy = touchStartY - e.changedTouches[0].clientY;
