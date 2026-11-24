@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css?v=13">
+  <link rel="stylesheet" href="css/style.css?v=18">
 </head>
 <body>
   <!-- Preloader à remplissage vertical inspiré de sbwebdesign.ch -->
@@ -33,7 +33,7 @@
     </div>
   </div>
 
-  <!-- Fond béton minéral issu de Téléchargements + voile éditorial pour contraste net -->
+  <!-- Fond béton minéral issu de Téléchargements + voile éditorial -->
   <div class="concrete-backdrop" aria-hidden="true"></div>
   <div class="concrete-veil" aria-hidden="true"></div>
 
@@ -48,26 +48,26 @@
     <div class="reticle-lock-pill" id="reticleStatus">LOCK // ST.00 · +00.00m</div>
   </div>
 
-  <!-- En-tête fixe minimaliste -->
-  <header class="site-header" role="banner">
-    <div class="header-left">
-      <button type="button" class="brand-btn" data-goto="0" aria-label="Retour à la station 00">
-        <span class="brand-dot" aria-hidden="true"></span>
-        <span class="brand-code">VVC // GCCD</span>
-      </button>
-      <span class="header-sep" aria-hidden="true">/</span>
-      <span class="header-loc mono">48.66°N 6.15°E · NANCY</span>
-    </div>
+  <!-- Contrôles flottants minimalistes (sans bandeau plein largeur) -->
+  <header class="floating-hud" role="banner">
+    <button type="button" class="hud-pill brand-btn" data-goto="0" aria-label="Retour à la station 00">
+      <span class="brand-dot" aria-hidden="true"></span>
+      <span class="brand-code">VVC <span class="brand-sub">// GCCD</span></span>
+    </button>
 
-    <div class="header-right">
+    <div class="hud-pill hud-actions">
       <div class="lang-switch" role="group" aria-label="Sélecteur de langue">
         <button type="button" class="lang-btn" data-lang="fr" aria-pressed="true">FR</button>
         <span class="lang-slash" aria-hidden="true">/</span>
         <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
       </div>
 
+      <span class="hud-divider" aria-hidden="true"></span>
+
+      <button type="button" class="hud-contact-btn mono" data-goto="6">CONTACT</button>
+
       <button type="button" class="header-cv-btn magnetic" id="openCvHeader">
-        <span data-i18n="nav.cv">CV COMPLET</span>
+        <span data-i18n="nav.cv">CV</span>
         <span class="arrow" aria-hidden="true">↗</span>
       </button>
     </div>
@@ -97,22 +97,22 @@
           <span class="alt-stop-tick" aria-hidden="true"></span>
         </button>
         <button type="button" class="alt-stop" data-goto="2">
-          <span class="alt-stop-name" data-i18n="st2.nav">Voyages</span>
+          <span class="alt-stop-name" data-i18n="st5.nav">S1–S6 &amp; Ikigai</span>
           <span class="alt-stop-code mono">ST.02</span>
           <span class="alt-stop-tick" aria-hidden="true"></span>
         </button>
         <button type="button" class="alt-stop" data-goto="3">
-          <span class="alt-stop-name" data-i18n="st3.nav">Breaking &amp; Tsunami</span>
+          <span class="alt-stop-name" data-i18n="st4.nav">Manifeste CAO</span>
           <span class="alt-stop-code mono">ST.03</span>
           <span class="alt-stop-tick" aria-hidden="true"></span>
         </button>
         <button type="button" class="alt-stop" data-goto="4">
-          <span class="alt-stop-name" data-i18n="st4.nav">Manifeste CAO</span>
+          <span class="alt-stop-name" data-i18n="st3.nav">Breaking &amp; Tsunami</span>
           <span class="alt-stop-code mono">ST.04</span>
           <span class="alt-stop-tick" aria-hidden="true"></span>
         </button>
         <button type="button" class="alt-stop" data-goto="5">
-          <span class="alt-stop-name" data-i18n="st5.nav">S1–S6 &amp; Ikigai</span>
+          <span class="alt-stop-name" data-i18n="st2.nav">Voyages</span>
           <span class="alt-stop-code mono">ST.05</span>
           <span class="alt-stop-tick" aria-hidden="true"></span>
         </button>
@@ -136,7 +136,7 @@
     </div>
   </aside>
 
-  <!-- Scène principale 100dvh contenant les 5 stations -->
+  <!-- Scène principale 100dvh contenant les 7 stations -->
   <main class="stage" id="stage">
 
     <!-- ======================================================================
@@ -162,6 +162,12 @@
           <canvas id="heroInkCanvas" aria-hidden="true"></canvas>
           <h1 class="hero-title hero-title-monumental ink-sr-fallback" id="heroTitle">VICTOR VALROFF CHHUN</h1>
         </div>
+
+        <p class="hero-subline mono">
+          <span>BUT GÉNIE CIVIL &amp; CONSTRUCTION DURABLE</span>
+          <span class="hero-sub-sep" aria-hidden="true">·</span>
+          <span>48.66°N 6.15°E · NANCY</span>
+        </p>
 
         <button type="button" class="scroll-cue mono magnetic" data-goto="1" aria-label="Explorer les stations">
           <span data-i18n="st0.ctaCircle">EXPLORER</span>
@@ -216,142 +222,107 @@
     </section>
 
     <!-- ======================================================================
-         ST.02 — VOYAGES (+08.40m) · 70% FIGURE / 30% TEXTE
+         ST.02 — TRAJECTOIRE S1 → S6 & IKIGAI (+08.40m) · PARCOURS PRO EN PRIORITÉ
          ====================================================================== -->
-    <section class="station" id="station-2" data-index="2" data-alt="+08.40m" data-code="ST.02" aria-label="Station 02 — Voyages">
-      <svg class="station-ribbon" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="none" aria-hidden="true">
-        <path class="ribbon-path" d="M-40 520 C 340 340, 740 120, 1240 240" stroke="#262CE8" stroke-width="2" stroke-opacity="0.22"/>
-      </svg>
-
-      <div class="station-inner st-figure-dominant st-figure-left">
-        <figure class="dim-frame photo-card photo-card-hero">
+    <section class="station" id="station-5" data-index="2" data-alt="+08.40m" data-code="ST.02" aria-label="Station 02 — Trajectoire S1-S6 & Ikigai">
+      <div class="station-inner st5-layout">
+        <!-- Bloc S1 → S6 -->
+        <div class="dim-frame st5-traj-block">
           <div class="dim-top mono">
-            <span>FIG.02 // HORIZON &amp; MOBILITÉ</span>
-            <span class="photo-ratio-readout" data-ratio-label>RATIO AUTO</span>
+            <span>ST.02A // <span data-i18n="cad.tabTrajectory">TRAJECTOIRE S1 → S6</span></span>
+            <span>BUT GCCD · ELV +08.40m</span>
           </div>
-          <div class="smart-photo photo-reveal" data-focal="50% 35%">
-            <img id="voyagesImg" src="images/voyages.jpg" alt="Voyages et ouverture internationale" loading="lazy">
-            <div class="photo-fallback photo-fallback-cad" aria-hidden="true">
-              <svg viewBox="0 0 640 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="320" cy="200" r="142" stroke="#121212" stroke-opacity="0.2" stroke-dasharray="4 6"/>
-                <circle cx="320" cy="200" r="88" stroke="#262CE8" stroke-width="1.6"/>
-                <ellipse cx="320" cy="200" rx="142" ry="52" stroke="#262CE8" stroke-opacity="0.55" stroke-width="1.2"/>
-                <ellipse cx="320" cy="200" rx="52" ry="142" stroke="#121212" stroke-opacity="0.25" stroke-width="1.2"/>
-                <line x1="120" y1="200" x2="520" y2="200" stroke="#121212" stroke-opacity="0.25"/>
-                <line x1="320" y1="36" x2="320" y2="364" stroke="#121212" stroke-opacity="0.25"/>
-                <circle cx="408" cy="148" r="6" fill="#262CE8"/>
-              </svg>
-              <span class="fallback-tag mono">images/voyages.jpg</span>
+          <div class="st5-traj-wrap">
+            <svg class="traj-svg-line" viewBox="0 0 900 120" fill="none" preserveAspectRatio="none" aria-hidden="true">
+              <path class="traj-path-active" d="M 30 60 C 200 10, 320 110, 480 60" stroke="#262CE8" stroke-width="2"/>
+              <path d="M 480 60 C 640 10, 740 110, 870 60" stroke="#121212" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="5 6"/>
+            </svg>
+            <div class="traj-grid">
+              <div class="traj-step hover-card">
+                <span class="mono traj-code" data-i18n="traj.s1Code">01 · S1 ACTUEL</span>
+                <h3 data-i18n="traj.s1Title">Socle GCCD</h3>
+                <p data-i18n="traj.s1Text">Plans AutoDesk, matériaux, mécanique des structures, topographie.</p>
+              </div>
+              <div class="traj-step traj-step-accent hover-card">
+                <span class="mono traj-code" data-i18n="traj.s2Code">02 · S2 MAI–JUIN</span>
+                <h3 data-i18n="traj.s2Title">Stage 4 semaines</h3>
+                <p data-i18n="traj.s2Text">Suivi de chantier auprès d’un ingénieur travaux pour relier théorie et terrain.</p>
+              </div>
+              <div class="traj-step hover-card">
+                <span class="mono traj-code">03 · S3 → S6</span>
+                <h3 data-i18n="traj.s3Title">École d’Ingénieurs</h3>
+                <p data-i18n="traj.s3Text">Dimensionnement, BIM, stages longs et intégration (INSA, ESTP, ENTPE).</p>
+              </div>
             </div>
           </div>
-          <figcaption class="dim-bottom mono">
-            <div class="photo-switcher" role="group" aria-label="Galerie Voyages">
-              <button type="button" class="photo-sw-btn active" data-swap-target="voyagesImg" data-swap-src="images/voyages.jpg">01</button>
-              <button type="button" class="photo-sw-btn" data-swap-target="voyagesImg" data-swap-src="images/voyages-2.jpg">02</button>
-              <button type="button" class="photo-sw-btn" data-swap-target="voyagesImg" data-swap-src="images/voyages-3.jpg">03</button>
-              <button type="button" class="photo-sw-btn" data-swap-target="voyagesImg" data-swap-src="images/voyages-4.jpg">04</button>
-            </div>
-            <span data-i18n="st2.capLeft">CAMBRIDGE FIRST · B2</span>
-          </figcaption>
-        </figure>
+        </div>
 
-        <div class="st-copy-compact cote-block" data-cote="ELV +08.40m · B2">
-          <div class="st-meta-bar mono">
-            <span class="st-tag">ST.02</span>
-            <span class="st-dim">+08.40m</span>
+        <!-- Vrai diagramme Ikigai en 4 cercles entrelacés interactifs -->
+        <div class="dim-frame st5-iki-block">
+          <div class="dim-top mono">
+            <span>ST.02B // <span data-i18n="iki.header">IKIGAI · DIAGRAMME 4 CERCLES</span></span>
+            <span data-i18n="iki.hint">CLIC / SURVOL SUR UN CERCLE</span>
           </div>
+          <div class="ikigai-venn-layout">
+            <svg class="ikigai-venn-svg" viewBox="0 0 420 340" role="img" aria-label="Diagramme Ikigai en 4 cercles">
+              <circle cx="210" cy="170" r="154" fill="none" stroke="rgba(18,18,18,0.12)" stroke-dasharray="3 6"/>
+              <!-- Cercle 1 : Passion (Haut) -->
+              <g class="venn-circle active" data-pole="passion" tabindex="0" role="button">
+                <circle cx="210" cy="112" r="78" fill="rgba(38,44,232,0.14)" stroke="#262CE8" stroke-width="1.6"/>
+                <text x="210" y="72" text-anchor="middle" class="venn-title" data-i18n="iki.vLove">CE QUE J'AIME</text>
+                <text x="210" y="87" text-anchor="middle" class="venn-sub" data-i18n="iki.vLoveSub">3D · PLANS</text>
+              </g>
+              <!-- Cercle 2 : Talents (Gauche) -->
+              <g class="venn-circle" data-pole="talents" tabindex="0" role="button">
+                <circle cx="148" cy="170" r="78" fill="rgba(18,18,18,0.08)" stroke="#121212" stroke-width="1.5"/>
+                <text x="108" y="166" text-anchor="middle" class="venn-title" data-i18n="iki.vTalents">TALENTS</text>
+                <text x="108" y="181" text-anchor="middle" class="venn-sub" data-i18n="iki.vTalentsSub">PCSI · CAO</text>
+              </g>
+              <!-- Cercle 3 : Mission (Droite) -->
+              <g class="venn-circle" data-pole="mission" tabindex="0" role="button">
+                <circle cx="272" cy="170" r="78" fill="rgba(255,77,28,0.14)" stroke="#FF4D1C" stroke-width="1.6"/>
+                <text x="312" y="166" text-anchor="middle" class="venn-title">MISSION</text>
+                <text x="312" y="181" text-anchor="middle" class="venn-sub" data-i18n="iki.vMissionSub">DURABLE</text>
+              </g>
+              <!-- Cercle 4 : Profession (Bas) -->
+              <g class="venn-circle" data-pole="profession" tabindex="0" role="button">
+                <circle cx="210" cy="228" r="78" fill="rgba(38,44,232,0.09)" stroke="#262CE8" stroke-width="1.5" stroke-dasharray="4 3"/>
+                <text x="210" y="264" text-anchor="middle" class="venn-title">PROFESSION</text>
+                <text x="210" y="279" text-anchor="middle" class="venn-sub" data-i18n="iki.vProfSub">INGÉNIEUR</text>
+              </g>
+              <!-- Cœur central Ikigai -->
+              <circle cx="210" cy="170" r="36" fill="#EFECE6" stroke="#121212" stroke-width="1.6"/>
+              <text x="210" y="167" text-anchor="middle" class="venn-core-title">IKIGAI</text>
+              <text x="210" y="180" text-anchor="middle" class="venn-core-sub" data-i18n="iki.vCoreSub">GÉNIE CIVIL</text>
+            </svg>
 
-          <h2 class="st-title-compact" data-i18n="st2.title">Voyages<br><span class="accent-text">&amp; Horizon.</span></h2>
-
-          <p class="st-text-compact" data-i18n="st2.p1">
-            Observer d’autres villes et cultures, porté par un <strong>anglais B2 (First Cambridge)</strong> et l’envie d’exercer à l’international.
-          </p>
-
-          <div class="spec-chips mono">
-            <span>CAMBRIDGE B2</span>
-            <span data-i18n="st2.chip1">SECTION EURO</span>
-            <span data-i18n="st2.chip2">MOBILITÉ INTL.</span>
+            <div class="ikigai-venn-cards">
+              <div class="iki-mini-cell active hover-card" data-pole="passion">
+                <span class="mono">01 / PASSION</span>
+                <p data-i18n="iki.p1">Conception 3D, plans techniques et design fonctionnel.</p>
+              </div>
+              <div class="iki-mini-cell hover-card" data-pole="talents">
+                <span class="mono">02 / TALENTS</span>
+                <p data-i18n="iki.p2">Bases PCSI, AutoDesk, méthode et gestion de collectif.</p>
+              </div>
+              <div class="iki-mini-cell hover-card" data-pole="mission">
+                <span class="mono">03 / MISSION</span>
+                <p data-i18n="iki.p3">Bâtir durablement des ouvrages utiles et fiables.</p>
+              </div>
+              <div class="iki-mini-cell iki-mini-core hover-card" data-pole="profession">
+                <span class="mono">04 / PROFESSION</span>
+                <p data-i18n="iki.p4"><strong>Ingénieur en génie civil</strong>, ouvert à l’international.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ======================================================================
-         ST.03 — BREAKING & ASSOCIATION TSUNAMI (+12.60m) · VISUELS DOMINANTS
+         ST.03 — MANIFESTE CAO FUSION 360 (+12.60m) · 100 % MANIFESTE
          ====================================================================== -->
-    <section class="station" id="station-3" data-index="3" data-alt="+12.60m" data-code="ST.03" aria-label="Station 03 — Breaking & Association Tsunami">
-      <svg class="station-ribbon" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="none" aria-hidden="true">
-        <path class="ribbon-path" d="M-30 440 C 260 120, 620 620, 960 220 C 1080 90, 1180 180, 1250 150" stroke="#262CE8" stroke-width="2.4" stroke-opacity="0.24"/>
-      </svg>
-
-      <div class="station-inner st3-layout">
-        <div class="st-copy-compact cote-block" data-cote="NANCY · 2024">
-          <div class="st-meta-bar mono">
-            <span class="st-tag">ST.03</span>
-            <span class="st-dim">+12.60m</span>
-          </div>
-
-          <h2 class="st-title-compact" data-i18n="st3.title">Breaking<br><span class="accent-text">&amp; Tsunami.</span></h2>
-
-          <p class="st-text-compact" data-i18n="st3.p1">
-            Président &amp; cofondateur de l’<strong>Association Tsunami</strong> à Nancy (breaking, événements, Relais de la Flamme JO).
-          </p>
-
-          <blockquote class="st3-quote" data-i18n="st3.quote">
-            « Rien ne se monte seul : que ce soit au sein de l’Association Tsunami, en session de breaking ou en déplacement, c’est l’énergie du collectif et la confiance entre amis qui donnent du relief à ce que j’entreprends. »
-          </blockquote>
-
-          <div class="spec-chips mono">
-            <span data-i18n="st3.chip1">PRÉSIDENT · 2024</span>
-            <span data-i18n="st3.chip2">FLAMME JO</span>
-          </div>
-        </div>
-
-        <div class="st3-bento">
-          <!-- Photo 1 Breaking (colonne gauche haute) -->
-          <figure class="dim-frame photo-card st3-photo-tall">
-            <div class="dim-top mono">
-              <span>FIG.03A // BREAKING</span>
-              <span class="photo-ratio-readout" data-ratio-label>3:4</span>
-            </div>
-            <div class="smart-photo photo-reveal" data-focal="50% 25%">
-              <img src="images/breaking-tsunami.jpg" alt="Breaking sous structure métallique de nuit" loading="lazy">
-              <div class="photo-fallback photo-fallback-cad" aria-hidden="true"></div>
-            </div>
-          </figure>
-
-          <!-- Colonne droite empilée : Logo Tsunami 3D compact + Photo 2 Collectif -->
-          <div class="st3-bento-right">
-            <div class="dim-frame tsunami-compact-card">
-              <div class="dim-top mono">
-                <span>OBJ.3D // TSUNAMI</span>
-                <button type="button" class="mini-reset mono" id="resetTsunamiBtn" data-i18n="st3.reset3d">RESET 360°</button>
-              </div>
-              <div class="tsunami-canvas-wrap tsunami-compact-wrap" id="tsunamiWrap">
-                <canvas id="tsunamiCanvas" aria-label="Logo vague Tsunami en 3D interactive"></canvas>
-                <span class="canvas-hint mono" data-i18n="st3.dragHint">GLISSER 360°</span>
-              </div>
-            </div>
-
-            <figure class="dim-frame photo-card st3-photo-second">
-              <div class="dim-top mono">
-                <span>FIG.03B // COLLECTIF</span>
-                <span class="photo-ratio-readout" data-ratio-label>3:4</span>
-              </div>
-              <div class="smart-photo photo-reveal" data-focal="50% 35%">
-                <img src="images/breaking-2.jpg" alt="Scène nocturne collective Breaking & Tsunami" loading="lazy">
-                <div class="photo-fallback photo-fallback-cad" aria-hidden="true"></div>
-              </div>
-            </figure>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================================================================
-         ST.04 — MANIFESTE CAO FUSION 360 (+16.80m) · 100 % MANIFESTE
-         ====================================================================== -->
-    <section class="station" id="station-4" data-index="4" data-alt="+16.80m" data-code="ST.04" aria-label="Station 04 — Manifeste CAO">
+    <section class="station" id="station-4" data-index="3" data-alt="+12.60m" data-code="ST.03" aria-label="Station 03 — Manifeste CAO">
       <div class="station-inner st4-layout">
 
         <!-- Grande fenêtre Manifeste façon Fusion 360 / AutoCAD -->
@@ -480,99 +451,148 @@
     </section>
 
     <!-- ======================================================================
-         ST.05 — TRAJECTOIRE S1 → S6 & IKIGAI (+21.00m)
+         ST.04 — BREAKING & ASSOCIATION TSUNAMI (+16.80m) · VISUELS DOMINANTS
          ====================================================================== -->
-    <section class="station" id="station-5" data-index="5" data-alt="+21.00m" data-code="ST.05" aria-label="Station 05 — Trajectoire S1-S6 & Ikigai">
-      <div class="station-inner st5-layout">
-        <!-- Bloc S1 → S6 -->
-        <div class="dim-frame st5-traj-block">
-          <div class="dim-top mono">
-            <span>ST.05A // <span data-i18n="cad.tabTrajectory">TRAJECTOIRE S1 → S6</span></span>
-            <span>BUT GCCD · ELV +21.00m</span>
+    <section class="station" id="station-3" data-index="4" data-alt="+16.80m" data-code="ST.04" aria-label="Station 04 — Breaking & Association Tsunami">
+      <svg class="station-ribbon" viewBox="0 0 1200 700" fill="none" preserveAspectRatio="none" aria-hidden="true">
+        <path class="ribbon-path" d="M-30 440 C 260 120, 620 620, 960 220 C 1080 90, 1180 180, 1250 150" stroke="#262CE8" stroke-width="2.4" stroke-opacity="0.24"/>
+      </svg>
+
+      <div class="station-inner st3-editorial">
+        <!-- Bandeau texte plein écran bien lisible en haut (même rythme que Voyages) -->
+        <div class="st3-top-bar cote-block" data-cote="NANCY · 2024 · FLAMME JO">
+          <div class="st3-top-left">
+            <span class="mono st2-kicker">ST.04 // <span data-i18n="st3.kicker">COLLECTIF &amp; ENGAGEMENT</span></span>
+            <h2 class="st-title-compact" data-i18n="st3.title">Breaking <span class="accent-text">&amp; Tsunami.</span></h2>
+            <p class="st-text-compact" data-i18n="st3.p1">
+              Président &amp; cofondateur de l’<strong>Association Tsunami</strong> à Nancy (breaking, événements, Relais de la Flamme JO).
+            </p>
           </div>
-          <div class="st5-traj-wrap">
-            <svg class="traj-svg-line" viewBox="0 0 900 120" fill="none" preserveAspectRatio="none" aria-hidden="true">
-              <path class="traj-path-active" d="M 30 60 C 200 10, 320 110, 480 60" stroke="#262CE8" stroke-width="2"/>
-              <path d="M 480 60 C 640 10, 740 110, 870 60" stroke="#121212" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="5 6"/>
-            </svg>
-            <div class="traj-grid">
-              <div class="traj-step hover-card">
-                <span class="mono traj-code" data-i18n="traj.s1Code">01 · S1 ACTUEL</span>
-                <h3 data-i18n="traj.s1Title">Socle GCCD</h3>
-                <p data-i18n="traj.s1Text">Plans AutoDesk, matériaux, mécanique des structures, topographie.</p>
-              </div>
-              <div class="traj-step traj-step-accent hover-card">
-                <span class="mono traj-code" data-i18n="traj.s2Code">02 · S2 MAI–JUIN</span>
-                <h3 data-i18n="traj.s2Title">Stage 4 semaines</h3>
-                <p data-i18n="traj.s2Text">Suivi de chantier auprès d’un ingénieur travaux pour relier théorie et terrain.</p>
-              </div>
-              <div class="traj-step hover-card">
-                <span class="mono traj-code">03 · S3 → S6</span>
-                <h3 data-i18n="traj.s3Title">École d’Ingénieurs</h3>
-                <p data-i18n="traj.s3Text">Dimensionnement, BIM, stages longs et intégration (INSA, ESTP, ENTPE).</p>
-              </div>
+          <blockquote class="st3-quote" data-i18n="st3.quote">
+            « Rien ne se monte seul : que ce soit au sein de l’Association Tsunami, en session de breaking ou en déplacement, c’est l’énergie du collectif et la confiance entre amis qui donnent du relief à ce que j’entreprends. »
+          </blockquote>
+        </div>
+
+        <!-- Galerie 3 colonnes équilibrées sur toute la largeur -->
+        <div class="st3-trio">
+          <figure class="dim-frame photo-card st3-trio-photo">
+            <div class="dim-top mono">
+              <span>FIG.04A // BREAKING</span>
+              <span class="photo-ratio-readout" data-ratio-label>3:4</span>
             </div>
+            <div class="smart-photo photo-reveal" data-focal="50% 25%">
+              <img src="images/breaking-tsunami.jpg" alt="Breaking sous structure métallique de nuit" loading="lazy">
+              <div class="photo-fallback photo-fallback-cad" aria-hidden="true"></div>
+            </div>
+          </figure>
+
+          <div class="dim-frame tsunami-compact-card st3-trio-3d">
+            <div class="dim-top mono">
+              <span>OBJ.3D // TSUNAMI</span>
+              <button type="button" class="mini-reset mono" id="resetTsunamiBtn" data-i18n="st3.reset3d">RESET 360°</button>
+            </div>
+            <div class="tsunami-canvas-wrap tsunami-compact-wrap" id="tsunamiWrap">
+              <canvas id="tsunamiCanvas" aria-label="Logo vague Tsunami en 3D interactive"></canvas>
+              <span class="canvas-hint mono" data-i18n="st3.dragHint">GLISSER 360°</span>
+            </div>
+          </div>
+
+          <figure class="dim-frame photo-card st3-trio-photo">
+            <div class="dim-top mono">
+              <span>FIG.04B // COLLECTIF</span>
+              <span class="photo-ratio-readout" data-ratio-label>3:4</span>
+            </div>
+            <div class="smart-photo photo-reveal" data-focal="50% 35%">
+              <img src="images/breaking-2.jpg" alt="Scène nocturne collective Breaking & Tsunami" loading="lazy">
+              <div class="photo-fallback photo-fallback-cad" aria-hidden="true"></div>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         ST.05 — VOYAGES (+21.00m) · CARROUSEL 3D INCURVÉ CINÉMATIQUE
+         ====================================================================== -->
+    <section class="station" id="station-2" data-index="5" data-alt="+21.00m" data-code="ST.05" aria-label="Station 05 — Voyages">
+      <div class="station-inner st2-sticky-layout">
+        <div class="st2-head">
+          <div>
+            <span class="mono st2-kicker">ST.05 // <span data-i18n="st2.kicker">OUVERTURE &amp; MOBILITÉ</span></span>
+            <h2 class="st-title-compact" data-i18n="st2.title">Voyages <span class="accent-text">&amp; Horizon.</span></h2>
+          </div>
+          <p class="st2-brief" data-i18n="st2.p1">
+            Observer d’autres villes et cultures, porté par un <strong>anglais B2 (First Cambridge)</strong> et l’envie d’exercer à l’international.
+          </p>
+        </div>
+
+        <!-- Scène Carrousel 3D incurvé + viseur à 4 croix (+) -->
+        <div class="voyages-carousel" id="voyagesCarousel">
+          <div class="voyages-viewfinder" id="voyagesViewfinder" aria-hidden="true">
+            <span class="vf-cross vf-tl">+</span>
+            <span class="vf-cross vf-tr">+</span>
+            <span class="vf-cross vf-bl">+</span>
+            <span class="vf-cross vf-br">+</span>
+          </div>
+
+          <div class="voyages-track" id="voyagesTrack">
+            <figure class="v-card is-center" data-slide="0">
+              <img src="images/voyages-3.jpg" alt="Yosemite Glacier Point, USA" loading="lazy">
+            </figure>
+            <figure class="v-card" data-slide="1">
+              <img src="images/voyages-lux.jpg" alt="Luxembourg-Ville, Luxembourg" loading="lazy">
+            </figure>
+            <figure class="v-card" data-slide="2">
+              <img src="images/voyages-cq1.jpg" alt="Chongqing, Chine" loading="lazy">
+            </figure>
+            <figure class="v-card" data-slide="3">
+              <img src="images/voyages-cq2.jpg" alt="Chongqing de nuit, Chine" loading="lazy">
+            </figure>
+            <figure class="v-card" data-slide="4">
+              <img src="images/voyages-2.jpg" alt="Xi'an Huaqing, Chine" loading="lazy">
+            </figure>
+            <figure class="v-card" data-slide="5">
+              <img src="images/voyages-5.jpg" alt="Xi'an cour traditionnelle, Chine" loading="lazy">
+            </figure>
+            <figure class="v-card" data-slide="6">
+              <img src="images/voyages.jpg" alt="Xi'an corridor lacustre, Chine" loading="lazy">
+            </figure>
+            <figure class="v-card" data-slide="7">
+              <img src="images/voyages-4.jpg" alt="Olmeto Corse, France" loading="lazy">
+            </figure>
           </div>
         </div>
 
-        <!-- Vrai diagramme Ikigai en 4 cercles entrelacés interactifs -->
-        <div class="dim-frame st5-iki-block">
-          <div class="dim-top mono">
-            <span>ST.05B // <span data-i18n="iki.header">IKIGAI · DIAGRAMME 4 CERCLES</span></span>
-            <span data-i18n="iki.hint">CLIC / SURVOL SUR UN CERCLE</span>
+        <!-- Règle graduée / lignes de cotes 1px synchronisées au carrousel -->
+        <div class="voyages-ruler mono" aria-hidden="true">
+          <div class="vr-labels">
+            <span>ÉCH. 1:1 · USA · LUX · CHN · FRA</span>
+            <span id="voyagesCoord">POS 000.0mm</span>
           </div>
-          <div class="ikigai-venn-layout">
-            <svg class="ikigai-venn-svg" viewBox="0 0 420 340" role="img" aria-label="Diagramme Ikigai en 4 cercles">
-              <circle cx="210" cy="170" r="154" fill="none" stroke="rgba(18,18,18,0.12)" stroke-dasharray="3 6"/>
-              <!-- Cercle 1 : Passion (Haut) -->
-              <g class="venn-circle active" data-pole="passion" tabindex="0" role="button">
-                <circle cx="210" cy="112" r="78" fill="rgba(38,44,232,0.14)" stroke="#262CE8" stroke-width="1.6"/>
-                <text x="210" y="72" text-anchor="middle" class="venn-title" data-i18n="iki.vLove">CE QUE J'AIME</text>
-                <text x="210" y="87" text-anchor="middle" class="venn-sub" data-i18n="iki.vLoveSub">3D · PLANS</text>
-              </g>
-              <!-- Cercle 2 : Talents (Gauche) -->
-              <g class="venn-circle" data-pole="talents" tabindex="0" role="button">
-                <circle cx="148" cy="170" r="78" fill="rgba(18,18,18,0.08)" stroke="#121212" stroke-width="1.5"/>
-                <text x="108" y="166" text-anchor="middle" class="venn-title" data-i18n="iki.vTalents">TALENTS</text>
-                <text x="108" y="181" text-anchor="middle" class="venn-sub" data-i18n="iki.vTalentsSub">PCSI · CAO</text>
-              </g>
-              <!-- Cercle 3 : Mission (Droite) -->
-              <g class="venn-circle" data-pole="mission" tabindex="0" role="button">
-                <circle cx="272" cy="170" r="78" fill="rgba(255,77,28,0.14)" stroke="#FF4D1C" stroke-width="1.6"/>
-                <text x="312" y="166" text-anchor="middle" class="venn-title">MISSION</text>
-                <text x="312" y="181" text-anchor="middle" class="venn-sub" data-i18n="iki.vMissionSub">DURABLE</text>
-              </g>
-              <!-- Cercle 4 : Profession (Bas) -->
-              <g class="venn-circle" data-pole="profession" tabindex="0" role="button">
-                <circle cx="210" cy="228" r="78" fill="rgba(38,44,232,0.09)" stroke="#262CE8" stroke-width="1.5" stroke-dasharray="4 3"/>
-                <text x="210" y="264" text-anchor="middle" class="venn-title">PROFESSION</text>
-                <text x="210" y="279" text-anchor="middle" class="venn-sub" data-i18n="iki.vProfSub">INGÉNIEUR</text>
-              </g>
-              <!-- Cœur central Ikigai -->
-              <circle cx="210" cy="170" r="36" fill="#EFECE6" stroke="#121212" stroke-width="1.6"/>
-              <text x="210" y="167" text-anchor="middle" class="venn-core-title">IKIGAI</text>
-              <text x="210" y="180" text-anchor="middle" class="venn-core-sub" data-i18n="iki.vCoreSub">GÉNIE CIVIL</text>
-            </svg>
+          <div class="vr-track">
+            <div class="vr-ticks"></div>
+            <div class="vr-cursor" id="voyagesRulerCursor"></div>
+          </div>
+        </div>
 
-            <div class="ikigai-venn-cards">
-              <div class="iki-mini-cell active hover-card" data-pole="passion">
-                <span class="mono">01 / PASSION</span>
-                <p data-i18n="iki.p1">Conception 3D, plans techniques et design fonctionnel.</p>
-              </div>
-              <div class="iki-mini-cell hover-card" data-pole="talents">
-                <span class="mono">02 / TALENTS</span>
-                <p data-i18n="iki.p2">Bases PCSI, AutoDesk, méthode et gestion de collectif.</p>
-              </div>
-              <div class="iki-mini-cell hover-card" data-pole="mission">
-                <span class="mono">03 / MISSION</span>
-                <p data-i18n="iki.p3">Bâtir durablement des ouvrages utiles et fiables.</p>
-              </div>
-              <div class="iki-mini-cell iki-mini-core hover-card" data-pole="profession">
-                <span class="mono">04 / PROFESSION</span>
-                <p data-i18n="iki.p4"><strong>Ingénieur en génie civil</strong>, ouvert à l’international.</p>
-              </div>
+        <!-- Légende dynamique Ville · Pays + contrôles discrets -->
+        <div class="voyages-caption-bar">
+          <button type="button" class="v-nav-btn mono" id="voyagesPrev" aria-label="Photo précédente">←</button>
+          <div class="voyages-caption-center">
+            <div class="voyages-caption-title" id="voyagesCaptionTitle">Yosemite · USA</div>
+            <div class="voyages-caption-sub mono" id="voyagesCaptionSub">01 / 08 · Glacier Point, Californie</div>
+            <div class="v-dots" aria-label="Navigation photos Voyages">
+              <button type="button" class="v-dot active" aria-label="Photo 1"></button>
+              <button type="button" class="v-dot" aria-label="Photo 2"></button>
+              <button type="button" class="v-dot" aria-label="Photo 3"></button>
+              <button type="button" class="v-dot" aria-label="Photo 4"></button>
+              <button type="button" class="v-dot" aria-label="Photo 5"></button>
+              <button type="button" class="v-dot" aria-label="Photo 6"></button>
+              <button type="button" class="v-dot" aria-label="Photo 7"></button>
+              <button type="button" class="v-dot" aria-label="Photo 8"></button>
             </div>
           </div>
+          <button type="button" class="v-nav-btn mono" id="voyagesNext" aria-label="Photo suivante">→</button>
         </div>
       </div>
     </section>
@@ -899,8 +919,9 @@
   <script src="js/i18n.js?v=8" defer></script>
   <script src="js/hero-ink.js?v=8" defer></script>
   <script src="js/helmet-3d.js?v=8" defer></script>
+  <script src="js/voyages-carousel.js?v=3" defer></script>
   <script src="js/cad-window.js?v=8" defer></script>
   <script src="js/tsunami-3d.js?v=8" defer></script>
-  <script src="js/main.js?v=8" defer></script>
+  <script src="js/main.js?v=11" defer></script>
 </body>
 </html>

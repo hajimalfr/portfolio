@@ -51,158 +51,7 @@
     }
 
     /* ----------------------------------------------------------------------
-       1. PHYSIQUE À RESSORT LETTRE PAR LETTRE (INSPIRÉE SBWEBDESIGN.CH)
-          Rebond élastique + liseré orange #FF4D1C net + taches légères au survol
-       ---------------------------------------------------------------------- */
-    const heroSelectionBox = document.getElementById('heroSelectionBox');
-    const heroTitle = document.getElementById('heroTitle');
-    const heroSpecBadge = document.getElementById('heroSpecBadge');
-    const stainField = document.getElementById('orangeStainField');
-    const stainBlobs = stainField ? Array.from(stainField.querySelectorAll('.stain-blob')) : [];
-    const letterStates = [];
-
-    if (heroTitle) {
-      heroTitle.querySelectorAll('.hero-word').forEach((wordEl) => {
-        const text = wordEl.textContent || '';
-        wordEl.textContent = '';
-        Array.from(text).forEach((ch) => {
-          const span = document.createElement('span');
-          span.className = 'hero-letter';
-          span.textContent = ch;
-          wordEl.appendChild(span);
-          letterStates.push({
-            el: span,
-            y: 0,
-            vy: 0,
-            rot: 0,
-            vrot: 0,
-            scale: 1,
-            vscale: 0,
-            glow: 0,
-            vglow: 0
-          });
-        });
-      });
-
-      function updateSpecBadge() {
-        if (!heroSpecBadge || !heroSelectionBox) return;
-        const fs = Math.round(parseFloat(getComputedStyle(heroTitle).fontSize) || 84);
-        const rect = heroSelectionBox.getBoundingClientRect();
-        heroSpecBadge.textContent = `Bricolage · ${fs} px · ${Math.round(rect.width)} × ${Math.round(rect.height)}`;
-      }
-
-      updateSpecBadge();
-      window.addEventListener('resize', updateSpecBadge);
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(updateSpecBadge);
-      }
-
-      if (heroSelectionBox && !reducedMotion) {
-        let lastMx = null;
-        let lastMy = null;
-        let springRaf = null;
-
-        function stepSprings() {
-          let moving = false;
-          const k = 0.14; // raideur ressort
-          const d = 0.76; // amortissement élastique
-
-          for (const st of letterStates) {
-            st.vy = (st.vy + -st.y * k) * d;
-            st.y += st.vy;
-
-            st.vrot = (st.vrot + -st.rot * k) * d;
-            st.rot += st.vrot;
-
-            st.vscale = (st.vscale + (1 - st.scale) * k) * d;
-            st.scale += st.vscale;
-
-            st.vglow = (st.vglow + -st.glow * 0.12) * 0.72;
-            st.glow = Math.max(0, st.glow + st.vglow);
-
-            if (
-              Math.abs(st.y) > 0.08 ||
-              Math.abs(st.vy) > 0.08 ||
-              Math.abs(st.rot) > 0.08 ||
-              Math.abs(st.vrot) > 0.08 ||
-              Math.abs(st.scale - 1) > 0.002 ||
-              st.glow > 0.02
-            ) {
-              moving = true;
-              st.el.style.transform = `translate3d(0, ${st.y.toFixed(1)}px, 0) rotate(${st.rot.toFixed(1)}deg) scale(${st.scale.toFixed(3)})`;
-              if (st.glow > 0.04) {
-                const a = Math.min(1, st.glow * 1.15).toFixed(2);
-                const ox = (-st.glow * 3.8).toFixed(1);
-                const oy = (-st.glow * 3.0).toFixed(1);
-                // Liseré orange #FF4D1C franc et marqué façon sbwebdesign.ch
-                st.el.style.textShadow = `${ox}px ${oy}px 0 rgba(255, 77, 28, ${a}), ${(st.glow * 2.2).toFixed(1)}px ${(st.glow * 1.8).toFixed(1)}px 0 rgba(255, 77, 28, ${(st.glow * 0.65).toFixed(2)}), 0 0 10px rgba(255, 77, 28, ${(st.glow * 0.55).toFixed(2)})`;
-              } else {
-                st.el.style.textShadow = '';
-              }
-            } else {
-              st.y = 0; st.vy = 0; st.rot = 0; st.vrot = 0; st.scale = 1; st.vscale = 0; st.glow = 0; st.vglow = 0;
-              st.el.style.transform = '';
-              st.el.style.textShadow = '';
-            }
-          }
-
-          if (moving) {
-            springRaf = requestAnimationFrame(stepSprings);
-          } else {
-            springRaf = null;
-          }
-        }
-
-        function kickSprings() {
-          if (!springRaf) springRaf = requestAnimationFrame(stepSprings);
-        }
-
-        heroSelectionBox.addEventListener('pointermove', (e) => {
-          const mx = e.clientX;
-          const my = e.clientY;
-          const vx = lastMx === null ? 0 : Math.max(-36, Math.min(36, mx - lastMx));
-          const vy = lastMy === null ? 0 : Math.max(-36, Math.min(36, my - lastMy));
-          lastMx = mx;
-          lastMy = my;
-
-          if (stainField && stainBlobs.length) {
-            const boxRect = stainField.getBoundingClientRect();
-            const lx = mx - boxRect.left;
-            const ly = my - boxRect.top;
-            stainField.classList.add('active');
-            if (stainBlobs[0]) stainBlobs[0].style.transform = `translate3d(${(lx - 75).toFixed(0)}px, ${(ly - 60).toFixed(0)}px, 0)`;
-            if (stainBlobs[1]) stainBlobs[1].style.transform = `translate3d(${(lx - 45).toFixed(0)}px, ${(ly - 80).toFixed(0)}px, 0)`;
-            if (stainBlobs[2]) stainBlobs[2].style.transform = `translate3d(${(lx - 90).toFixed(0)}px, ${(ly - 30).toFixed(0)}px, 0)`;
-          }
-
-          for (const st of letterStates) {
-            const rect = st.el.getBoundingClientRect();
-            const cx = rect.left + rect.width / 2;
-            const cy = rect.top + rect.height / 2;
-            const dist = Math.hypot(mx - cx, my - cy);
-
-            if (dist < 110) {
-              const force = 1 - dist / 110;
-              st.vy += (-3.4 * force) + vy * 0.14 * force;
-              st.vrot += (vx * 0.24 * force) + ((mx - cx) / 38) * 0.9 * force;
-              st.vscale += 0.032 * force;
-              st.glow = Math.min(1.15, st.glow + 0.34 * force);
-            }
-          }
-
-          kickSprings();
-        });
-
-        heroSelectionBox.addEventListener('pointerleave', () => {
-          lastMx = null;
-          lastMy = null;
-          if (stainField) stainField.classList.remove('active');
-        });
-      }
-    }
-
-    /* ----------------------------------------------------------------------
-       2. PHYSIQUE MAGNÉTIQUE SUR LES BOUTONS CLÉS
+       1. PHYSIQUE MAGNÉTIQUE SUR LES BOUTONS CLÉS
        ---------------------------------------------------------------------- */
     if (!reducedMotion && window.matchMedia('(pointer: fine)').matches) {
       document.querySelectorAll('.magnetic').forEach((btn) => {
@@ -219,7 +68,7 @@
     }
 
     /* ----------------------------------------------------------------------
-       3. NAVIGATION PAR STATIONS 100dvh, ALTIMÈTRE & MIRE
+       2. NAVIGATION PAR STATIONS 100dvh, ALTIMÈTRE & MIRE
        ---------------------------------------------------------------------- */
     const stations = Array.from(document.querySelectorAll('.station'));
     const altStops = Array.from(document.querySelectorAll('.alt-stop'));
@@ -329,8 +178,8 @@
       const isPhone = window.innerWidth <= 640;
 
       stations.forEach((st) => {
-        // Ne pas transformer .st4-layout (sticky) pour garder le zoom vectoriel net
-        if (st.id === 'station-4') return;
+        // Ne pas transformer les pistes sticky (ST.02 carrousel 3D & ST.04 manifeste)
+        if (st.id === 'station-2' || st.id === 'station-4') return;
         const inner = st.querySelector('.station-inner');
         if (!inner) return;
 
