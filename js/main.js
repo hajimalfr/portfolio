@@ -37,18 +37,27 @@
 
     applyTheme(savedTheme || (darkMedia.matches ? 'dark' : 'light'));
 
-    darkMedia.addEventListener('change', (e) => {
+    function syncSystemTheme() {
       const manual = (() => {
         try { return localStorage.getItem('portfolio_theme'); } catch (_) { return null; }
       })();
-      if (!manual) applyTheme(e.matches ? 'dark' : 'light');
+      if (!manual) applyTheme(darkMedia.matches ? 'dark' : 'light');
+    }
+
+    darkMedia.addEventListener('change', syncSystemTheme);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) syncSystemTheme();
     });
 
     if (themeToggleBtn) {
       themeToggleBtn.addEventListener('click', () => {
         const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         applyTheme(next);
-        try { localStorage.setItem('portfolio_theme', next); } catch (_) {}
+        const sys = darkMedia.matches ? 'dark' : 'light';
+        try {
+          if (next === sys) localStorage.removeItem('portfolio_theme');
+          else localStorage.setItem('portfolio_theme', next);
+        } catch (_) {}
       });
     }
 
@@ -176,6 +185,9 @@
       const alt = activeStation.getAttribute('data-alt') || '+00.00m';
       const code = activeStation.getAttribute('data-code') || 'ST.00';
 
+      const mobileStPill = document.getElementById('mobileStationCode');
+      if (mobileStPill) mobileStPill.textContent = code;
+
       if (altValue) altValue.textContent = alt;
       if (altProgress) {
         const pct = (currentIndex / Math.max(1, stations.length - 1)) * 100;
@@ -235,11 +247,17 @@
     }
 
     if (stageEl) {
+      const mobileProgFill = document.getElementById('mobileProgressFill');
       let appleRaf = null;
       const scheduleApple = () => {
         if (!appleRaf) {
           appleRaf = requestAnimationFrame(() => {
             updateAppleTransitions();
+            if (mobileProgFill) {
+              const maxScroll = Math.max(1, stageEl.scrollHeight - stageEl.clientHeight);
+              const pct = Math.min(100, Math.max(0, (stageEl.scrollTop / maxScroll) * 100));
+              mobileProgFill.style.width = `${pct.toFixed(2)}%`;
+            }
             appleRaf = null;
           });
         }

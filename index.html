@@ -13,9 +13,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css?v=28">
+  <link rel="stylesheet" href="css/style.css?v=30">
 </head>
 <body>
+  <!-- Barre de progression fine en haut sur mobile (2.5px Bleu Tsunami) -->
+  <div class="mobile-progress" aria-hidden="true">
+    <div class="mobile-progress-fill" id="mobileProgressFill"></div>
+  </div>
   <!-- Preloader à remplissage vertical inspiré de sbwebdesign.ch -->
   <div class="preloader" id="preloader" aria-hidden="true">
     <div class="preloader-top mono">
@@ -54,6 +58,7 @@
     <button type="button" class="hud-pill brand-btn" data-goto="0" aria-label="Retour à la station 00">
       <span class="brand-dot" aria-hidden="true"></span>
       <span class="brand-code">VVC <span class="brand-sub">// GCCD</span></span>
+      <span class="mobile-st-pill mono" id="mobileStationCode">ST.00</span>
     </button>
 
     <div class="hud-pill hud-actions">
@@ -655,7 +660,8 @@
               <span>LINKEDIN</span>
             </div>
             <div class="contact-tile-main">
-              <strong>linkedin.com/in/victor-valroff-chhun</strong>
+              <strong class="li-full">linkedin.com/in/victor-valroff-chhun</strong>
+              <strong class="li-mobile">LinkedIn</strong>
               <span class="contact-arrow">↗</span>
             </div>
             <div class="dim-bottom mono">
@@ -814,7 +820,7 @@
   <script src="js/voyages-carousel.js?v=3" defer></script>
   <script src="js/cad-window.js?v=10" defer></script>
   <script src="js/tsunami-3d.js?v=8" defer></script>
-  <script src="js/main.js?v=14" defer></script>
+  <script src="js/main.js?v=15" defer></script>
   <script src="js/awwwards-fx.js?v=3" defer></script>
   <script src="js/favicon-3d.js?v=2" defer></script>
 </body>
