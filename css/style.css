@@ -481,17 +481,19 @@ body {
   z-index: 10;
   overflow-y: auto;
   overflow-x: hidden;
+  scroll-snap-type: y proximity;
   -webkit-overflow-scrolling: touch;
 }
 
 .station {
   position: relative;
   width: 100%;
-  min-height: 88dvh;
+  min-height: 86dvh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(18px, 2.4vw, 32px) clamp(24px, 3.8vw, 52px);
+  padding: clamp(16px, 2.2vw, 28px) clamp(24px, 3.8vw, 52px);
+  scroll-snap-align: center;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -502,24 +504,26 @@ body {
   will-change: transform, opacity;
 }
 
-/* ST.04 — Piste de scrollytelling sticky compacte (zéro espace vide avant ST.05) */
+/* ST.04 — Piste sticky ultra-compacte (zéro trou avant ST.05) */
 #station-4 {
-  min-height: 155dvh;
+  min-height: 132dvh;
   align-items: flex-start;
-  padding-top: 20px;
+  scroll-snap-align: start;
+  padding-top: 16px;
   padding-bottom: 0;
 }
 
 .st4-layout {
   position: sticky;
-  top: 20px;
-  height: calc(100dvh - var(--header-h) - 44px);
+  top: 16px;
+  height: calc(100dvh - var(--header-h) - 36px);
 }
 
 #station-5 {
   min-height: auto;
-  padding-top: 28px;
-  padding-bottom: 40px;
+  scroll-snap-align: start;
+  padding-top: 8px;
+  padding-bottom: 36px;
 }
 
 /* Ruban discret en arrière-plan (netteté retrouvée, très peu de flou) */

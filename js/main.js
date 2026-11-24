@@ -8,8 +8,8 @@
      ======================================================================== */
   const CONFIG = {
     preloaderDurationMs: 860, // Durée du chargement initial (ms)
-    desktopWheelFactor: 0.66, // Vitesse du défilé continu sur PC (fluide et réactif)
-    desktopWheelLerp: 0.13,   // Douceur de l'inertie sur PC
+    desktopWheelFactor: 0.56, // Vitesse posée du défilé continu sur PC
+    desktopWheelLerp: 0.11,   // Douceur de l'inertie sur PC
     emailFallback: 'victorvalroff@hotmail.com'
   };
 
@@ -338,11 +338,11 @@
         const centerOffset = (rect.top - stageRect.top + rect.height / 2 - vh / 2) / vh;
         const dist = Math.min(1, Math.abs(centerOffset));
 
-        // Courbe douce façon Apple identique sur PC & téléphone : net au centre, léger recul & fondu aux bords
-        const ease = 1 - Math.pow(dist, 1.6);
-        const opacity = 0.24 + ease * 0.76;
-        const scale = 0.94 + ease * 0.06;
-        const shiftY = centerOffset * (isPhone ? 22 : 26);
+        // Transition très légère et lumineuse (opacité 0.84 -> 1.0, scale 0.975 -> 1.0)
+        const ease = 1 - Math.pow(dist, 1.5);
+        const opacity = 0.84 + ease * 0.16;
+        const scale = 0.975 + ease * 0.025;
+        const shiftY = centerOffset * 14;
 
         inner.style.opacity = opacity.toFixed(3);
         inner.style.transform = `translate3d(0, ${shiftY.toFixed(1)}px, 0) scale(${scale.toFixed(4)})`;
