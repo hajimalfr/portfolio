@@ -481,7 +481,6 @@ body {
   z-index: 10;
   overflow-y: auto;
   overflow-x: hidden;
-  scroll-snap-type: y proximity;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -493,7 +492,6 @@ body {
   align-items: center;
   justify-content: center;
   padding: clamp(16px, 2.2vw, 28px) clamp(24px, 3.8vw, 52px);
-  scroll-snap-align: center;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -508,7 +506,6 @@ body {
 #station-4 {
   min-height: 132dvh;
   align-items: flex-start;
-  scroll-snap-align: start;
   padding-top: 16px;
   padding-bottom: 0;
 }
@@ -521,7 +518,6 @@ body {
 
 #station-5 {
   min-height: auto;
-  scroll-snap-align: start;
   padding-top: 8px;
   padding-bottom: 36px;
 }
