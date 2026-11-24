@@ -419,7 +419,11 @@
     const closeCvBtn = document.getElementById('closeCvBtn');
     const printCvBtn = document.getElementById('printCvBtn');
     if (closeCvBtn) closeCvBtn.addEventListener('click', closeCvModal);
-    if (printCvBtn) printCvBtn.addEventListener('click', () => window.print());
+    if (printCvBtn) {
+      printCvBtn.addEventListener('click', () => {
+        window.open('VALROFF_Victor_CV.pdf', '_blank', 'noopener,noreferrer');
+      });
+    }
 
     if (cvModal) {
       cvModal.addEventListener('click', (e) => {

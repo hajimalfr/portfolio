@@ -2933,13 +2933,13 @@ body {
 html[data-theme="dark"] {
   --bg-concrete: #111214;
   --bg-panel: #191B20;
-  --bg-panel-soft: rgba(25, 27, 32, 0.84);
+  --bg-panel-soft: rgba(25, 27, 32, 0.86);
   --bg-card: rgba(22, 24, 29, 0.88);
   --ink: #F2EFE9;
-  --ink-muted: rgba(242, 239, 233, 0.68);
-  --ink-faint: rgba(242, 239, 233, 0.34);
-  --line: rgba(242, 239, 233, 0.16);
-  --line-strong: rgba(242, 239, 233, 0.48);
+  --ink-muted: rgba(242, 239, 233, 0.8);
+  --ink-faint: rgba(242, 239, 233, 0.5);
+  --line: rgba(242, 239, 233, 0.2);
+  --line-strong: rgba(242, 239, 233, 0.56);
   --tsunami: #526FFF;
   --tsunami-soft: rgba(82, 111, 255, 0.18);
   --tsunami-line: rgba(82, 111, 255, 0.58);
@@ -2994,15 +2994,47 @@ html[data-theme="dark"] .alt-stop-name {
   border-color: rgba(242, 239, 233, 0.18);
 }
 
-html[data-theme="dark"] .nav-step-btn {
-  background: rgba(22, 24, 29, 0.85);
+html[data-theme="dark"] .nav-step-btn,
+html[data-theme="dark"] .v-nav-btn,
+html[data-theme="dark"] .mini-reset,
+html[data-theme="dark"] .cad-reset-btn,
+html[data-theme="dark"] .spec-chips span,
+html[data-theme="dark"] .btn-outline,
+html[data-theme="dark"] .discreet-badge {
+  background: rgba(22, 24, 30, 0.9);
+  border-color: rgba(242, 239, 233, 0.28);
+  color: #F2EFE9;
+}
+
+html[data-theme="dark"] .canvas-hint,
+html[data-theme="dark"] .cote-block::after,
+html[data-theme="dark"] .reticle-lock-pill {
+  background: rgba(17, 18, 22, 0.92);
+  border-color: rgba(242, 239, 233, 0.26);
+  color: rgba(242, 239, 233, 0.92);
+}
+
+html[data-theme="dark"] .v-dot {
+  background: rgba(242, 239, 233, 0.34);
+}
+
+html[data-theme="dark"] .v-dot.active {
+  background: var(--tsunami);
+}
+
+html[data-theme="dark"] .contact-arrow,
+html[data-theme="dark"] .scroll-cue-arrow,
+html[data-theme="dark"] .cad-node,
+html[data-theme="dark"] .cad-workshop-note p {
+  color: #F2EFE9;
 }
 
 html[data-theme="dark"] .dim-frame,
 html[data-theme="dark"] .cad-window,
-html[data-theme="dark"] .cv-modal-card {
-  background: rgba(20, 22, 27, 0.92);
-  border-color: rgba(242, 239, 233, 0.18);
+html[data-theme="dark"] .cv-modal-sheet {
+  background: rgba(20, 22, 27, 0.94);
+  border-color: rgba(242, 239, 233, 0.2);
+  color: #F2EFE9;
 }
 
 html[data-theme="dark"] .cad-titlebar,
@@ -3298,38 +3330,6 @@ html[data-theme="dark"] .ikigai-venn-svg g[data-pole="talents"] circle {
   font-weight: 700;
   letter-spacing: 0.1em;
   color: #ffffff;
-}
-
-/* ==========================================================================
-   12. IMPRESSION A4 (1 SEULE PAGE BLANCHE PROPRE)
-   ========================================================================== */
-#cv-print-root { display: none; }
-
-@media print {
-  @page { size: A4 portrait; margin: 0; }
-  html, body { height: auto !important; overflow: visible !important; background: #ffffff !important; }
-  body > *:not(#cv-print-root) { display: none !important; }
-  #cv-print-root {
-    display: grid !important; grid-template-columns: 74mm 1fr;
-    width: 210mm; min-height: 297mm; background: #ffffff; color: #121212;
-    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
-  }
-  .print-sidebar { background: #EFECE6; padding: 12mm 8mm; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid #d5d2ca; }
-  .print-name { font-family: 'Bricolage Grotesque', Arial, sans-serif; font-size: 23pt; font-weight: 800; line-height: 0.96; color: #262CE8; text-transform: uppercase; }
-  .print-subtitle { font-size: 9pt; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin: 4px 0 12px; }
-  .print-contact { font-size: 8.5pt; line-height: 1.5; padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid #c9c5bc; }
-  .print-side-sec { margin-bottom: 10px; }
-  .print-side-title, .print-main-title { font-size: 9pt; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #262CE8; border-bottom: 1px solid #262CE8; padding-bottom: 3px; margin-bottom: 7px; }
-  .print-profile-text { font-size: 8pt; line-height: 1.45; }
-  .print-edu-item { margin-bottom: 6px; }
-  .print-edu-title { font-size: 8.5pt; font-weight: 700; }
-  .print-edu-meta { font-size: 7.8pt; color: #444; }
-  .print-side-list { padding-left: 12px; font-size: 8pt; line-height: 1.42; }
-  .print-main { padding: 12mm 11mm; }
-  .print-exp-item { margin-bottom: 11px; }
-  .print-exp-role { font-size: 10pt; font-weight: 700; text-transform: uppercase; }
-  .print-exp-place { font-size: 8.2pt; color: #444; margin-bottom: 4px; }
-  .print-exp-list { padding-left: 14px; font-size: 8.5pt; line-height: 1.42; }
 }
 
 @media (prefers-reduced-motion: reduce) {

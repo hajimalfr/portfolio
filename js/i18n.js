@@ -65,6 +65,7 @@
       'st1.p1':
         'Esquisse paramétrique sous <strong>Fusion 360</strong> et pièces utiles imprimées sur <strong>Bambu Lab</strong>. Cotation et tolérances au service d’AutoCAD.',
       'st1.capLeft': "OUVRAGE D'ART · FILAIRE CAO",
+      'st1.capRight': 'L:320m · H:110m · HAUBANS',
 
       'st2.kicker': 'OUVERTURE & MOBILITÉ',
       'st2.title': 'Voyages <span class="accent-text">&amp; Horizon.</span>',
@@ -139,7 +140,8 @@
       'st4.copy': 'COPIER',
       'st4.copied': 'COPIÉ ✓',
 
-      'cv.print': 'Imprimer A4',
+      'cv.sub': 'victorvalroff@hotmail.com · 06 01 40 69 62 · Nancy, France · Permis B',
+      'cv.print': 'Imprimer PDF',
       'cv.pdf': 'PDF ↓',
       'cv.close': 'Fermer',
       'cv.profileLabel': 'Profil :',
@@ -256,6 +258,7 @@
       'st1.p1':
         'Parametric sketching in <strong>Fusion 360</strong> and functional parts printed on <strong>Bambu Lab</strong>. Tolerances that sharpen AutoCAD.',
       'st1.capLeft': 'CIVIL STRUCTURE · CAD WIREFRAME',
+      'st1.capRight': 'L:320m · H:110m · STAY CABLES',
 
       'st2.kicker': 'WORLDVIEW & MOBILITY',
       'st2.title': 'Travel <span class="accent-text">&amp; Horizon.</span>',
@@ -330,7 +333,8 @@
       'st4.copy': 'COPY',
       'st4.copied': 'COPIED ✓',
 
-      'cv.print': 'Print A4',
+      'cv.sub': 'victorvalroff@hotmail.com · 06 01 40 69 62 · Nancy, France · Driver License',
+      'cv.print': 'Print PDF',
       'cv.pdf': 'PDF ↓',
       'cv.close': 'Close',
       'cv.profileLabel': 'Profile:',
@@ -397,15 +401,6 @@
 
   let currentLang = detectLang();
 
-  function renderMarquee(lang) {
-    const items = DICT[lang].marquee;
-    const html = items.map((t) => `<span>${t}</span><span class="m-star">✦</span>`).join('');
-    const s1 = document.getElementById('marqueeSeq1');
-    const s2 = document.getElementById('marqueeSeq2');
-    if (s1) s1.innerHTML = html;
-    if (s2) s2.innerHTML = html;
-  }
-
   function applyLang(lang, persist = false) {
     currentLang = lang === 'fr' ? 'fr' : 'en';
     document.documentElement.lang = currentLang;
@@ -430,7 +425,6 @@
       btn.setAttribute('aria-pressed', String(isMatch));
     });
 
-    renderMarquee(currentLang);
     document.dispatchEvent(new CustomEvent('portfolio:langchange', { detail: { lang: currentLang } }));
   }
 

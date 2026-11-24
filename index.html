@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css?v=25">
+  <link rel="stylesheet" href="css/style.css?v=26">
 </head>
 <body>
   <!-- Preloader à remplissage vertical inspiré de sbwebdesign.ch -->
@@ -220,7 +220,7 @@
           </div>
           <figcaption class="dim-bottom mono">
             <span data-i18n="st1.capLeft">OUVRAGE D'ART · FILAIRE CAO</span>
-            <span>L:320m · H:110m · HAUBANS</span>
+            <span data-i18n="st1.capRight">L:320m · H:110m · HAUBANS</span>
           </figcaption>
         </figure>
       </div>
@@ -697,10 +697,10 @@
         <div>
           <span class="mono cv-kicker">CURRICULUM VITAE // A4</span>
           <h2 id="cvModalTitle">Victor Valroff Chhun</h2>
-          <p class="cv-sub mono">victorvalroff@hotmail.com · 06 01 40 69 62 · Nancy, France · Permis B</p>
+          <p class="cv-sub mono" data-i18n="cv.sub">victorvalroff@hotmail.com · 06 01 40 69 62 · Nancy, France · Permis B</p>
         </div>
         <div class="cv-modal-actions">
-          <button type="button" class="btn-outline" id="printCvBtn" data-i18n="cv.print">Imprimer A4</button>
+          <button type="button" class="btn-outline" id="printCvBtn" data-i18n="cv.print">Imprimer PDF</button>
           <a href="VALROFF_Victor_CV.pdf" download class="btn-outline" data-i18n="cv.pdf">PDF ↓</a>
           <button type="button" class="btn-solid" id="closeCvBtn" data-i18n="cv.close">Fermer</button>
         </div>
@@ -807,127 +807,14 @@
     </div>
   </div>
 
-  <!-- Conteneur dédié à l'impression A4 (1 page propre) -->
-  <div id="cv-print-root" aria-hidden="true">
-    <aside class="print-sidebar">
-      <div>
-        <div class="print-name">Victor<br>Valroff</div>
-        <div class="print-subtitle">Étudiant en Génie Civil</div>
-        <div class="print-contact">
-          <div>victorvalroff@hotmail.com</div>
-          <div>06 01 40 69 62</div>
-          <div>Permis B et véhicule</div>
-          <div>Nancy, France</div>
-        </div>
-        <div class="print-side-sec">
-          <div class="print-side-title">Profil</div>
-          <p class="print-profile-text">
-            Étudiant en première année de BUT Génie Civil - Construction Durable, je recherche un stage de 4 semaines (mai-juin) en suivi de chantier auprès d'un ingénieur travaux. Rigoureux, impliqué et doté d'une première expérience concrète en environnement professionnel, je souhaite observer la gestion technique et opérationnelle d'un projet pour consolider mon parcours vers les écoles d'ingénieurs.
-          </p>
-        </div>
-        <div class="print-side-sec">
-          <div class="print-side-title">Formation</div>
-          <div class="print-edu-item">
-            <div class="print-edu-title">BUT Génie Civil - Construction Durable</div>
-            <div class="print-edu-meta">IUT Nancy-Brabois · Depuis septembre 2026</div>
-          </div>
-          <div class="print-edu-item">
-            <div class="print-edu-title">CPGE PCSI (Scientifique)</div>
-            <div class="print-edu-meta">Lycée Loritz · 2025</div>
-          </div>
-          <div class="print-edu-item">
-            <div class="print-edu-title">Baccalauréat Général Scientifique</div>
-            <div class="print-edu-meta">Section Européenne mention Assez Bien · Lycée Notre-Dame Saint Sigisbert · 2025</div>
-          </div>
-        </div>
-        <div class="print-side-sec">
-          <div class="print-side-title">Compétences</div>
-          <ul class="print-side-list">
-            <li>Respect des consignes et règles de sécurité</li>
-            <li>Adaptabilité, endurance et fiabilité</li>
-            <li>Travail en équipe</li>
-            <li>Maîtrise Pack Office au niveau avancé</li>
-            <li>Maîtrise AutoDesk au niveau avancé</li>
-          </ul>
-        </div>
-      </div>
-      <div>
-        <div class="print-side-sec">
-          <div class="print-side-title">Langues</div>
-          <ul class="print-side-list">
-            <li>Français : langue maternelle</li>
-            <li>Anglais : niveau avancé attesté (B2)</li>
-            <li>Espagnol : notions</li>
-          </ul>
-        </div>
-        <div class="print-side-sec" style="margin-bottom:0">
-          <div class="print-side-title">Certifications</div>
-          <ul class="print-side-list">
-            <li>First Cambridge Niveau B2</li>
-            <li>Pix niveau avancé</li>
-            <li>Impression 3D Bambu Lab</li>
-          </ul>
-        </div>
-      </div>
-    </aside>
-
-    <section class="print-main">
-      <div class="print-main-title">Expériences</div>
-      <div class="print-exp-item">
-        <div class="print-exp-role">Vendeur en fromagerie</div>
-        <div class="print-exp-place">Les Frères Marchand, Nancy | Juin, Novembre et Décembre 2026 (CDD)</div>
-        <ul class="print-exp-list">
-          <li>Accueil, conseil personnalisé et vente au comptoir de produits laitiers</li>
-          <li>Gestion de la caisse, encaissement et entretien du stand</li>
-          <li>Réassort et respect strict des normes d'hygiène alimentaire</li>
-        </ul>
-      </div>
-      <div class="print-exp-item">
-        <div class="print-exp-role">Préparateur de commandes</div>
-        <div class="print-exp-place">Auchan Drive, Laxou | Février–Mai 2026</div>
-        <ul class="print-exp-list">
-          <li>Préparation cadencée de commandes via scanneur</li>
-          <li>Réception de la clientèle et chargement des commandes</li>
-        </ul>
-      </div>
-      <div class="print-exp-item">
-        <div class="print-exp-role">Président associatif</div>
-        <div class="print-exp-place">Association Tsunami (Cofondateur), Nancy | Depuis 2024</div>
-        <ul class="print-exp-list">
-          <li>Gestion financière et organisation d'événements culturels</li>
-          <li>Tâches administratives et coordination d'équipe</li>
-          <li>Participation au Relais de la Flamme des Jeux Olympiques</li>
-        </ul>
-      </div>
-      <div class="print-exp-item">
-        <div class="print-exp-role">Trieur</div>
-        <div class="print-exp-place">Chronopost, Nancy | Janvier 2026 (intérim)</div>
-        <ul class="print-exp-list">
-          <li>Déchargement de camions et utilisation de transpalettes</li>
-          <li>Tri de colis par zone géographique et scannage pour traçabilité</li>
-          <li>Respect des cadences et des procédures d'acheminement express</li>
-        </ul>
-      </div>
-      <div class="print-exp-item" style="margin-bottom:0">
-        <div class="print-exp-role">Opérateur de production</div>
-        <div class="print-exp-place">Elis, Nancy | Décembre 2025 (CDD)</div>
-        <ul class="print-exp-list">
-          <li>Tri et contrôle de vêtements industriels</li>
-          <li>Respect strict des consignes d'hygiène et de sécurité</li>
-          <li>Travail en équipe dans un environnement cadencé</li>
-        </ul>
-      </div>
-    </section>
-  </div>
-
   <!-- Scripts modulaires -->
-  <script src="js/i18n.js?v=11" defer></script>
+  <script src="js/i18n.js?v=12" defer></script>
   <script src="js/hero-ink.js?v=9" defer></script>
   <script src="js/helmet-3d.js?v=12" defer></script>
   <script src="js/voyages-carousel.js?v=3" defer></script>
   <script src="js/cad-window.js?v=9" defer></script>
   <script src="js/tsunami-3d.js?v=8" defer></script>
-  <script src="js/main.js?v=13" defer></script>
+  <script src="js/main.js?v=14" defer></script>
   <script src="js/awwwards-fx.js?v=3" defer></script>
   <script src="js/favicon-3d.js?v=2" defer></script>
 </body>
