@@ -502,11 +502,12 @@ body {
   will-change: transform, opacity;
 }
 
-/* ST.04 — Piste sticky ultra-compacte (zéro trou avant ST.05) */
+/* ST.04 — Piste sticky compacte avec respiration propre après ST.03 et zéro trou avant ST.05 */
 #station-4 {
   min-height: 132dvh;
   align-items: flex-start;
-  padding-top: 16px;
+  margin-top: 56px;
+  padding-top: 20px;
   padding-bottom: 0;
 }
 
