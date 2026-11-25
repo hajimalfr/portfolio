@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css?v=31">
+  <link rel="stylesheet" href="css/style.css?v=33">
 </head>
 <body>
   <!-- Barre de progression fine en haut sur mobile (2.5px Bleu Tsunami) -->
@@ -82,6 +82,27 @@
       </button>
     </div>
   </header>
+
+  <!-- Tiroir d'index plein écran mobile Awwwards (masqué sur PC) -->
+  <nav class="mobile-nav-drawer" id="mobileNavDrawer" aria-label="Index des stations" aria-hidden="true">
+    <div class="m-drawer-top mono">
+      <span>INDEX // VICTOR VALROFF CHHUN</span>
+      <button type="button" class="m-drawer-close mono" id="mobileDrawerClose">FERMER ×</button>
+    </div>
+    <ul class="m-drawer-list">
+      <li><button type="button" data-m-goto="0"><span class="mono">00</span><strong data-i18n="st0.nav">Ouverture</strong></button></li>
+      <li><button type="button" data-m-goto="1"><span class="mono">01</span><strong data-i18n="st1.nav">Impression 3D</strong></button></li>
+      <li><button type="button" data-m-goto="2"><span class="mono">02</span><strong data-i18n="st5.nav">S1–S6 &amp; Ikigai</strong></button></li>
+      <li><button type="button" data-m-goto="3"><span class="mono">03</span><strong data-i18n="st4.nav">Manifeste CAO</strong></button></li>
+      <li><button type="button" data-m-goto="4"><span class="mono">04</span><strong data-i18n="st3.nav">Breaking &amp; Tsunami</strong></button></li>
+      <li><button type="button" data-m-goto="5"><span class="mono">05</span><strong data-i18n="st2.nav">Voyages</strong></button></li>
+      <li><button type="button" data-m-goto="6"><span class="mono">06</span><strong data-i18n="st6.nav">Contact &amp; CV</strong></button></li>
+    </ul>
+    <div class="m-drawer-foot mono">
+      <span>BUT GCCD · IUT NANCY-BRABOIS</span>
+      <span>48.66°N 6.15°E</span>
+    </div>
+  </nav>
 
   <!-- Altimètre vertical latéral fixe (navigation directe + cote active en #262CE8) -->
   <aside class="altimeter" aria-label="Altimètre de navigation par stations">
@@ -231,6 +252,14 @@
       </div>
     </section>
 
+    <!-- Ruban typographique cinétique lié à la vitesse du scroll (mobile uniquement) -->
+    <div class="m-velocity-ribbon mono" aria-hidden="true">
+      <div class="m-ribbon-track">
+        <span>GÉNIE CIVIL &nbsp;·&nbsp; FUSION 360 &nbsp;·&nbsp; BAMBU LAB &nbsp;·&nbsp; BUT GCCD NANCY &nbsp;·&nbsp; STRUCTURES &nbsp;·&nbsp;</span>
+        <span>GÉNIE CIVIL &nbsp;·&nbsp; FUSION 360 &nbsp;·&nbsp; BAMBU LAB &nbsp;·&nbsp; BUT GCCD NANCY &nbsp;·&nbsp; STRUCTURES &nbsp;·&nbsp;</span>
+      </div>
+    </div>
+
     <!-- ======================================================================
          ST.02 — TRAJECTOIRE S1 → S6 & IKIGAI (+08.40m) · PARCOURS PRO EN PRIORITÉ
          ====================================================================== -->
@@ -263,11 +292,6 @@
                 <h3 data-i18n="traj.s3Title">École d’Ingénieurs</h3>
                 <p data-i18n="traj.s3Text">Dimensionnement, BIM, stages longs et intégration (INSA, ESTP, ENTPE).</p>
               </div>
-            </div>
-            <div class="traj-dots" id="trajDots" aria-label="Étapes S1 à S6">
-              <button type="button" class="traj-dot active" data-traj="0" aria-label="S1"></button>
-              <button type="button" class="traj-dot" data-traj="1" aria-label="S2"></button>
-              <button type="button" class="traj-dot" data-traj="2" aria-label="S3-S6"></button>
             </div>
           </div>
         </div>
@@ -525,6 +549,14 @@
         </div>
       </div>
     </section>
+
+    <!-- Second ruban cinétique à contre-sens (mobile uniquement) -->
+    <div class="m-velocity-ribbon m-ribbon-alt mono" aria-hidden="true">
+      <div class="m-ribbon-track">
+        <span>ASSOCIATION TSUNAMI &nbsp;·&nbsp; BREAKING &nbsp;·&nbsp; CAMBRIDGE B2 &nbsp;·&nbsp; INTERNATIONAL &nbsp;·&nbsp; HORIZON &nbsp;·&nbsp;</span>
+        <span>ASSOCIATION TSUNAMI &nbsp;·&nbsp; BREAKING &nbsp;·&nbsp; CAMBRIDGE B2 &nbsp;·&nbsp; INTERNATIONAL &nbsp;·&nbsp; HORIZON &nbsp;·&nbsp;</span>
+      </div>
+    </div>
 
     <!-- ======================================================================
          ST.05 — VOYAGES (+21.00m) · CARROUSEL 3D INCURVÉ CINÉMATIQUE
@@ -825,8 +857,9 @@
   <script src="js/voyages-carousel.js?v=3" defer></script>
   <script src="js/cad-window.js?v=10" defer></script>
   <script src="js/tsunami-3d.js?v=8" defer></script>
-  <script src="js/main.js?v=16" defer></script>
+  <script src="js/main.js?v=17" defer></script>
   <script src="js/awwwards-fx.js?v=3" defer></script>
+  <script src="js/mobile-awwwards.js?v=1" defer></script>
   <script src="js/favicon-3d.js?v=2" defer></script>
 </body>
 </html>

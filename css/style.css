@@ -2620,632 +2620,6 @@ body {
   .traj-svg-line { display: none; }
 }
 
-.mobile-progress,
-.mobile-st-pill,
-.li-mobile,
-.traj-dots {
-  display: none;
-}
-
-@media (max-width: 640px) {
-  :root { --altimeter-w: 0px; --header-h: 0px; }
-
-  /* Barre de progression architecturale 2.5px tout en haut de l'écran mobile */
-  .mobile-progress {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2.5px;
-    z-index: 60;
-    background: rgba(18, 18, 18, 0.08);
-    pointer-events: none;
-  }
-
-  .mobile-progress-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--tsunami), var(--orange));
-    will-change: width;
-  }
-
-  .floating-hud {
-    top: max(10px, env(safe-area-inset-top));
-    left: 12px;
-    right: 12px;
-  }
-
-  .hud-pill {
-    padding: 4px 10px;
-    min-height: 36px;
-    background: rgba(239, 236, 230, 0.86);
-  }
-
-  .brand-btn {
-    padding: 6px 11px;
-    font-size: 10.5px;
-    gap: 7px;
-  }
-
-  .mobile-st-pill {
-    display: inline-block;
-    padding-left: 7px;
-    border-left: 1px solid var(--line);
-    color: var(--tsunami);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-  }
-
-  .brand-sub,
-  .hud-contact-btn,
-  .hud-divider,
-  .cad-doc-name { display: none; }
-
-  .altimeter,
-  .reticle-layer { display: none; }
-
-  .stage, .reticle-layer { right: 0; bottom: 0; }
-
-  /* Défilement natif tactile fluide */
-  .stage {
-    overflow-y: auto;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .station {
-    position: relative;
-    inset: auto;
-    min-height: auto;
-    height: auto;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transform: none !important;
-    transition: none !important;
-    overflow: visible;
-    align-items: flex-start;
-    padding: 62px 16px 34px;
-  }
-
-  /* Séparateur éditorial fin entre chapitres (zéro look "bloc-notes") */
-  .station:not(#station-0)::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 16px;
-    right: 16px;
-    height: 1px;
-    background: linear-gradient(90deg, var(--tsunami-line), var(--line) 55%, transparent);
-  }
-
-  .station-inner {
-    transition: transform 0.08s linear, opacity 0.08s linear;
-  }
-
-  .station.above { transform: none !important; }
-
-  .station-ribbon,
-  .photo-reveal,
-  .st-title-compact,
-  .st-text-compact,
-  .spec-chips {
-    clip-path: none !important;
-    transform: none !important;
-    opacity: 1 !important;
-    transition: none !important;
-  }
-
-  .concrete-backdrop {
-    opacity: 0.78;
-    filter: grayscale(100%) brightness(1.54) contrast(1.16);
-  }
-
-  .concrete-veil {
-    background: radial-gradient(circle at 50% 42%, rgba(239, 236, 230, 0.28), rgba(226, 223, 215, 0.5) 85%);
-  }
-
-  /* ========================================================================
-     REFONTE ÉDITORIALE AWWWARDS MOBILE : TEXTE LIBRE (FINI LES BOÎTES BLOC-NOTES)
-     ======================================================================== */
-  .cote-block {
-    border: none !important;
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    transform: none !important;
-  }
-
-  .cote-block::before,
-  .cote-block::after { display: none !important; }
-
-  .st-meta-bar {
-    display: flex !important;
-    border-bottom: none;
-    padding-bottom: 4px;
-    margin-bottom: 6px;
-    font-size: 10px;
-    color: var(--tsunami);
-  }
-
-  .st-tag { color: var(--tsunami); }
-  .st-dim { color: var(--ink-muted); }
-
-  .st-title-compact,
-  .st6-title {
-    font-size: 34px;
-    font-weight: 800;
-    line-height: 0.96;
-    letter-spacing: -0.03em;
-    color: var(--ink);
-    margin-bottom: 10px;
-  }
-
-  .st-text-compact,
-  .st6-sub {
-    font-size: 14.5px;
-    font-weight: 450;
-    line-height: 1.52;
-    color: var(--ink);
-    max-width: none;
-    margin-bottom: 10px;
-  }
-
-  /* ST.00 — Affiche d'ouverture plein écran 100dvh */
-  #station-0 {
-    min-height: 100dvh;
-    align-items: center;
-    padding: 58px 16px 34px;
-  }
-
-  .hero-ink-wrap {
-    height: min(46dvh, 320px);
-  }
-
-  .hero-subline {
-    font-size: 9.5px;
-    padding: 6px 12px;
-    gap: 6px;
-    max-width: 92vw;
-  }
-
-  .scroll-cue {
-    border-radius: 999px;
-    padding: 10px 20px;
-  }
-
-  /* ST.01 — Showcase 3D plein bord (100vw, façon Apple / Studio) */
-  #station-1 .st-figure-dominant {
-    gap: 14px;
-  }
-
-  #station-1 .spec-chips {
-    display: flex !important;
-    gap: 6px;
-    margin-top: 8px;
-  }
-
-  #station-1 .spec-chips span {
-    border-radius: 999px;
-    padding: 4px 10px;
-    font-size: 9.5px;
-  }
-
-  #station-1 .photo-card-hero {
-    margin: 2px -16px 0;
-    width: calc(100% + 32px);
-    border-left: none;
-    border-right: none;
-    border-radius: 0;
-  }
-
-  .helmet-canvas-wrap,
-  .tsunami-canvas-wrap {
-    touch-action: pan-y;
-    cursor: default;
-  }
-
-  .helmet-canvas-wrap {
-    height: min(46dvh, 340px);
-  }
-
-  /* ST.02 — Cartes S1->S6 swipables à l'horizontale + Ikigai interactif */
-  #station-5 {
-    padding-top: 62px;
-    padding-bottom: 28px;
-  }
-
-  .st5-layout {
-    gap: 20px;
-  }
-
-  .st5-traj-block {
-    border: none !important;
-    background: transparent !important;
-    padding: 0;
-  }
-
-  .st5-traj-block .dim-top {
-    border-bottom: none;
-    padding: 0 0 8px;
-    background: transparent;
-  }
-
-  .st5-traj-block .dim-top > span:last-child::after {
-    content: ' · SWIPE →';
-    color: var(--orange);
-  }
-
-  .st5-traj-wrap {
-    padding: 0;
-  }
-
-  .traj-grid {
-    display: flex !important;
-    flex-direction: row;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x proximity;
-    scroll-padding-left: 16px;
-    overscroll-behavior-x: contain;
-    touch-action: pan-x pan-y;
-    -webkit-overflow-scrolling: touch;
-    gap: 12px;
-    padding: 4px 20vw 12px 16px;
-    margin: 0 -16px;
-    scrollbar-width: none;
-  }
-
-  .traj-grid::-webkit-scrollbar { display: none; }
-
-  .traj-step {
-    flex: 0 0 76vw;
-    scroll-snap-align: start;
-    border-radius: 14px;
-    padding: 16px;
-    border: 1px solid var(--line);
-    border-top: 3px solid var(--tsunami) !important;
-    background: rgba(239, 236, 230, 0.88);
-    backdrop-filter: blur(8px);
-    box-shadow: 0 10px 24px -10px rgba(18, 18, 18, 0.14);
-    cursor: pointer;
-  }
-
-  .traj-dots {
-    display: flex;
-    justify-content: center;
-    gap: 7px;
-    margin-top: 2px;
-  }
-
-  .traj-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 999px;
-    border: none;
-    padding: 0;
-    background: var(--line-strong);
-    opacity: 0.35;
-    transition: width 0.25s var(--ease-expo), opacity 0.2s ease, background-color 0.2s ease;
-  }
-
-  .traj-dot.active {
-    width: 22px;
-    opacity: 1;
-    background: var(--tsunami);
-  }
-
-  .traj-step-accent {
-    border-top-color: var(--orange) !important;
-  }
-
-  .traj-step h3 {
-    font-size: 19px;
-    margin: 6px 0 6px;
-  }
-
-  .traj-step p {
-    font-size: 13.5px;
-    line-height: 1.48;
-  }
-
-  /* Ikigai interactif : SVG centré + 1 seule carte dynamique qui change au tap */
-  .st5-iki-block {
-    border-radius: 16px;
-    overflow: hidden;
-  }
-
-  .ikigai-venn-layout {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 10px 12px 14px;
-  }
-
-  .ikigai-venn-svg {
-    max-height: 270px;
-  }
-
-  .ikigai-venn-cards {
-    display: block !important;
-  }
-
-  .iki-mini-cell {
-    display: none;
-    border-radius: 12px;
-    padding: 12px 14px;
-    border-left: 3px solid var(--tsunami);
-  }
-
-  .iki-mini-cell.active {
-    display: block;
-    animation: mobileCardPop 0.3s var(--ease-expo);
-  }
-
-  @keyframes mobileCardPop {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ST.03 — Manifeste Fusion 360 plein bord sticky */
-  #station-4 {
-    min-height: 175dvh;
-    align-items: flex-start;
-    margin-top: 0;
-    padding: 10px 0 14px;
-  }
-
-  #station-4 .st4-layout {
-    position: sticky;
-    top: 56px;
-    height: calc(100dvh - 72px);
-    min-height: 360px;
-    padding: 0;
-  }
-
-  .cad-window {
-    min-height: 0;
-    height: 100%;
-    border-left: none;
-    border-right: none;
-  }
-
-  .cad-viewport {
-    touch-action: pan-y;
-    cursor: default;
-  }
-
-  .cad-canvas-content {
-    max-width: 100%;
-    padding: 10px 14px;
-  }
-
-  .cad-quote-box {
-    padding: 16px 14px 22px;
-  }
-
-  .cad-live-cursor,
-  .cad-viewcube,
-  .cad-hud-bottom span:last-child {
-    display: none;
-  }
-
-  .cad-hud-bottom {
-    font-size: 9px;
-    justify-content: center;
-  }
-
-  /* ST.04 — Breaking & Tsunami : Grille Magazine Bento 2 colonnes ! */
-  .st3-editorial {
-    gap: 14px;
-  }
-
-  .st3-top-bar {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .st3-quote {
-    font-size: 13.5px;
-    line-height: 1.48;
-    font-weight: 500;
-    padding: 10px 12px;
-    border-left: 3px solid var(--orange);
-    border-radius: 0 10px 10px 0;
-    background: rgba(239, 236, 230, 0.78);
-    color: var(--ink);
-  }
-
-  .st3-trio {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    height: auto;
-  }
-
-  .st3-trio-photo {
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  .st3-trio-photo:first-child { order: 1; }
-  .st3-trio-photo:last-child  { order: 2; }
-
-  .st3-trio-photo .dim-top {
-    padding: 6px 8px;
-    font-size: 8.5px;
-  }
-
-  .st3-trio-photo .photo-ratio-readout {
-    display: none;
-  }
-
-  .st3-trio-photo .smart-photo {
-    aspect-ratio: 3 / 4;
-    max-height: none;
-  }
-
-  .st3-trio-3d {
-    grid-column: 1 / -1;
-    order: 3;
-    height: 215px;
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  /* ST.05 — Carrousel 3D Voyages plein bord (100vw cinéma) */
-  #station-2 {
-    min-height: 185dvh;
-    align-items: flex-start;
-    padding: 12px 16px 14px;
-  }
-
-  .st2-sticky-layout {
-    position: sticky;
-    top: 54px;
-    height: calc(100dvh - 64px);
-    gap: 6px;
-  }
-
-  .st2-head { gap: 4px; }
-
-  .st2-head .st-title-compact {
-    font-size: 28px;
-    margin-bottom: 2px;
-  }
-
-  .st2-brief {
-    display: block;
-    max-width: 100%;
-    padding: 6px 10px;
-    font-size: 12.5px;
-    line-height: 1.4;
-    border-radius: 0 8px 8px 0;
-  }
-
-  .voyages-carousel {
-    min-height: 240px;
-    margin: 0 -16px;
-    width: calc(100% + 32px);
-  }
-
-  .v-card {
-    width: 72vw;
-    height: min(335px, 42dvh);
-  }
-
-  .voyages-viewfinder {
-    width: 76vw;
-    height: min(350px, 44dvh);
-  }
-
-  .voyages-caption-title { font-size: 18px; }
-  .voyages-caption-bar { gap: 12px; }
-
-  /* ST.06 — Contact & CV : Vraie grille Bento 2 colonnes asymétrique ! */
-  #station-6 {
-    padding-top: 44px;
-    padding-bottom: 48px;
-  }
-
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .contact-tile {
-    border-radius: 14px;
-    padding: 14px;
-    min-height: 84px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .contact-tile .dim-bottom { display: none !important; }
-
-  .contact-tile .dim-top {
-    display: flex !important;
-    border-bottom: none;
-    padding: 0;
-    margin-bottom: 8px;
-    background: transparent;
-    font-size: 9px;
-  }
-
-  /* Tuile 1 (CV A4) : pleine largeur en Bleu Tsunami vibrant */
-  #openCvFooter {
-    grid-column: 1 / -1;
-    background: var(--tsunami) !important;
-    border-color: var(--tsunami) !important;
-    color: #ffffff !important;
-    padding: 18px 16px;
-  }
-
-  #openCvFooter .dim-top,
-  #openCvFooter strong,
-  #openCvFooter .contact-arrow {
-    color: #ffffff !important;
-  }
-
-  /* Tuile 2 (E-mail copier) : pleine largeur propre */
-  #copyEmailBtn {
-    grid-column: 1 / -1;
-    min-height: 76px;
-  }
-
-  /* Tuiles 3 & 4 (LinkedIn & Tél) : 2 cartes Bento côte à côte */
-  .li-full { display: none; }
-  .li-mobile { display: inline; font-size: 16px; }
-
-  .contact-tile:nth-child(4) strong {
-    font-size: 14px;
-    line-height: 1.2;
-    white-space: nowrap;
-  }
-
-  .st6-foot {
-    margin-top: 4px;
-  }
-
-  /* Mode sombre harmonisé sur les nouveaux éléments Bento mobile */
-  html[data-theme="dark"] .mobile-progress {
-    background: rgba(242, 239, 233, 0.1);
-  }
-
-  html[data-theme="dark"] .traj-step {
-    background: rgba(22, 24, 30, 0.9);
-    border-color: rgba(242, 239, 233, 0.16);
-    border-top-color: var(--tsunami);
-  }
-
-  html[data-theme="dark"] .traj-step-accent {
-    border-top-color: var(--orange);
-  }
-
-  html[data-theme="dark"] .st3-quote {
-    background: rgba(22, 24, 30, 0.86);
-  }
-
-  html[data-theme="dark"] .st-text-compact,
-  html[data-theme="dark"] .st6-sub {
-    color: rgba(242, 239, 233, 0.88);
-  }
-
-  /* Effets tactiles doux (100 % scroll-safe) */
-  .hover-card.is-touched,
-  .hover-card:active,
-  .dim-frame.is-touched {
-    transform: scale(0.985);
-    border-color: var(--tsunami);
-  }
-}
-
 /* ==========================================================================
    11B. MODE SOMBRE ARCHITECTURAL (BÉTON ANTHRACITE + CAO NUIT)
    ========================================================================== */
@@ -3662,6 +3036,836 @@ html[data-theme="dark"] .ikigai-venn-svg g[data-pole="talents"] circle {
   font-weight: 700;
   letter-spacing: 0.1em;
   color: #ffffff;
+}
+
+/* ==========================================================================
+   12. REFONTE MOBILE AWWWARDS — MOTION DESIGN & ÉDITORIAL (<= 640px UNIQUEMENT)
+   Placé en fin de feuille : desktop (> 640px) 100 % intact, priorité nette.
+   ========================================================================== */
+.mobile-progress,
+.mobile-st-pill,
+.li-mobile,
+.mobile-nav-drawer,
+.m-velocity-ribbon,
+.m-watermark,
+.m-elev-rail,
+.m-iki-tabs {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  :root { --altimeter-w: 0px; --header-h: 0px; }
+
+  /* 1. Barre de progression fine 2.5px tout en haut */
+  .mobile-progress {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2.5px;
+    z-index: 70;
+    background: rgba(128, 128, 128, 0.14);
+    pointer-events: none;
+  }
+
+  .mobile-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--tsunami), var(--orange));
+    will-change: width;
+  }
+
+  /* 2. HUD flottant minimaliste + pastille d'index cliquable (ouvre le tiroir) */
+  .floating-hud {
+    top: max(10px, env(safe-area-inset-top));
+    left: 12px;
+    right: 12px;
+    z-index: 65;
+  }
+
+  .hud-pill {
+    padding: 4px 10px;
+    min-height: 36px;
+  }
+
+  .brand-btn {
+    padding: 6px 12px;
+    font-size: 10.5px;
+    gap: 7px;
+  }
+
+  .mobile-st-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding-left: 7px;
+    border-left: 1px solid var(--line);
+    color: var(--tsunami);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .mobile-st-pill::after {
+    content: '≡';
+    font-size: 13px;
+    opacity: 0.7;
+  }
+
+  .brand-sub,
+  .hud-contact-btn,
+  .hud-divider,
+  .cad-doc-name,
+  .altimeter,
+  .reticle-layer {
+    display: none !important;
+  }
+
+  /* 3. Tiroir d'index plein écran cinétique (rideau clip-path) */
+  .mobile-nav-drawer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    padding: max(22px, env(safe-area-inset-top)) 20px 26px;
+    background: #0D0E12;
+    color: #F4F1EA;
+    clip-path: inset(0 0 100% 0);
+    pointer-events: none;
+    transition: clip-path 0.65s var(--ease-expo);
+  }
+
+  .mobile-nav-drawer.is-open {
+    clip-path: inset(0 0 0 0);
+    pointer-events: auto;
+  }
+
+  .m-drawer-top,
+  .m-drawer-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: rgba(244, 241, 234, 0.56);
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(244, 241, 234, 0.14);
+  }
+
+  .m-drawer-foot {
+    border-bottom: none;
+    border-top: 1px solid rgba(244, 241, 234, 0.14);
+    padding-top: 12px;
+    padding-bottom: 0;
+  }
+
+  .m-drawer-close {
+    background: none;
+    border: 1px solid rgba(244, 241, 234, 0.28);
+    color: #F4F1EA;
+    padding: 5px 10px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+  }
+
+  .m-drawer-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: auto 0;
+  }
+
+  .m-drawer-list li {
+    border-bottom: 1px solid rgba(244, 241, 234, 0.1);
+    overflow: hidden;
+  }
+
+  .m-drawer-list button {
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 13px 2px;
+    background: none;
+    border: none;
+    color: #F4F1EA;
+    text-align: left;
+    cursor: pointer;
+    transform: translateY(105%);
+    opacity: 0;
+    transition: transform 0.65s var(--ease-expo), opacity 0.45s ease, color 0.2s ease;
+  }
+
+  .mobile-nav-drawer.is-open .m-drawer-list button {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .mobile-nav-drawer.is-open .m-drawer-list li:nth-child(1) button { transition-delay: 0.08s; }
+  .mobile-nav-drawer.is-open .m-drawer-list li:nth-child(2) button { transition-delay: 0.12s; }
+  .mobile-nav-drawer.is-open .m-drawer-list li:nth-child(3) button { transition-delay: 0.16s; }
+  .mobile-nav-drawer.is-open .m-drawer-list li:nth-child(4) button { transition-delay: 0.20s; }
+  .mobile-nav-drawer.is-open .m-drawer-list li:nth-child(5) button { transition-delay: 0.24s; }
+  .mobile-nav-drawer.is-open .m-drawer-list li:nth-child(6) button { transition-delay: 0.28s; }
+  .mobile-nav-drawer.is-open .m-drawer-list li:nth-child(7) button { transition-delay: 0.32s; }
+
+  .m-drawer-list button span {
+    font-size: 11px;
+    color: #526FFF;
+    font-weight: 700;
+  }
+
+  .m-drawer-list button strong {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+
+  .m-drawer-list button:active {
+    color: #FF5D30;
+  }
+
+  /* 4. Scène tactile fluide + stations sans cadres "bloc-notes" */
+  .stage {
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .station {
+    position: relative;
+    inset: auto;
+    min-height: auto;
+    height: auto;
+    overflow: hidden;
+    align-items: flex-start;
+    padding: 72px 18px 46px;
+  }
+
+  .station-inner {
+    will-change: transform, opacity;
+    transform-origin: center top;
+  }
+
+  /* Numéros géants en parallaxe (01 -> 06) */
+  .m-watermark {
+    display: block;
+    position: absolute;
+    top: 22px;
+    right: -6px;
+    font-size: 31vw;
+    font-weight: 800;
+    line-height: 0.85;
+    letter-spacing: -0.06em;
+    color: var(--ink);
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+  }
+
+  .canvas-hint {
+    display: none;
+  }
+
+  /* Filet 1px animé qui se trace de gauche à droite à l'entrée de chaque chapitre */
+  .station:not(#station-0)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 18px;
+    right: 18px;
+    height: 1px;
+    background: var(--line-strong);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.9s var(--ease-expo);
+  }
+
+  .station.m-in:not(#station-0)::before {
+    transform: scaleX(1);
+  }
+
+  /* Rubans typographiques cinétiques liés à la vitesse du scroll */
+  .m-velocity-ribbon {
+    display: block;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 13px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: rgba(18, 18, 18, 0.04);
+    z-index: 4;
+  }
+
+  html[data-theme="dark"] .m-velocity-ribbon {
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .m-ribbon-alt {
+    background: #0B0C0F !important;
+    border-color: rgba(244, 241, 234, 0.14) !important;
+    color: #F4F1EA;
+  }
+
+  .m-ribbon-track {
+    display: flex;
+    white-space: nowrap;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--tsunami);
+    will-change: transform;
+  }
+
+  .m-ribbon-alt .m-ribbon-track {
+    color: rgba(244, 241, 234, 0.72);
+  }
+
+  /* Suppression des boîtes bloc-notes : typo libre monumentale */
+  .cote-block,
+  html[data-theme="dark"] .cote-block,
+  .dim-frame,
+  html[data-theme="dark"] .dim-frame {
+    border: none;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .cote-block::before,
+  .cote-block::after { display: none !important; }
+
+  .st-meta-bar {
+    display: flex;
+    border-bottom: none;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--tsunami);
+  }
+
+  .st-tag { color: var(--tsunami); }
+  .st-dim { color: var(--ink-muted); }
+
+  .st-title-compact,
+  .st6-title {
+    font-size: clamp(36px, 11vw, 46px);
+    font-weight: 800;
+    line-height: 0.94;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+
+  .st-text-compact,
+  .st6-sub {
+    font-size: 15px;
+    font-weight: 450;
+    line-height: 1.54;
+    color: var(--ink);
+    max-width: none;
+    margin-bottom: 12px;
+    opacity: 0.9;
+  }
+
+  /* 5. ST.00 — Poster d'ouverture 100dvh */
+  #station-0 {
+    min-height: 100dvh;
+    align-items: center;
+    padding: 64px 18px 36px;
+  }
+
+  .hero-ink-wrap { height: min(46dvh, 330px); }
+
+  .hero-subline {
+    font-size: 9.5px;
+    padding: 6px 12px;
+    max-width: 92vw;
+  }
+
+  .scroll-cue {
+    border-radius: 999px;
+    padding: 10px 22px;
+  }
+
+  /* 6. ST.01 — Pont à Haubans 3D plein bord sans cadre (façon Apple/Studio) */
+  #station-1 .st-figure-dominant { gap: 18px; }
+
+  #station-1 .spec-chips {
+    display: flex;
+    gap: 7px;
+    margin-top: 6px;
+  }
+
+  #station-1 .spec-chips span {
+    border-radius: 0;
+    padding: 4px 9px;
+    font-size: 9.5px;
+  }
+
+  #station-1 .photo-card-hero {
+    margin: 4px -18px 0;
+    width: calc(100% + 36px);
+  }
+
+  #station-1 .photo-card-hero .dim-top,
+  #station-1 .photo-card-hero .dim-bottom {
+    padding: 8px 18px;
+    background: transparent;
+    border-color: var(--line);
+  }
+
+  .helmet-canvas-wrap,
+  .tsunami-canvas-wrap {
+    touch-action: pan-y;
+    cursor: default;
+    border-left: none !important;
+    border-right: none !important;
+  }
+
+  .helmet-canvas-wrap {
+    height: min(48dvh, 360px);
+  }
+
+  /* 7. ST.02 REPENSÉE — Ligne d'élévation verticale tracée au pouce (zéro swipe buggé!) */
+  #station-5 {
+    padding-top: 72px;
+    padding-bottom: 52px;
+  }
+
+  .st5-layout { gap: 44px; }
+
+  .st5-traj-block .dim-top,
+  .st5-iki-block .dim-top {
+    padding: 0 0 12px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 18px;
+    background: transparent;
+  }
+
+  .st5-traj-wrap {
+    position: relative;
+    padding: 0 0 0 24px;
+  }
+
+  .m-elev-rail {
+    display: block;
+    position: absolute;
+    left: 5px;
+    top: 8px;
+    bottom: 12px;
+    width: 2px;
+    background: var(--line);
+  }
+
+  .m-elev-fill {
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(180deg, var(--tsunami), var(--orange));
+    transition: height 0.08s linear;
+  }
+
+  .traj-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .traj-step,
+  html[data-theme="dark"] .traj-step {
+    position: relative;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    background: transparent;
+    padding: 0 0 20px;
+    box-shadow: none;
+    opacity: 0.35;
+    transform: translate3d(14px, 0, 0);
+    transition: opacity 0.55s ease, transform 0.7s var(--ease-expo);
+  }
+
+  .traj-step:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .traj-step::before {
+    content: '';
+    position: absolute;
+    left: -23px;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--bg-concrete);
+    border: 2px solid var(--line-strong);
+    transition: background-color 0.35s ease, border-color 0.35s ease, transform 0.4s var(--ease-expo);
+  }
+
+  .traj-step.m-step-lit,
+  .traj-step.m-in {
+    opacity: 1 !important;
+    transform: translate3d(0, 0, 0) !important;
+  }
+
+  .traj-step.m-step-lit::before {
+    background: var(--tsunami);
+    border-color: var(--tsunami);
+    transform: scale(1.25);
+  }
+
+  .traj-step-accent.m-step-lit::before {
+    background: var(--orange);
+    border-color: var(--orange);
+  }
+
+  .traj-step h3 {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin: 5px 0 6px;
+  }
+
+  .traj-step p {
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+
+  /* ST.02B Ikigai sans cadre + barre tactile 4 pôles */
+  .ikigai-venn-layout {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 0;
+  }
+
+  .ikigai-venn-svg { max-height: 290px; }
+
+  .m-iki-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .m-iki-tab {
+    padding: 9px 8px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
+
+  .m-iki-tab.active {
+    background: var(--tsunami);
+    border-color: var(--tsunami);
+    color: #ffffff;
+  }
+
+  .ikigai-venn-cards { display: block !important; }
+
+  .iki-mini-cell,
+  html[data-theme="dark"] .iki-mini-cell {
+    display: none;
+    border: none;
+    border-left: 3px solid var(--orange);
+    background: transparent;
+    padding: 6px 0 6px 14px;
+  }
+
+  .iki-mini-cell.active {
+    display: block;
+    animation: mFadeUp 0.35s var(--ease-expo);
+  }
+
+  .iki-mini-cell p {
+    font-size: 15px;
+    line-height: 1.48;
+  }
+
+  @keyframes mFadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 8. ST.03 — Manifeste Fusion 360 plein bord sticky (overflow visible obligatoire!) */
+  #station-4 {
+    overflow: visible;
+    min-height: 175dvh;
+    margin-top: 0;
+    padding: 10px 0 14px;
+  }
+
+  #station-4 .st4-layout {
+    position: sticky;
+    top: 56px;
+    height: calc(100dvh - 72px);
+    min-height: 360px;
+    padding: 0;
+  }
+
+  .cad-window {
+    min-height: 0;
+    height: 100%;
+    border-left: none;
+    border-right: none;
+  }
+
+  .cad-viewport { touch-action: pan-y; cursor: default; }
+  .cad-canvas-content { max-width: 100%; padding: 10px 14px; }
+  .cad-quote-box { padding: 16px 14px 22px; }
+  .cad-live-cursor,
+  .cad-viewcube,
+  .cad-hud-bottom span:last-child { display: none; }
+  .cad-hud-bottom { font-size: 9px; justify-content: center; }
+
+  /* 9. ST.04 — Chapitre NOIR CARBONE plein écran + Collage Magazine asymétrique */
+  #station-3 {
+    background: #0B0C0F;
+    color: #F4F1EA;
+    padding: 76px 18px 56px;
+  }
+
+  #station-3 .m-watermark { color: #F4F1EA; opacity: 0.06; }
+  #station-3 .st2-kicker { color: #6B85FF; }
+  #station-3 .st-title-compact { color: #F4F1EA; }
+  #station-3 .accent-text { color: #6B85FF; }
+  #station-3 .st-text-compact { color: rgba(244, 241, 234, 0.84); }
+  #station-3 .st-text-compact strong { color: #FFFFFF; }
+
+  .st3-editorial { gap: 22px; }
+  .st3-top-bar { grid-template-columns: 1fr; gap: 14px; }
+
+  #station-3 .st3-quote {
+    background: transparent;
+    border: none;
+    border-left: 3px solid #FF5D30;
+    padding: 4px 0 4px 14px;
+    font-size: 14.5px;
+    line-height: 1.54;
+    color: rgba(244, 241, 234, 0.92);
+  }
+
+  /* Collage Magazine asymétrique : grand freeze à gauche, collectif chevauchant à droite, 3D libre dessous */
+  .st3-trio {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    height: auto;
+  }
+
+  .st3-trio-photo {
+    position: relative;
+    overflow: hidden;
+    will-change: transform;
+  }
+
+  .st3-trio-photo:first-child {
+    order: 1;
+    width: 86%;
+    align-self: flex-start;
+    z-index: 2;
+  }
+
+  .st3-trio-photo:last-child {
+    order: 2;
+    width: 78%;
+    align-self: flex-end;
+    margin-top: -22px;
+    z-index: 3;
+    box-shadow: 0 22px 44px rgba(0, 0, 0, 0.55);
+  }
+
+  /* Rideau cinéma + dézoom optique au scroll sur mobile */
+  #station-3 .st3-trio-photo .smart-photo {
+    aspect-ratio: 3 / 4;
+    max-height: none;
+    clip-path: inset(18% 0 0 0);
+    transition: clip-path 1s var(--ease-circ);
+  }
+
+  #station-3 .st3-trio-photo.m-in .smart-photo {
+    clip-path: inset(0 0 0 0);
+  }
+
+  #station-3 .st3-trio-photo .smart-photo img {
+    transform: scale(1.16);
+    transition: transform 1.25s var(--ease-expo), opacity 0.35s ease;
+  }
+
+  #station-3 .st3-trio-photo.m-in .smart-photo img {
+    transform: scale(1);
+  }
+
+  /* Micro-légende flottante sur la photo (zéro barre grise bloc-notes!) */
+  .st3-trio-photo .dim-top {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 5;
+    padding: 4px 8px;
+    border: none;
+    background: rgba(11, 12, 15, 0.72);
+    backdrop-filter: blur(6px);
+    color: #F4F1EA;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  .st3-trio-photo .photo-ratio-readout { display: none; }
+
+  .st3-trio-3d {
+    order: 3;
+    width: 100%;
+    height: 230px;
+    margin-top: 22px;
+  }
+
+  .st3-trio-3d .dim-top {
+    border-bottom: 1px solid rgba(244, 241, 234, 0.14);
+    color: rgba(244, 241, 234, 0.7);
+    padding: 0 0 8px;
+  }
+
+  #station-3 .tsunami-canvas-wrap {
+    background-color: transparent !important;
+    background-image: none !important;
+  }
+
+  /* 10. ST.05 — Voyages 3D incurvé plein bord sticky (overflow visible obligatoire!) */
+  #station-2 {
+    overflow: visible;
+    min-height: 190dvh;
+    padding: 16px 18px 20px;
+  }
+
+  .st2-sticky-layout {
+    position: sticky;
+    top: 56px;
+    height: calc(100dvh - 68px);
+    gap: 6px;
+  }
+
+  .st2-head { gap: 4px; }
+  .st2-head .st-title-compact { font-size: 32px; margin-bottom: 2px; }
+
+  .st2-brief {
+    display: block;
+    max-width: 100%;
+    padding: 4px 0 4px 12px;
+    border: none;
+    border-left: 2px solid var(--tsunami);
+    background: transparent !important;
+    backdrop-filter: none;
+    font-size: 13px;
+    line-height: 1.42;
+  }
+
+  .voyages-carousel {
+    min-height: 245px;
+    margin: 0 -18px;
+    width: calc(100% + 36px);
+  }
+
+  .v-card { width: 74vw; height: min(345px, 43dvh); }
+  .voyages-viewfinder { width: 78vw; height: min(360px, 45dvh); }
+  .voyages-caption-title { font-size: 19px; }
+  .voyages-caption-bar { gap: 14px; }
+
+  /* 11. ST.06 — Finale Poster PLEIN ÉCRAN BLEU TSUNAMI (#262CE8) + lignes 1px animées */
+  #station-6 {
+    background: #262CE8;
+    color: #FFFFFF;
+    padding: 78px 18px 56px;
+  }
+
+  #station-6::before { display: none; }
+  #station-6 .m-watermark { color: #FFFFFF; opacity: 0.08; }
+  #station-6 .st-meta-bar,
+  #station-6 .st-tag,
+  #station-6 .st-dim { color: rgba(255, 255, 255, 0.72); }
+  #station-6 .st6-title,
+  #station-6 .accent-text { color: #FFFFFF; }
+  #station-6 .st6-sub { color: rgba(255, 255, 255, 0.88); }
+  #station-6 .st6-sub strong { color: #FFFFFF; }
+
+  .contact-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  #station-6 .contact-tile,
+  html[data-theme="dark"] #station-6 .contact-tile {
+    position: relative;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 0;
+    padding: 18px 2px;
+    min-height: 0;
+    color: #FFFFFF;
+    text-align: left;
+  }
+
+  #station-6 .contact-tile .dim-top,
+  #station-6 .contact-tile .dim-bottom { display: none !important; }
+
+  #station-6 .contact-tile strong,
+  #station-6 .contact-tile .contact-arrow {
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  /* Action principale CV : barre blanche ultra-nette à fort impact */
+  #station-6 #openCvFooter,
+  html[data-theme="dark"] #station-6 #openCvFooter {
+    background: #FFFFFF !important;
+    color: #111214 !important;
+    border: none;
+    padding: 18px 18px;
+    margin-bottom: 14px;
+  }
+
+  #station-6 #openCvFooter strong,
+  #station-6 #openCvFooter .contact-arrow {
+    color: #111214 !important;
+    font-size: 17px;
+  }
+
+  #station-6 .contact-tile:active {
+    opacity: 0.72;
+    transform: scale(0.99);
+  }
+
+  .li-full { display: none; }
+  .li-mobile { display: inline; }
+
+  #station-6 .st6-foot {
+    margin-top: 20px;
+  }
+
+  #station-6 .btn-outline,
+  #station-6 .discreet-badge {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.42);
+    color: #FFFFFF;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
